@@ -3,7 +3,13 @@ import { FaLock, FaUser } from "react-icons/fa";
 
 const { Title } = Typography;
 
-const onFinish = (values: any) => {
+interface LoginFormValues {
+    username: string;
+    password: string;
+    remember: boolean;
+}
+
+const onFinish = (values: LoginFormValues) => {
   console.log("Received values of form: ", values);
 };
 
