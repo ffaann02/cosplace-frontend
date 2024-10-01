@@ -36,7 +36,7 @@ const Login = () => {
 
 
   return (
-    <div className="flex-grow bg-blue-50 px-6 sm:pt-12 pb-12 pt-6">
+    <div className="flex-grow px-6 sm:pt-12 pb-12 pt-6">
       <Row gutter={[16, 16]}>
         <Col xs={24} sm={24} md={12} lg={12} className="sm:pt-12 pb-12 pt-2">
           <Title level={2} className="text-center">CosBaanDeawGun</Title>

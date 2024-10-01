@@ -10,7 +10,7 @@ interface LoginFormCardProps {
 
 const LoginFormCard = ({ onFinish }: LoginFormCardProps) => {
   return (
-    <div className="bg-blue-100 drop-shadow-sm border border-blue-200 w-full max-w-md mx-auto pt-6 pb-0 px-4 sm:px-10 rounded-3xl mt-16">
+    <div className="bg-primary-100 drop-shadow-sm border border-primary-200 w-full max-w-md mx-auto pt-6 pb-0 px-4 sm:px-10 rounded-3xl mt-16">
       <Title style={{ fontWeight: "400", textAlign: "center", marginBottom: 16 }} level={5}>
         เริ่มต้นใช้งานและสนุกไปกับการคอสเพลย์ได้เลย!
       </Title>
