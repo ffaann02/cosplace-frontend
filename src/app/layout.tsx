@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className="font-Kanit">
         <ConfigProvider theme={antTheme}>
           <AntdRegistry>
             <Navbar />

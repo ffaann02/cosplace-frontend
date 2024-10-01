@@ -1,6 +1,6 @@
 import { LoginFormValues } from "@/app/login/page";
 import { Button, Checkbox, Form, Input, Typography } from "antd";
-import { FaLock, FaUser } from "react-icons/fa";
+import { FaGoogle, FaLock, FaUser } from "react-icons/fa";
 
 const { Title } = Typography;
 
@@ -10,18 +10,12 @@ interface LoginFormCardProps {
 
 const LoginFormCard = ({ onFinish }: LoginFormCardProps) => {
   return (
-    <div className="bg-primary-100 drop-shadow-sm border border-primary-200 w-full max-w-md mx-auto pt-6 pb-0 px-4 sm:px-10 rounded-3xl mt-16">
-      <Title style={{ fontWeight: "400", textAlign: "center", marginBottom: 16 }} level={5}>
-        เริ่มต้นใช้งานและสนุกไปกับการคอสเพลย์ได้เลย!
-      </Title>
-      <Form
-        name="login"
-        initialValues={{ remember: true }}
-        onFinish={onFinish}
-      >
+    <div className="bg-primary-50 drop-shadow-sm border text-primary-800 border-primary-200 w-full max-w-md mx-auto p-6 pb-8 sm:px-10 rounded-3xl mt-12">
+      <h3 className="text-center mb-4">เริ่มต้นใช้งานและสนุกไปกับการคอสเพลย์ได้เลย!</h3>
+      <Form name="login" initialValues={{ remember: true }} onFinish={onFinish}>
         <Form.Item
           name="username"
-          rules={[{ required: true, message: "Please input your Username!" }]}
+          rules={[{ required: true, message: "โปรดกรอก Username หรือ Email" }]}
         >
           <Input
             size="large"
@@ -31,7 +25,7 @@ const LoginFormCard = ({ onFinish }: LoginFormCardProps) => {
         </Form.Item>
         <Form.Item
           name="password"
-          rules={[{ required: true, message: "Please input your Password!" }]}
+          rules={[{ required: true, message: "โปรดกรอกรหัสผ่าน" }]}
         >
           <Input
             size="large"
@@ -40,22 +34,29 @@ const LoginFormCard = ({ onFinish }: LoginFormCardProps) => {
             placeholder="Password"
           />
         </Form.Item>
-        <Form.Item>
-          <div className="flex justify-between items-center">
-            <Form.Item name="remember" valuePropName="checked" noStyle>
-              <Checkbox>Remember me</Checkbox>
-            </Form.Item>
-            <a href="">Forgot password</a>
-          </div>
-        </Form.Item>
-
+        <div className="-mt-4 flex justify-between">
+          <Form.Item name="remember" valuePropName="checked">
+            <Checkbox>จดจำบัญชี</Checkbox>
+          </Form.Item>
+          <Button type="link" className="underline" style={{padding:0}}>ลืมรหัสผ่าน</Button>
+        </div>
         <Form.Item>
           <Button size="large" block type="primary" htmlType="submit">
-            Log in
+            ลงชื่อเข้าใช้งาน
           </Button>
-          or <a href="">Register now!</a>
         </Form.Item>
       </Form>
+      <p className="text-center -mt-2 mb-4 text-sm">หรือ</p>
+      <Button
+        icon={<FaGoogle />}
+        size="large"
+        block
+        type="default"
+        htmlType="submit"
+        color="primary"
+      >
+        ลงชื่อเข้าใช้ด้วย Google
+      </Button>
     </div>
   );
 };
