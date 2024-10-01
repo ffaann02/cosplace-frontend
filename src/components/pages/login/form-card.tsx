@@ -1,8 +1,6 @@
 import { LoginFormValues } from "@/app/login/page";
-import { Button, Checkbox, Form, Input, Typography } from "antd";
+import { Button, Checkbox, Form, Input } from "antd";
 import { FaGoogle, FaLock, FaUser } from "react-icons/fa";
-
-const { Title } = Typography;
 
 interface LoginFormCardProps {
   onFinish: (values: LoginFormValues) => void;

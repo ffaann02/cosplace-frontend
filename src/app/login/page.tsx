@@ -1,11 +1,10 @@
 "use client";
 // import { login } from "@/api/auth";
-import LoginFormCard from "@/components/login/form-card";
+import LoginFormCard from "@/components/pages/login/form-card";
 import { roundedButton } from "@/config/theme";
-import { Button, Col, Flex, message, Row, Typography } from "antd";
+import { Button, Flex, message, Typography } from "antd";
 import { useRouter } from "next/navigation";
-import { FaArrowRight, FaInfoCircle } from "react-icons/fa";
-import { FaRightLong } from "react-icons/fa6";
+import { FaArrowRight } from "react-icons/fa";
 
 const { Title } = Typography;
 
@@ -36,7 +35,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex-grow px-6 sm:pt-12 pb-12 pt-6 flex flex-col">
+    <div className="flex-grow px-6 flex flex-col bg-gradient-to-br from-white to-secondary-50">
       <Flex className="h-full flex-grow">
         <div className="sm:pt-12 pb-12 pt-2 my-auto mx-auto">
           <Title level={2} className="text-center">
