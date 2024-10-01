@@ -1,5 +1,5 @@
 'use client';
-import { login } from "@/api/auth";
+// import { login } from "@/api/auth";
 import LoginFormCard from "@/components/login/form-card";
 import { Col, message, Row, Typography } from "antd";
 import { useRouter } from "next/navigation";
@@ -17,9 +17,9 @@ const Login = () => {
 
   const onFinish = async (values: LoginFormValues) => {
     try{
-      const {username, password} = values;
+      // const {username, password} = values;
       console.log(values);
-      const data = await login(username, password);
+      // const data = await login(username, password);
 
       message.success("Login successful");
       router.push("/");

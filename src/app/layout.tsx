@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "../styles/globals.css";
-import { Kanit } from "next/font/google";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import Navbar from "@/components/navbar";
 import { ConfigProvider } from "antd";
