@@ -1,28 +1,22 @@
-import { Button, Checkbox, Flex, Form, Input, Typography } from "antd";
+import { LoginFormValues } from "@/app/login/page";
+import { Button, Checkbox, Form, Input, Typography } from "antd";
 import { FaLock, FaUser } from "react-icons/fa";
 
 const { Title } = Typography;
 
-interface LoginFormValues {
-    username: string;
-    password: string;
-    remember: boolean;
+interface LoginFormCardProps {
+  onFinish: (values: LoginFormValues) => void;
 }
 
-const onFinish = (values: LoginFormValues) => {
-  console.log("Received values of form: ", values);
-};
-
-const LoginFormCard = () => {
+const LoginFormCard = ({ onFinish }: LoginFormCardProps) => {
   return (
-    <div className="bg-blue-100 drop-shadow-sm border border-blue-200 w-fit mx-auto pt-6 pb-0 px-10 rounded-3xl mt-16">
+    <div className="bg-primary-100 drop-shadow-sm border border-primary-200 w-full max-w-md mx-auto pt-6 pb-0 px-4 sm:px-10 rounded-3xl mt-16">
       <Title style={{ fontWeight: "400", textAlign: "center", marginBottom: 16 }} level={5}>
         เริ่มต้นใช้งานและสนุกไปกับการคอสเพลย์ได้เลย!
       </Title>
       <Form
         name="login"
         initialValues={{ remember: true }}
-        style={{ minWidth: 360, maxWidth: 480 }}
         onFinish={onFinish}
       >
         <Form.Item
@@ -47,16 +41,16 @@ const LoginFormCard = () => {
           />
         </Form.Item>
         <Form.Item>
-          <Flex justify="space-between" align="center">
+          <div className="flex justify-between items-center">
             <Form.Item name="remember" valuePropName="checked" noStyle>
               <Checkbox>Remember me</Checkbox>
             </Form.Item>
             <a href="">Forgot password</a>
-          </Flex>
+          </div>
         </Form.Item>
 
         <Form.Item>
-          <Button size="large" block type="primary" color="primary" htmlType="submit">
+          <Button size="large" block type="primary" htmlType="submit">
             Log in
           </Button>
           or <a href="">Register now!</a>
@@ -65,4 +59,5 @@ const LoginFormCard = () => {
     </div>
   );
 };
+
 export default LoginFormCard;
