@@ -1,7 +1,6 @@
 import { apiClientWithAuth } from "@/api";
 import { LoginFormValues } from "@/app/login/page";
 import { Button, Checkbox, Form, Input } from "antd";
-import axios from "axios";
 import { FaGoogle, FaLock, FaUser } from "react-icons/fa";
 
 interface LoginFormCardProps {

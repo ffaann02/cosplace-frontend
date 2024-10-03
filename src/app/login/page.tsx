@@ -23,7 +23,7 @@ const Login = () => {
       const {username, password} = values;
       console.log(values);
       const data = await login(username, password);
-
+      console.log(data);
       message.success("Login successful");
       router.push("/");
     } catch (error: unknown) {
