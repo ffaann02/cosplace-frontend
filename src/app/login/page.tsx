@@ -1,4 +1,5 @@
 "use client";
+import { login } from "@/api/auth";
 // import { login } from "@/api/auth";
 import LoginFormCard from "@/components/pages/login/form-card";
 import { roundedButton } from "@/config/theme";
@@ -19,9 +20,9 @@ const Login = () => {
 
   const onFinish = async (values: LoginFormValues) => {
     try {
-      // const {username, password} = values;
+      const {username, password} = values;
       console.log(values);
-      // const data = await login(username, password);
+      const data = await login(username, password);
 
       message.success("Login successful");
       router.push("/");
@@ -37,7 +38,7 @@ const Login = () => {
   return (
     <div className="flex-grow px-6 flex flex-col bg-gradient-to-br from-white to-secondary-50">
       <Flex className="h-full flex-grow">
-        <div className="sm:pt-12 pb-12 pt-2 my-auto mx-auto">
+        <div className="sm:pt-12 pb-12 pt-2 my-auto mx-auto w-full max-w-md">
           <Title level={2} className="text-center">
             CosBaanDeawGun
           </Title>
@@ -45,7 +46,7 @@ const Login = () => {
             &quot; แค่มองตากันก็เข้าใจอยู่ &quot;
           </Title>
           <LoginFormCard onFinish={onFinish} />
-          <div className="flex justify-center mt-12">
+          <div className="flex justify-center mt-6">
             <Button
               style={roundedButton}
               size="large"

@@ -1,5 +1,7 @@
+import { apiClientWithAuth } from "@/api";
 import { LoginFormValues } from "@/app/login/page";
 import { Button, Checkbox, Form, Input } from "antd";
+import axios from "axios";
 import { FaGoogle, FaLock, FaUser } from "react-icons/fa";
 
 interface LoginFormCardProps {
@@ -7,8 +9,14 @@ interface LoginFormCardProps {
 }
 
 const LoginFormCard = ({ onFinish }: LoginFormCardProps) => {
+
+  const testFetch = async () => {
+    const response = await apiClientWithAuth.get("/commission");
+    console.log(response.data);
+  };
+
   return (
-    <div className="bg-primary-50 drop-shadow-sm border text-primary-800 border-primary-200 w-full max-w-md mx-auto p-6 pb-8 sm:px-10 rounded-3xl mt-12">
+    <div className="bg-primary-50 drop-shadow-sm border text-primary-800 border-primary-200 mx-auto p-6 pb-8 sm:px-6 rounded-3xl mt-8">
       <h3 className="text-center mb-4">เริ่มต้นใช้งานและสนุกไปกับการคอสเพลย์ได้เลย!</h3>
       <Form name="login" initialValues={{ remember: true }} onFinish={onFinish}>
         <Form.Item
@@ -36,7 +44,9 @@ const LoginFormCard = ({ onFinish }: LoginFormCardProps) => {
           <Form.Item name="remember" valuePropName="checked">
             <Checkbox>จดจำบัญชี</Checkbox>
           </Form.Item>
-          <Button type="link" className="underline" style={{padding:0}}>ลืมรหัสผ่าน</Button>
+          <Button type="link" className="underline" style={{ padding: 0 }}>
+            ลืมรหัสผ่าน
+          </Button>
         </div>
         <Form.Item>
           <Button size="large" block type="primary" htmlType="submit">
@@ -46,6 +56,7 @@ const LoginFormCard = ({ onFinish }: LoginFormCardProps) => {
       </Form>
       <p className="text-center -mt-2 mb-4 text-sm">หรือ</p>
       <Button
+        onClick={testFetch}
         icon={<FaGoogle />}
         size="large"
         block

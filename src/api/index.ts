@@ -8,6 +8,16 @@ const apiClient = axios.create({
         "Content-Type": "application/json",
     },
     timeout: 10000,
+    withCredentials: true,
 });
 
-export default apiClient;
+const apiClientWithAuth = axios.create({
+    baseURL: API_BASE_URL + "/api/protected",
+    headers: {
+        "Content-Type": "application/json",
+    },
+    timeout: 10000,
+    withCredentials: true,
+});
+
+export { apiClient, apiClientWithAuth };
