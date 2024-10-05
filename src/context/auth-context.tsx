@@ -8,11 +8,13 @@ import React, {
 } from "react";
 import { useRouter } from "next/navigation";
 import { apiClient } from "@/api";
+import Loading from "@/components/loading";
 
 interface AuthContextType {
   user: User | null;
   setUser: (user: User | null) => void;
   isAuthenticated: boolean;
+  setIsAuthenticated: (isAuthenticated: boolean) => void;
   loading: boolean;
 }
 
@@ -27,7 +29,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -51,7 +53,13 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     checkAuth();
   }, [router]);
 
-  const value = { isAuthenticated, loading, user, setUser };
+  const value: AuthContextType = {
+    isAuthenticated,
+    setIsAuthenticated,
+    loading,
+    user,
+    setUser,
+  };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

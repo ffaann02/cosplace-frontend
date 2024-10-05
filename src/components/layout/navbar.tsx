@@ -7,11 +7,14 @@ import { IoMenu } from "react-icons/io5";
 import DrawerSidebar from "./drawer-sidebar";
 import { roundedButton } from "@/config/theme";
 import { usePathname } from "next/navigation";
+import { useAuth } from "@/context/auth-context";
+import UserBadgeNavbar from "./user-badge-navbar";
 
 const Navbar = () => {
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [options, setOptions] = useState<{ value: string }[]>([]);
-  const pathname = usePathname(); // Get the current path
+  const { isAuthenticated } = useAuth();
+  const pathname = usePathname();
 
   const showDrawer = () => {
     setOpenDrawer(true);
@@ -28,13 +31,12 @@ const Navbar = () => {
     );
   };
 
-  // Check if the current route is either /login or /register
   if (pathname === "/login" || pathname === "/register") {
-    return null; // Return null to hide the Navbar
+    return null;
   }
 
   return (
-    <nav className="h-16 bg-secondary-50 flex items-center justify-between z-50 fixed top-0 w-full px-4 sm:px-6 xl:px-12 border-b border-neutral-200 drop-shadow-sm">
+    <nav className="h-16 bg-secondary-50 flex items-center justify-between z-50 fixed top-0 w-full px-4 sm:px-6 xl:px-10 border-b border-neutral-200 drop-shadow-sm">
       <DrawerSidebar open={openDrawer} setOpen={setOpenDrawer} />
       <Flex className="gap-x-4 xl:gap-x-12 w-full lg:w-fit">
         <Link href="/" passHref className="my-auto">
@@ -90,15 +92,20 @@ const Navbar = () => {
         </Link>
         <Link href="/events" passHref className="my-auto">
           <span className="text-primary-600 hover:text-primary-800">
-            กิจกรรมและงานคอสเพลย์
+            กิจกรรมและงาน
           </span>
         </Link>
-        <Link href="/login" passHref >
-        <div className="my-auto">
-          <Button style={{ ...roundedButton }} size="small" type="primary">
-            <span className="mt-0.5">ลงชื่อเข้าใช้</span>
-          </Button>
-        </div></Link>
+        {isAuthenticated ? (
+          <UserBadgeNavbar />
+        ) : (
+          <Link href="/login" passHref>
+            <div className="my-auto">
+              <Button style={{ ...roundedButton }} size="small" type="primary">
+                <span className="mt-0.5">ลงชื่อเข้าใช้</span>
+              </Button>
+            </div>
+          </Link>
+        )}
       </div>
     </nav>
   );

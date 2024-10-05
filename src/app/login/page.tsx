@@ -19,21 +19,21 @@ export interface LoginFormValues {
 
 const Login = () => {
   const router = useRouter();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, setIsAuthenticated } = useAuth();
 
   useEffect(() => {
     if (isAuthenticated) {
       router.push("/");
     }
-  },[]);
+  }, [isAuthenticated, router]);
 
   const onFinish = async (values: LoginFormValues) => {
     try {
       const { username, password } = values;
-      console.log(values);
       const data = await login(username, password);
-      console.log(data);
+      setIsAuthenticated(true);
       message.success("Login successful");
+  
       router.push("/");
     } catch (error: unknown) {
       if (error instanceof Error) {

@@ -5,6 +5,7 @@ import Navbar from "@/components/layout/navbar";
 import { ConfigProvider } from "antd";
 import { antTheme } from "@/config/theme";
 import { AuthProvider } from "@/context/auth-context";
+import Loading from "@/components/loading";
 
 export const metadata: Metadata = {
   title: "CosBaanDeawGun",
@@ -22,6 +23,7 @@ export default function RootLayout({
         <ConfigProvider theme={antTheme}>
           <AuthProvider>
             <AntdRegistry>
+              <Loading />
               <Navbar />
               <div className="flex flex-col min-h-dvh z-0">{children}</div>
             </AntdRegistry>
