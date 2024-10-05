@@ -23,3 +23,10 @@
   content: ".";
   animation: loading 1s infinite;
 }
+
+.ant-picker .ant-picker-input span.ant-picker-suffix,
+.ant-picker.ant-picker-range span.ant-picker-suffix {
+  margin-left: 1px;
+  margin-right: 10px;
+  order: -1; /* This moves the icon to the left */
+}
