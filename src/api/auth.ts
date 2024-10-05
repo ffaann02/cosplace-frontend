@@ -20,23 +20,35 @@ export const login = async (username: string, password: string) => {
   }
 };
 
-export const register = async (username: string, password: string) => {
-  try {
-    const response = await apiClient.post("/auth/register", {
-      username,
-      password,
-    });
-
-    if (response.status !== 200) {
-      throw new Error("Register failed");
+export const register = async (
+    firstname: string, 
+    lastname: string,
+    phoneNumber: string,
+    dateOfBirth: string,
+    username: string,
+    email: string,
+    password: string
+) => {
+    try{
+        console.log(firstname, lastname, phoneNumber, dateOfBirth, username, email, password);
+        const response = await apiClient.post("/auth/register", {
+            first_name: firstname,
+            last_name: lastname,
+            phone_number: phoneNumber,
+            date_of_birth: dateOfBirth,
+            username,
+            email,
+            password,
+        });
+        if (response.status !== 201) {
+            throw new Error("Register failed");
+        }
+        const { token, user } = response.data;
+        return { token, user };
+    }catch(error: unknown){
+        console.log("register error", error);
+        throw error;
     }
-
-    const { token, user } = response.data;
-    return { token, user };
-  } catch (error: unknown) {
-    console.log("register error", error);
-    throw error;
-  }
 };
 
 export const logout = async () => {
