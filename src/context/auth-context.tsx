@@ -7,7 +7,6 @@ import React, {
   useContext,
 } from "react";
 import { useRouter } from "next/navigation";
-import { check } from "@/api/auth";
 import { apiClient } from "@/api";
 
 interface AuthContextType {
@@ -15,8 +14,6 @@ interface AuthContextType {
   setUser: (user: User | null) => void;
   isAuthenticated: boolean;
   loading: boolean;
-  // login: () => void;
-  // logout: () => void;
 }
 
 export interface User {
@@ -41,16 +38,16 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (response.status === 200) {
           setIsAuthenticated(true);
         } else {
-          router.push("/login");
+          setIsAuthenticated(false);
         }
       } catch (error) {
-        console.error("Failed to check authentication", error);
-        router.push("/login");
+        // console.error("Failed to check authentication", error);
+        setIsAuthenticated(false);
       } finally {
         setLoading(false);
       }
     };
-    
+
     checkAuth();
   }, [router]);
 

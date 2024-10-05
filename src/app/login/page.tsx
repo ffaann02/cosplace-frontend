@@ -6,6 +6,7 @@ import { roundedButton } from "@/config/theme";
 import { useAuth } from "@/context/auth-context";
 import { Button, Flex, message, Typography } from "antd";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { FaArrowRight } from "react-icons/fa";
 
 const { Title } = Typography;
@@ -19,6 +20,12 @@ export interface LoginFormValues {
 const Login = () => {
   const router = useRouter();
   const { isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push("/");
+    }
+  },[]);
 
   const onFinish = async (values: LoginFormValues) => {
     try {
