@@ -4,6 +4,7 @@ import { AntdRegistry } from "@ant-design/nextjs-registry";
 import Navbar from "@/components/layout/navbar";
 import { ConfigProvider } from "antd";
 import { antTheme } from "@/config/theme";
+import { AuthProvider } from "@/context/auth-context";
 
 export const metadata: Metadata = {
   title: "CosBaanDeawGun",
@@ -19,10 +20,12 @@ export default function RootLayout({
     <html lang="en">
       <body className="font-Kanit">
         <ConfigProvider theme={antTheme}>
-          <AntdRegistry>
-            <Navbar />
-            <div className="flex flex-col min-h-dvh z-0">{children}</div>
-          </AntdRegistry>
+          <AuthProvider>
+            <AntdRegistry>
+              <Navbar />
+              <div className="flex flex-col min-h-dvh z-0">{children}</div>
+            </AntdRegistry>
+          </AuthProvider>
         </ConfigProvider>
       </body>
     </html>

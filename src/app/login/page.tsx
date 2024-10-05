@@ -3,6 +3,7 @@ import { login } from "@/api/auth";
 // import { login } from "@/api/auth";
 import LoginFormCard from "@/components/pages/login/form-card";
 import { roundedButton } from "@/config/theme";
+import { useAuth } from "@/context/auth-context";
 import { Button, Flex, message, Typography } from "antd";
 import { useRouter } from "next/navigation";
 import { FaArrowRight } from "react-icons/fa";
@@ -17,10 +18,11 @@ export interface LoginFormValues {
 
 const Login = () => {
   const router = useRouter();
+  const { isAuthenticated } = useAuth();
 
   const onFinish = async (values: LoginFormValues) => {
     try {
-      const {username, password} = values;
+      const { username, password } = values;
       console.log(values);
       const data = await login(username, password);
       console.log(data);
