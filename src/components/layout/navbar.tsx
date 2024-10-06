@@ -13,7 +13,7 @@ import UserBadgeNavbar from "./user-badge-navbar";
 const Navbar = () => {
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [options, setOptions] = useState<{ value: string }[]>([]);
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const pathname = usePathname();
 
   const showDrawer = () => {
@@ -96,7 +96,7 @@ const Navbar = () => {
           </span>
         </Link>
         {isAuthenticated ? (
-          <UserBadgeNavbar />
+          <UserBadgeNavbar user={user} />
         ) : (
           <Link href="/login" passHref>
             <div className="my-auto">

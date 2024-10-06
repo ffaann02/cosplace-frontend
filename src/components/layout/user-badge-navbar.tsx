@@ -1,4 +1,5 @@
 import { logout } from "@/api/auth";
+import { User } from "@/context/auth-context";
 import { Avatar, Dropdown, MenuProps, Space } from "antd";
 import { FaChevronDown } from "react-icons/fa";
 import { IoIosNotificationsOutline } from "react-icons/io";
@@ -41,7 +42,9 @@ const items: MenuProps["items"] = [
   },
 ];
 
-const UserBadgeNavbar = () => {
+const UserBadgeNavbar = ({user}:{
+    user: User | null;
+}) => {
   return (
     <div
       className="flex cursor-pointer bg-white hover:bg-primary-50 pl-1.5 pr-2 py-1 
@@ -64,10 +67,10 @@ const UserBadgeNavbar = () => {
       >
         <a onClick={(e) => e.preventDefault()}>
           <Space className="ml-2">
-            <p className="my-auto text-lg text-primary-800 mb-0.5 tracking-wide">
-              Username
+            <p className="my-auto text-[16px] text-primary-800 mb-1 tracking-wide">
+              {user?.username}
             </p>
-            <FaChevronDown className="text-xs mt-0.5 text-primary-800" />
+            <FaChevronDown className="text-xs mb-0.5 text-primary-800" />
           </Space>
         </a>
       </Dropdown>

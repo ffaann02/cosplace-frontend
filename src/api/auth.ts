@@ -12,8 +12,8 @@ export const login = async (username: string, password: string) => {
       throw new Error("Login failed");
     }
 
-    const { token, user } = response.data;
-    return { token, user };
+    const { user } = response.data;
+    return user;
   } catch (error: unknown) {
     console.log("login error", error);
     throw error;
