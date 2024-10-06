@@ -1,6 +1,5 @@
 "use client";
 import { register } from "@/api/auth";
-// import { login } from "@/api/auth";
 import RegisterFormCard from "@/components/pages/register/form-card";
 import { roundedButton } from "@/config/theme";
 import { useAuth } from "@/context/auth-context";
@@ -8,7 +7,7 @@ import { Button, Flex, message, Typography } from "antd";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { FaArrowRight } from "react-icons/fa";
-import moment from "moment"; // Make sure to install moment if not already installed
+import { format } from "date-fns";
 
 const { Title } = Typography;
 
@@ -24,7 +23,7 @@ export interface RegisterFormValues {
   accept: boolean;
 }
 
-const Login = () => {
+const Register = () => {
   const router = useRouter();
   const { isAuthenticated } = useAuth();
 
@@ -32,13 +31,13 @@ const Login = () => {
     if (isAuthenticated) {
       router.push("/");
     }
-  },[]);
+  },[isAuthenticated, router]);
 
   const onFinish = async (values: RegisterFormValues) => {
     try {
       const { firstname, lastname, phoneNumber, dateOfBirth, username, email, password } = values;
       console.log(values);
-      const formatedDateOfBirth = moment(dateOfBirth).format("YYYY-MM-DD")
+      const formatedDateOfBirth = format(new Date(dateOfBirth), "yyyy-MM-dd");
       const data = await register(firstname, lastname, phoneNumber, formatedDateOfBirth, username, email, password);
       console.log(data);
       message.success("Register successful");
@@ -75,4 +74,4 @@ const Login = () => {
     </div>
   );
 };
-export default Login;
+export default Register;

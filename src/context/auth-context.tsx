@@ -8,7 +8,6 @@ import React, {
 } from "react";
 import { useRouter } from "next/navigation";
 import { apiClient } from "@/api";
-import Loading from "@/components/loading";
 
 interface AuthContextType {
   user: User | null;
@@ -28,7 +27,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -45,7 +44,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         // console.error("Failed to check authentication", error);
         setIsAuthenticated(false);
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     };
 
