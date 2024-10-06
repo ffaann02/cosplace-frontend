@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/auth-context";
 
 const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
-  return (props: P) => {
+  const ComponentWithAuth = (props: P) => {
     const router = useRouter();
     const { isAuthenticated, loading } = useAuth();
 
@@ -15,6 +15,10 @@ const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
 
     return <WrappedComponent {...props} />;
   };
+
+  ComponentWithAuth.displayName = `WithAuth(${WrappedComponent.displayName || WrappedComponent.name || "Component"})`;
+
+  return ComponentWithAuth;
 };
 
 export default withAuth;
