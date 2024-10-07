@@ -1,6 +1,5 @@
 "use client";
 import { login } from "@/api/auth";
-// import { login } from "@/api/auth";
 import LoginFormCard from "@/components/pages/login/form-card";
 import { roundedButton } from "@/config/theme";
 import { useAuth } from "@/context/auth-context";
@@ -31,13 +30,11 @@ const Login = () => {
     try {
       const { username, password } = values;
       const data = await login(username, password);
-      console.log(data);
       setIsAuthenticated(true);
       setUser({
         user_id: data.user,
         username: data.username,
       })
-      message.success("Login successful");
   
       router.push("/");
     } catch (error: unknown) {
@@ -52,7 +49,7 @@ const Login = () => {
   return (
     <div className="flex-grow px-6 flex flex-col bg-gradient-to-br from-white to-secondary-50">
       <Flex className="h-full flex-grow">
-        <div className="sm:pt-12 pb-12 pt-2 my-auto mx-auto w-full max-w-md">
+        <div className="pb-12 pt-2 my-auto mx-auto w-full max-w-md">
           <Title level={2} className="text-center">
             CosBaanDeawGun
           </Title>

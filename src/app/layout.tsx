@@ -25,7 +25,7 @@ export default function RootLayout({
             <AntdRegistry>
               <Loading />
               <Navbar />
-              <div className="flex flex-col min-h-dvh z-0">{children}</div>
+              <div className="flex flex-col min-h-dvh z-0 pt-16">{children}</div>
             </AntdRegistry>
           </AuthProvider>
         </ConfigProvider>

@@ -38,39 +38,37 @@ const items: MenuProps["items"] = [
     key: "5",
     label: "ออกจากระบบ",
     icon: <SlLogout />,
-    onClick: logout
+    onClick: logout,
   },
 ];
 
-const UserBadgeNavbar = ({user}:{
-    user: User | null;
-}) => {
+const UserBadgeNavbar = ({ user }: { user: User | null }) => {
   return (
     <div
       className="flex cursor-pointer bg-white hover:bg-primary-50 pl-1.5 pr-2 py-1 
         border border-primary-200 rounded-lg transition-all ease-linear duration-100"
     >
-      <Avatar
-        src="https://api.dicebear.com/7.x/miniavs/svg?seed=1"
-        style={{
-          background: "white",
-          border: "1px solid #bb763b",
-          padding: 1,
-          marginTop: "auto",
-          marginBottom: "auto",
-        }}
-      />
       <Dropdown
         menu={{ items }}
         className="my-auto pt-0.5"
         placement="bottomRight"
       >
         <a onClick={(e) => e.preventDefault()}>
-          <Space className="ml-2">
-            <p className="my-auto text-[16px] text-primary-800 mb-1 tracking-wide">
+          <Space className="">
+            <Avatar
+              src="https://api.dicebear.com/7.x/miniavs/svg?seed=1"
+              style={{
+                background: "white",
+                border: "1px solid #bb763b",
+                padding: 1,
+                marginTop: "auto",
+                marginBottom: "auto",
+              }}
+            />
+            {/* <p className="my-auto text-[16px] text-primary-800 mb-1 tracking-wide">
               {user?.username}
-            </p>
-            <FaChevronDown className="text-xs mb-0.5 text-primary-800" />
+            </p> */}
+            <FaChevronDown className="text-xs mt-0.5 mb-0.5 mr-0.5 text-primary-800" />
           </Space>
         </a>
       </Dropdown>

@@ -5,7 +5,7 @@ import { roundedButton } from "@/config/theme";
 import { useAuth } from "@/context/auth-context";
 import { Button, Flex, message, Typography } from "antd";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { format } from "date-fns";
 
@@ -26,6 +26,7 @@ export interface RegisterFormValues {
 const Register = () => {
   const router = useRouter();
   const { isAuthenticated } = useAuth();
+  const [accept, setAccept] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -54,11 +55,11 @@ const Register = () => {
   return (
     <div className="flex-grow px-6 flex flex-col bg-gradient-to-br from-white to-secondary-50">
       <Flex className="h-full flex-grow">
-        <div className="sm:pt-12 pb-12 pt-2 my-auto mx-auto w-full max-w-md">
+        <div className="pb-12 pt-2 my-auto mx-auto w-full max-w-lg">
           <Title level={2} className="text-center">
             CosBaanDeawGun
           </Title>
-          <RegisterFormCard onFinish={onFinish} />
+          <RegisterFormCard onFinish={onFinish} accept={accept} setAccept={setAccept} />
           <div className="flex justify-center mt-6">
             <Button
               style={roundedButton}
