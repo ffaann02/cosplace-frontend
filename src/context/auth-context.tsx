@@ -22,32 +22,48 @@ export interface User {
   username: string;
 }
 
+const fakeUser = {
+  user_id: 1,
+  username: "admin1",
+};
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     const checkAuth = async () => {
       setLoading(true);
-      try {
-        const response = await apiClient.get("/auth/check");
-        if (response.status === 200) {
-          setIsAuthenticated(true);
-        } else {
+      if (!isAuthenticated || !user) {
+        try {
+          const response = await apiClient.get("/auth/check");
+          if (response.status === 200) {
+            if (!user){
+              setUser({
+                user_id: response.data.user_id,
+                username: response.data.username,
+              });
+            }
+            setIsAuthenticated(true);
+          } else {
+            setIsAuthenticated(false);
+          }
+        } catch (error) {
+          if(process.env.NEXT_PUBLIC_APP_STATUS === "PRODUCTION") console.clear();
+          console.error("Failed to check authentication", error);
           setIsAuthenticated(false);
+        } finally {
+          setLoading(false);
         }
-      } catch (error) {
-        // console.error("Failed to check authentication", error);
-        setIsAuthenticated(false);
-      } finally {
-        // setLoading(false);
+      } else {
+        setLoading(false);
+        return;
       }
     };
-
     checkAuth();
   }, [router]);
 
