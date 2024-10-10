@@ -1,12 +1,11 @@
-import { apiClientWithAuth } from "@/api";
 import { RegisterFormValues } from "@/app/register/page";
 import { Button, Checkbox, DatePicker, Flex, Form, Input } from "antd";
+import { CheckboxChangeEvent } from "antd/es/checkbox";
 import {
   FaGoogle,
   FaLock,
   FaUser,
   FaRegUser,
-  FaCalendarAlt,
 } from "react-icons/fa";
 import { FiPhone } from "react-icons/fi";
 import { IoMail } from "react-icons/io5";
@@ -22,9 +21,8 @@ const RegisterFormCard = ({
   accept,
   setAccept,
 }: RegisterFormCardProps) => {
-  const [form] = Form.useForm();
-
-  const handleAcceptChange = (e: any) => {
+  
+  const handleAcceptChange = (e: CheckboxChangeEvent) => {
     setAccept(e.target.checked);
   };
 
