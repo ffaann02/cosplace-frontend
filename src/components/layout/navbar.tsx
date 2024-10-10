@@ -36,29 +36,54 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="h-16 bg-secondary-50 flex items-center justify-between z-50 fixed top-0 w-full px-4 sm:px-6 xl:px-10 border-b border-neutral-200 drop-shadow-sm">
+    <nav className="h-16 bg-secondary-50 flex items-center justify-between z-50 fixed top-0 w-full py-[2.1rem] px-4 sm:px-6 xl:px-12 border-b border-neutral-200 drop-shadow-sm">
       <DrawerSidebar open={openDrawer} setOpen={setOpenDrawer} />
-      <Flex className="gap-x-4 xl:gap-x-12 w-full lg:w-fit">
+      <Flex className="w-full">
         <Link href="/" passHref className="my-auto">
-          <h1 className="text-lg xl:text-xl font-semibold text-primary-600 tracking-wider">
-            CosBaanDeawGun
+          <h1 className="text-lg lg:text-xl font-semibold tracking-wider flex flex-col">
+            <span className="text-secondary-600">CosBaan</span>
+            <span className="-mt-2 text-secondary-700">DeawGun</span>
           </h1>
         </Link>
-        <div className="w-full lg:w-72 xl:w-[480px] my-auto">
-          <AutoComplete
-            options={options}
-            onSearch={handleSearch}
-            style={{ width: "100%" }}
-          >
-            <Input
-              size="middle"
-              placeholder="ค้นหาชุด, ชื่อตัวละคร, ของตกแต่ง"
-              style={{ borderRadius: 16 }}
-              prefix={<FaSearch />}
-            />
-          </AutoComplete>
+        <div className="w-full flex px-2 ml-8 xl:ml-12">
+          <div className="gap-x-4 xl:gap-x-5 2xl:gap-x-6 lg:flex hidden text-md xl:text-lg w-2/5 min-w-[448px]">
+            <Link href="/" passHref className="my-auto">
+              <span className="text-primary-600 hover:text-primary-800">
+                หน้าหลัก
+              </span>
+            </Link>
+            <Link href="/marketplace" passHref className="my-auto">
+              <span className="text-primary-600 hover:text-primary-800">
+                Marketplace
+              </span>
+            </Link>
+            <Link href="/friends" passHref className="my-auto">
+              <span className="text-primary-600 hover:text-primary-800">
+                เพื่อนและสังคม
+              </span>
+            </Link>
+            <Link href="/events" passHref className="my-auto">
+              <span className="text-primary-600 hover:text-primary-800">
+                กิจกรรมและงาน
+              </span>
+            </Link>
+          </div>
+          <div className="w-full lg:w-3/5 my-auto ml-2">
+            <AutoComplete
+              options={options}
+              onSearch={handleSearch}
+              style={{ width: "100%" }}
+            >
+              <Input
+                size="middle"
+                placeholder="ค้นหาชุด, ชื่อตัวละคร, ของตกแต่ง"
+                style={{ borderRadius: 16 }}
+                prefix={<FaSearch />}
+              />
+            </AutoComplete>
+          </div>
         </div>
-        <div className="my-auto mt-1">
+        <div className="my-auto mt-2">
           <Button
             type="text"
             style={{
@@ -74,39 +99,17 @@ const Navbar = () => {
           </Button>
         </div>
       </Flex>
-      <div className="gap-x-4 xl:gap-x-5 lg:flex hidden text-sm 2xl:text-lg">
-        <Link href="/" passHref className="my-auto">
-          <span className="text-primary-600 hover:text-primary-800">
-            หน้าหลัก
-          </span>
+      {isAuthenticated ? (
+        <UserBadgeNavbar user={user} />
+      ) : (
+        <Link href="/login" passHref>
+          <div className="my-auto">
+            <Button style={{ ...roundedButton }} size="small" type="primary">
+              <span className="mt-0.5">ลงชื่อเข้าใช้</span>
+            </Button>
+          </div>
         </Link>
-        <Link href="/marketplace" passHref className="my-auto">
-          <span className="text-primary-600 hover:text-primary-800">
-            Marketplace
-          </span>
-        </Link>
-        <Link href="/friends" passHref className="my-auto">
-          <span className="text-primary-600 hover:text-primary-800">
-            เพื่อนและสังคม
-          </span>
-        </Link>
-        <Link href="/events" passHref className="my-auto">
-          <span className="text-primary-600 hover:text-primary-800">
-            กิจกรรมและงาน
-          </span>
-        </Link>
-        {isAuthenticated ? (
-          <UserBadgeNavbar user={user} />
-        ) : (
-          <Link href="/login" passHref>
-            <div className="my-auto">
-              <Button style={{ ...roundedButton }} size="small" type="primary">
-                <span className="mt-0.5">ลงชื่อเข้าใช้</span>
-              </Button>
-            </div>
-          </Link>
-        )}
-      </div>
+      )}
     </nav>
   );
 };
