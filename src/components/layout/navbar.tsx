@@ -1,0 +1,117 @@
+"use client";
+import { Button, Flex, Input, AutoComplete } from "antd";
+import Link from "next/link";
+import { useState } from "react";
+import { FaSearch } from "react-icons/fa";
+import { IoMenu } from "react-icons/io5";
+import DrawerSidebar from "./drawer-sidebar";
+import { roundedButton } from "@/config/theme";
+import { usePathname } from "next/navigation";
+import { useAuth } from "@/context/auth-context";
+import UserBadgeNavbar from "./user-badge-navbar";
+
+const Navbar = () => {
+  const [openDrawer, setOpenDrawer] = useState<boolean>(false);
+  const [options, setOptions] = useState<{ value: string }[]>([]);
+  const { isAuthenticated, user } = useAuth();
+  const pathname = usePathname();
+
+  const showDrawer = () => {
+    setOpenDrawer(true);
+  };
+
+  const handleSearch = (value: string) => {
+    const mockData = [
+      { value: "ชุดคอสเพลย์" },
+      { value: "ชื่อตัวละคร" },
+      { value: "ของตกแต่ง" },
+    ];
+    setOptions(
+      value ? mockData.filter((item) => item.value.includes(value)) : []
+    );
+  };
+
+  if (pathname === "/login" || pathname === "/register") {
+    return null;
+  }
+
+  return (
+    <nav className="h-16 bg-secondary-50 flex items-center justify-between z-50 fixed top-0 w-full py-[2.1rem] px-4 sm:px-6 xl:px-12 border-b border-neutral-200 drop-shadow-sm">
+      <DrawerSidebar open={openDrawer} setOpen={setOpenDrawer} />
+      <Flex className="w-full">
+        <Link href="/" passHref className="my-auto">
+          <h1 className="text-lg lg:text-xl font-semibold tracking-wider flex flex-col">
+            <span className="text-secondary-600">CosBaan</span>
+            <span className="-mt-2 text-secondary-700">DeawGun</span>
+          </h1>
+        </Link>
+        <div className="w-full flex px-2 ml-8 xl:ml-12">
+          <div className="gap-x-4 xl:gap-x-5 2xl:gap-x-6 lg:flex hidden text-md xl:text-lg w-2/5 min-w-[448px]">
+            <Link href="/" passHref className="my-auto">
+              <span className="text-primary-600 hover:text-primary-800">
+                หน้าหลัก
+              </span>
+            </Link>
+            <Link href="/marketplace" passHref className="my-auto">
+              <span className="text-primary-600 hover:text-primary-800">
+                Marketplace
+              </span>
+            </Link>
+            <Link href="/friends" passHref className="my-auto">
+              <span className="text-primary-600 hover:text-primary-800">
+                เพื่อนและสังคม
+              </span>
+            </Link>
+            <Link href="/events" passHref className="my-auto">
+              <span className="text-primary-600 hover:text-primary-800">
+                กิจกรรมและงาน
+              </span>
+            </Link>
+          </div>
+          <div className="w-full lg:w-3/5 my-auto ml-2">
+            <AutoComplete
+              options={options}
+              onSearch={handleSearch}
+              style={{ width: "100%" }}
+            >
+              <Input
+                size="middle"
+                placeholder="ค้นหาชุด, ชื่อตัวละคร, ของตกแต่ง"
+                style={{ borderRadius: 16 }}
+                prefix={<FaSearch />}
+              />
+            </AutoComplete>
+          </div>
+        </div>
+        <div className="my-auto mt-2">
+          <Button
+            type="text"
+            style={{
+              fontSize: 28,
+              paddingTop: 0,
+              paddingBottom: 0,
+              paddingLeft: 2,
+              paddingRight: 2,
+            }}
+            onClick={showDrawer}
+          >
+            <IoMenu className="block lg:hidden my-auto text-primary-800 py-0.5" />
+          </Button>
+        </div>
+      </Flex>
+      {isAuthenticated ? (
+        <UserBadgeNavbar user={user} />
+      ) : (
+        <Link href="/login" passHref>
+          <div className="my-auto">
+            <Button style={{ ...roundedButton }} size="small" type="primary">
+              <span className="mt-0.5">ลงชื่อเข้าใช้</span>
+            </Button>
+          </div>
+        </Link>
+      )}
+    </nav>
+  );
+};
+
+export default Navbar;
