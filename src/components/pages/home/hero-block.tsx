@@ -1,10 +1,10 @@
 "use client";
-import MascotImage from "@/public/images/mascot.gif";
 import MascotImageGif from "../../../public/images/mascot.gif";
 import Image from "next/image";
 import HeroButton from "@/components/button";
 import { FaUserFriends } from "react-icons/fa";
 import { MdEventAvailable } from "react-icons/md";
+import BackgroundFloatItem from "./bg-float-item";
 const HeroBlock = () => {
   const click = () => {
     console.log("click");
@@ -16,7 +16,8 @@ const HeroBlock = () => {
         className="grid grid-cols-8 lg:grid-cols-12 w-full h-full max-w-7xl m-auto lg:px-12 2xl:px-0 z-10
       overflow-hidden"
       >
-        <div className="w-full h-full flex pt-6 px-8 md:px-16 pb-6  md:pb-0 col-span-8">
+        <BackgroundFloatItem/>
+        <div className="w-full h-full flex pt-6 px-8 md:px-16 pb-6  md:pb-0 col-span-8 z-[50]">
           <div className="w-full flex flex-col h-full">
             {/* <h1 className="w-fit text-6xl font-semibold tracking-wider flex flex-col">
               <span className="text-secondary-600 -mb-2">CosBaan</span>
@@ -64,9 +65,7 @@ const HeroBlock = () => {
             </div>
           </div>
         </div>
-        {/* <img src={"../../../public/images/mascot.gif"} className="z-50"/> */}
-        {/* <Image unoptimized={true} src={MascotImageGif} alt="the gif" height={500} width={500} /> */}
-        <div className="float w-full h-full hidden lg:flex items-center justify-center my-auto col-span-4">
+        <div className="float z-50 w-full h-full hidden lg:flex items-center justify-center my-auto col-span-4">
           <Image
             unoptimized={true}
             src={MascotImageGif}
