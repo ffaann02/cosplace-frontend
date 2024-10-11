@@ -1,5 +1,6 @@
 "use client";
-import MascotImage from "@/public/images/mascot.png";
+import MascotImage from "@/public/images/mascot.gif";
+import MascotImageGif from "../../../public/images/mascot.gif";
 import Image from "next/image";
 import HeroButton from "@/components/button";
 import { FaUserFriends } from "react-icons/fa";
@@ -11,14 +12,16 @@ const HeroBlock = () => {
 
   return (
     <div className="w-full flex min-h-[56vh] bg-gradient-to-l from-primary-100 to-secondary-500 overflow-hidden relative">
-      <div className="grid grid-cols-8 lg:grid-cols-12 w-full h-full max-w-7xl m-auto lg:px-12 2xl:px-0 z-10
-      overflow-hidden">
+      <div
+        className="grid grid-cols-8 lg:grid-cols-12 w-full h-full max-w-7xl m-auto lg:px-12 2xl:px-0 z-10
+      overflow-hidden"
+      >
         <div className="w-full h-full flex pt-6 px-8 md:px-16 pb-6  md:pb-0 col-span-8">
           <div className="w-full flex flex-col h-full">
             {/* <h1 className="w-fit text-6xl font-semibold tracking-wider flex flex-col">
-              <span className="text-secondary-600 -mb-2">คอสบ้าน</span>
+              <span className="text-secondary-600 -mb-2">CosBaan</span>
               <div className="border-t border-2 border-white my-3"></div>
-              <span className="-mt-2 text-secondary-700">เดียวกัน</span>
+              <span className="-mt-2 text-secondary-700">DeawGun</span>
             </h1> */}
             <div className="my-auto">
               <h1 className="text-neutral-50 font-semibold text-outline [text-shadow:_0_3px_4px_#e2c799] mt-6">
@@ -61,11 +64,29 @@ const HeroBlock = () => {
             </div>
           </div>
         </div>
-        <div className="w-full h-full hidden lg:flex items-center justify-center my-auto col-span-4">
-          <Image src={MascotImage} alt="hero-mascot" width={500} height={500} />
+        {/* <img src={"../../../public/images/mascot.gif"} className="z-50"/> */}
+        {/* <Image unoptimized={true} src={MascotImageGif} alt="the gif" height={500} width={500} /> */}
+        <div className="float w-full h-full hidden lg:flex items-center justify-center my-auto col-span-4">
+          <Image
+            unoptimized={true}
+            src={MascotImageGif}
+            alt="hero-mascot"
+            width={500}
+            height={500}
+            className="z-50
+          scale-175"
+          />
         </div>
-        <Image src={MascotImage} alt="hero-mascot" width={400} height={400} 
-            className="lg:hidden absolute -right-10 md:right-0 bottom-2 md:-bottom-0 -z-10 opacity-10 sm:opacity-30 md:opacity-60" />
+        <div className="float lg:hidden absolute -right-10 md:right-0 bottom-2 md:-bottom-0 -z-10">
+          <Image
+            unoptimized={true}
+            src={MascotImageGif}
+            alt="hero-mascot"
+            width={400}
+            height={400}
+            className="scale-150 opacity-10 sm:opacity-30 md:opacity-60"
+          />
+        </div>
       </div>
     </div>
   );
