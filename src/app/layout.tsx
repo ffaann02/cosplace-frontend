@@ -8,6 +8,7 @@ import { AuthProvider } from "@/context/auth-context";
 import Loading from "@/components/loading";
 import { Suspense } from "react";
 import BottomMenu from "@/components/layout/bottom-menu";
+import Footer from "@/components/layout/footer";
 
 export const metadata: Metadata = {
   title: "CosBaanDeawGun",
@@ -21,18 +22,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="font-Kanit bg-primary-100">
+      <body className="font-Kanit bg-secondary-50">
         <Suspense fallback={<Loading />}>
           <ConfigProvider theme={antTheme}>
-          <AuthProvider>
-            <AntdRegistry>
-              <Navbar/>
-              <div className="flex flex-col min-h-dvh z-0 pt-16">{children}</div>
-              <BottomMenu/>
-            </AntdRegistry>
-          </AuthProvider>
-        </ConfigProvider>
+            <AuthProvider>
+              <AntdRegistry>
+                <Navbar />
+                <div className="flex flex-col min-h-dvh z-0 pt-16">
+                  {children}
+                </div>
+                <BottomMenu />
+              </AntdRegistry>
+            </AuthProvider>
+          </ConfigProvider>
         </Suspense>
+        <Footer/>
       </body>
     </html>
   );
