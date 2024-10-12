@@ -1,11 +1,11 @@
 "use client";
-import { useAuth } from "@/context/auth-context";
+// import { useAuth } from "@/context/auth-context";
 import Image from "next/image";
 
 const Loading = () => {
-  const { loading } = useAuth();
+  // const { loading } = useAuth();
 
-  if (!loading) return null;
+  // if (!loading) return null;
 
   return (
     <div className="fixed w-full h-dvh z-[100] flex flex-col bg-primary-600/25 backdrop-blur-sm">

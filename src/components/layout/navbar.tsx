@@ -1,5 +1,5 @@
 "use client";
-import { Button, Flex, Input, AutoComplete } from "antd";
+import { Button, Flex, Input, AutoComplete, Skeleton } from "antd";
 import Link from "next/link";
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
@@ -13,7 +13,7 @@ import UserBadgeNavbar from "./user-badge-navbar";
 const Navbar = () => {
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [options, setOptions] = useState<{ value: string }[]>([]);
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, loading } = useAuth();
   const pathname = usePathname();
 
   const showDrawer = () => {
@@ -99,16 +99,28 @@ const Navbar = () => {
           </Button>
         </div>
       </Flex>
-      {isAuthenticated ? (
-        <UserBadgeNavbar user={user} />
+      {loading ? (
+        <div className="mx-2 scale-x-125 hidden lg:block">
+          <Skeleton.Button active shape="default" size="default" />
+        </div>
       ) : (
-        <Link href="/login" passHref>
-          <div className="my-auto">
-            <Button style={{ ...roundedButton }} size="small" type="primary">
-              <span className="mt-0.5">ลงชื่อเข้าใช้</span>
-            </Button>
-          </div>
-        </Link>
+        <>
+          {isAuthenticated ? (
+            <UserBadgeNavbar user={user} />
+          ) : (
+            <Link href="/login" passHref className="hidden lg:block">
+              <div className="my-auto">
+                <Button
+                  style={{ ...roundedButton }}
+                  size="small"
+                  type="primary"
+                >
+                  <span className="mt-0.5">ลงชื่อเข้าใช้</span>
+                </Button>
+              </div>
+            </Link>
+          )}
+        </>
       )}
     </nav>
   );
