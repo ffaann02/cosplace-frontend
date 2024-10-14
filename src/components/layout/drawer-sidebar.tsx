@@ -1,4 +1,5 @@
 import { Drawer } from "antd";
+import Link from "next/link";
 
 const DrawerSidebar = ({
   open,
@@ -22,27 +23,26 @@ const DrawerSidebar = ({
     >
       <ul className="flex flex-col gap-4 p-6">
         <li>
-          <a href="/" className="text-primary-600 hover:text-primary-800">
+          <Link href="/" className="text-primary-600 hover:text-primary-800">
             หน้าหลัก
-          </a>
+          </Link>
         </li>
         <li>
-          <a
-            href="/marketplace"
-            className="text-primary-600 hover:text-primary-800"
+          <Link
+            href="/marketplace" className="text-primary-600 hover:text-primary-800"
           >
             Marketplace
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="/friends" className="text-primary-600 hover:text-primary-800">
+          <Link href="/friends" className="text-primary-600 hover:text-primary-800">
             เพื่อนและสังคม
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="/events" className="text-primary-600 hover:text-primary-800">
+          <Link href="/events" className="text-primary-600 hover:text-primary-800">
             กิจกรรมและงาน
-          </a>
+          </Link>
         </li>
       </ul>
     </Drawer>
