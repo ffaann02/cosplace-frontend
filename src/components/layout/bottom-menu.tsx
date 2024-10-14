@@ -7,7 +7,7 @@ import { IoCalendar } from "react-icons/io5";
 
 const BottomMenu = () => {
   return (
-    <div className="bg-primary-100 lg:hidden fixed z-[100] bottom-0 w-full border-t grid grid-cols-4 items-center pt-2.5 pb-2">
+    <div className= "bg-primary-100 lg:hidden fixed z-[100] bottom-0 w-full border-t grid grid-cols-4 items-center pt-2.5 pb-2">
       <button className="text-primary-600">
         <div className="w-full flex flex-col">
           <FaHome className="mx-auto text-2xl mb-0.5" />
