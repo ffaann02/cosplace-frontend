@@ -53,7 +53,7 @@ const Register = () => {
   };
 
   return (
-    <div className="flex-grow px-6 flex flex-col bg-gradient-to-br from-white to-secondary-50">
+    <div className="flex-grow px-6 flex flex-col bg-gradient-to-br from-white to-secondary-50 -mt-16">
       <Flex className="h-full flex-grow">
         <div className="pb-12 pt-2 my-auto mx-auto w-full max-w-lg">
           <Title level={2} className="text-center">

@@ -20,7 +20,7 @@ const HeroBlock = () => {
         lg:px-12 2xl:px-0 z-10 overflow-hidden"
       >
         <BackgroundFloatItem/>
-        <div className="w-full h-full flex px-8 md:px-16 pb-6  md:pb-0 col-span-8 z-[50]">
+        <div className="w-full h-full flex px-8 md:px-16 pb-0 sm:pb-6  md:pb-0 col-span-8 z-[50]">
           <div className="w-full flex flex-col h-full">
             <div className="my-auto mt-12 2xl:mt-12">
               <h1 className="text-neutral-50 font-semibold text-outline [text-shadow:_0_3px_4px_#e2c799]">
@@ -33,7 +33,7 @@ const HeroBlock = () => {
                 <HeroButton text="เริ่มค้นหาใน Marketplace" onClick={click} />
               </div>
             </div>
-            <div className="mt-auto mb-0">
+            <div className="mb-0 mt-6 md:mt-auto  md:mb-4">
               <p className="mb-1 text-white text-lg">บริการอื่น ๆ </p>
               <div className="w-full xl:w-3/4 bg-secondary-100 px-6 py-4 rounded-xl drop-shadow-sm  border border-primary-400">
                 <div className="w-full h-full grid grid-cols-2 gap-x-2 divide-x-2 divide-primary-300">
