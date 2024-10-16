@@ -1,7 +1,9 @@
 import { message } from "antd";
 import { apiClient, apiClientWithAuth } from ".";
+import { API_BASE_URL } from "@/config/api";
 
 export const login = async (username: string, password: string) => {
+  console.log(API_BASE_URL)
   try {
     const response = await apiClient.post("/auth/login", {
       username,
