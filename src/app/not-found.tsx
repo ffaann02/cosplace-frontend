@@ -4,8 +4,8 @@ import Link from "next/link";
 
 const NotFound = () => {
   return (
-    <div className="pt-16 flex-grow px-6 flex flex-col bg-gradient-to-br from-white to-secondary-50">
-      <div className="mx-auto mb-auto mt-48  text-primary-800">
+    <div className="pt-16 flex-grow pb-16 px-6 flex flex-col bg-gradient-to-br from-white to-secondary-50">
+      <div className="m-auto text-primary-800">
         <h1 className="text-[10rem] -mb-4 text-center">404</h1>
         <h2 className="text-4xl text-center mb-2">ไม่พบหน้านี้ในเว็บไซต์</h2>
         <p className="text-xl text-center text-primary-600">

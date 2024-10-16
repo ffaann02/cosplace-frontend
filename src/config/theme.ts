@@ -15,3 +15,4 @@ export const roundedButton = {
     paddingTop: 14,
     paddingBottom: 16,
 };
+
