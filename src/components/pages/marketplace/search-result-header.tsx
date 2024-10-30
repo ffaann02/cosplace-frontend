@@ -49,21 +49,27 @@ const SearchResultHeader = () => {
   const handleTagClose = (type: string, value: string) => {
     switch (type) {
       case "category":
-        setSelectedCategories((prev) => prev.filter((item) => item !== value));
+        setSelectedCategories(((prev: string[]) =>
+          prev.filter((item) => item !== value)) as unknown as string[]);
         break;
       case "condition":
-        setSelectedConditions((prev) => prev.filter((item) => item !== value));
+        setSelectedConditions(((prev: string[]) =>
+          prev.filter((item) => item !== value)) as unknown as string[]);
         break;
       case "size":
-        setSelectedSizes((prev) => prev.filter((item) => item !== value));
+        setSelectedSizes(((prev: string[]) =>
+          prev.filter((item) => item !== value)) as unknown as string[]);
         break;
       case "location":
-        setSelectedLocations((prev) => prev.filter((item) => item !== value));
+        setSelectedLocations(((prev: string[]) =>
+          prev.filter((item) => item !== value)) as unknown as string[]);
         break;
       default:
         break;
     }
   };
+  
+  
 
   return (
     <>
