@@ -1,7 +1,5 @@
-"use client";
-import { Checkbox, Divider } from "antd";
-import { CiFilter } from "react-icons/ci";
-import { capitalize } from "@/utils/string";
+import { Drawer, Checkbox, Divider } from "antd";
+import { useFilter } from "@/context/e-commerce-context";
 import {
   categories_th,
   categories_en,
@@ -9,12 +7,13 @@ import {
   conditions,
   locations,
 } from "./filter-bar-options";
-import { useFilter } from "@/context/e-commerce-context";
-import FilterBarMobile from "./filter-bar-mobile";
+import { capitalize } from "@/utils/string";
 import { divider } from "@/config/theme";
 
-const FilterBar = () => {
+const FilterBarMobile = () => {
   const {
+    openFilterDrawerMobile,
+    setOpenFilterDrawerMobile,
     selectedCategories,
     handleCategoryChange,
     selectedConditions,
@@ -25,18 +24,25 @@ const FilterBar = () => {
     handleLocationChange,
   } = useFilter();
 
+  const onClose = () => {
+    setOpenFilterDrawerMobile(false);
+  };
+
   return (
-    <div className="col-span-2 p-4 border border-primary-200 bg-white rounded-lg h-fit hidden lg:block">
-      <h5 className="flex mb-4">
-        <CiFilter className="my-auto mr-2" /> <label>ค้นหาแบบละเอียด</label>
-      </h5>
+    <Drawer
+      style={{ zIndex: 9999 }}
+      size="large"
+      title="คัดกรองการค้นหาแบบละเอียด"
+      placement="bottom"
+      closable
+      onClose={onClose}
+      open={openFilterDrawerMobile}
+    >
       <div className="flex flex-col gap-y-4">
+        {/* Categories */}
         <div>
           <h5 className="text-primary-700">หมวดหมู่</h5>
-          <Divider
-            className="bg-secondary-100"
-            style={divider}
-          />
+          <Divider style={divider} />
           <div className="flex flex-col gap-y-1 mt-2">
             {categories_th.map((category: string, index) => (
               <Checkbox
@@ -50,12 +56,11 @@ const FilterBar = () => {
             ))}
           </div>
         </div>
+        
+        {/* Conditions */}
         <div>
           <h5 className="text-primary-700">สภาพ</h5>
-          <Divider
-            className="bg-secondary-100"
-            style={divider}
-          />
+          <Divider style={divider} />
           <div className="flex flex-col gap-y-1 mt-2">
             {conditions.map((condition: string, index) => (
               <Checkbox
@@ -69,12 +74,11 @@ const FilterBar = () => {
             ))}
           </div>
         </div>
+        
+        {/* Sizes */}
         <div>
           <h5 className="text-primary-700">ขนาด</h5>
-          <Divider
-            className="bg-secondary-100"
-            style={divider}
-          />
+          <Divider style={divider} />
           <div className="flex flex-col gap-y-1 mt-2">
             {sizes.map((size: string, index) => (
               <Checkbox
@@ -88,12 +92,11 @@ const FilterBar = () => {
             ))}
           </div>
         </div>
+        
+        {/* Locations */}
         <div>
           <h5 className="text-primary-700">พื้นที่</h5>
-          <Divider
-            className="bg-secondary-100"
-            style={divider}
-          />
+          <Divider style={divider} />
           <div className="flex flex-col gap-y-1 mt-2">
             {locations.map((location: string, index) => (
               <Checkbox
@@ -108,9 +111,8 @@ const FilterBar = () => {
           </div>
         </div>
       </div>
-      <FilterBarMobile />
-    </div>
+    </Drawer>
   );
 };
 
-export default FilterBar;
+export default FilterBarMobile;

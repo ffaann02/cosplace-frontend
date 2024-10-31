@@ -1,5 +1,5 @@
 "use client";
-import MascotImageGif from "../../../public/images/mascot.gif";
+// import MascotImageGif from "/images/mascot.gif";
 import Image from "next/image";
 import HeroButton from "@/components/button";
 import { FaUserFriends } from "react-icons/fa";
@@ -60,7 +60,7 @@ const HeroBlock = () => {
           <Image
             priority
             unoptimized={true}
-            src={MascotImageGif}
+            src={"/images/mascot.gif"}
             alt="hero-mascot"
             width={500}
             height={500}
@@ -71,7 +71,7 @@ const HeroBlock = () => {
           <Image
             priority
             unoptimized={true}
-            src={MascotImageGif}
+            src={"/images/mascot.gif"}
             alt="hero-mascot"
             width={320}
             height={320}

@@ -50,7 +50,7 @@ h4 {
 #mascot-container {
   width: 100%;
   height: 100%;
-  background: url("../public/images/mascot-sprite.png");
+  background: url("../../public/images/mascot-sprite.png");
   /*Steps should be equal to number of frames*/
   /* animation: dance 5s steps(10); */
   z-index: 10000;
@@ -216,4 +216,8 @@ h4 {
 .section-container {
   margin: 0 auto;
   max-width: 86rem;
+}
+
+#search-result-card:hover {
+  transform: scale(1.01);
 }

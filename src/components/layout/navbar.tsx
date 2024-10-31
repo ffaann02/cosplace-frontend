@@ -6,15 +6,17 @@ import { FaSearch } from "react-icons/fa";
 import { IoMenu } from "react-icons/io5";
 import DrawerSidebar from "./drawer-sidebar";
 import { roundedButton } from "@/config/theme";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/context/auth-context";
 import UserBadgeNavbar from "./user-badge-navbar";
 
 const Navbar = () => {
+  const searchParams = useSearchParams();
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [options, setOptions] = useState<{ value: string }[]>([]);
   const { isAuthenticated, user, loading } = useAuth();
   const pathname = usePathname();
+  const router = useRouter();
 
   const showDrawer = () => {
     setOpenDrawer(true);
@@ -29,6 +31,14 @@ const Navbar = () => {
     setOptions(
       value ? mockData.filter((item) => item.value.includes(value)) : []
     );
+  };
+
+  const handleSearchSelect = (value: string) => {
+    if (value.trim() === "") {
+      router.push("/marketplace");
+    } else {
+      router.push(`/marketplace?search=${value}`);
+    }
   };
 
   if (pathname === "/login" || pathname === "/register") {
@@ -68,10 +78,11 @@ const Navbar = () => {
               </span>
             </Link>
           </div>
-          <div className="w-full lg:w-3/5 my-auto ml-2">
+          <div className="w-full lg:w-3/5 my-auto ml-2 relative">
             <AutoComplete
               options={options}
               onSearch={handleSearch}
+              onSelect={handleSearchSelect}
               style={{ width: "100%" }}
             >
               <Input
@@ -79,6 +90,9 @@ const Navbar = () => {
                 placeholder="ค้นหาชุด, ชื่อตัวละคร, ของตกแต่ง"
                 style={{ borderRadius: 16 }}
                 prefix={<FaSearch />}
+                onPressEnter={(e) =>
+                  handleSearchSelect((e.target as HTMLInputElement).value)
+                }
               />
             </AutoComplete>
           </div>

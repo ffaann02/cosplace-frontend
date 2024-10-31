@@ -14,15 +14,21 @@ interface EcommerceContextType {
   handleConditionChange: (e: CheckboxChangeEvent) => void;
   handleSizeChange: (e: CheckboxChangeEvent) => void;
   handleLocationChange: (e: CheckboxChangeEvent) => void;
+  openFilterDrawerMobile: boolean;
+  setOpenFilterDrawerMobile: (open: boolean) => void;
 }
 
-const EcommerceContext = createContext<EcommerceContextType | undefined>(undefined);
+const EcommerceContext = createContext<EcommerceContextType | undefined>(
+  undefined
+);
 
 export const EcommerceProvider = ({ children }: { children: ReactNode }) => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedConditions, setSelectedConditions] = useState<string[]>([]);
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
+  const [openFilterDrawerMobile, setOpenFilterDrawerMobile] =
+    useState<boolean>(false);
 
   const handleCategoryChange = (e: CheckboxChangeEvent) => {
     const value = e.target.value;
@@ -75,6 +81,8 @@ export const EcommerceProvider = ({ children }: { children: ReactNode }) => {
         handleConditionChange,
         handleSizeChange,
         handleLocationChange,
+        openFilterDrawerMobile,
+        setOpenFilterDrawerMobile,
       }}
     >
       {children}
