@@ -10,12 +10,14 @@ interface EcommerceContextType {
   setSelectedSizes: (sizes: string[]) => void;
   selectedLocations: string[];
   setSelectedLocations: (locations: string[]) => void;
+  selectedSort: string;
+  setSelectedSort: (sort: string) => void;
+  openFilterDrawerMobile: boolean;
+  setOpenFilterDrawerMobile: (open: boolean) => void;
   handleCategoryChange: (e: CheckboxChangeEvent) => void;
   handleConditionChange: (e: CheckboxChangeEvent) => void;
   handleSizeChange: (e: CheckboxChangeEvent) => void;
   handleLocationChange: (e: CheckboxChangeEvent) => void;
-  openFilterDrawerMobile: boolean;
-  setOpenFilterDrawerMobile: (open: boolean) => void;
 }
 
 const EcommerceContext = createContext<EcommerceContextType | undefined>(
@@ -27,6 +29,7 @@ export const EcommerceProvider = ({ children }: { children: ReactNode }) => {
   const [selectedConditions, setSelectedConditions] = useState<string[]>([]);
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
+  const [selectedSort, setSelectedSort] = useState<string>("ลงขายล่าสุด");
   const [openFilterDrawerMobile, setOpenFilterDrawerMobile] =
     useState<boolean>(false);
 
@@ -77,12 +80,14 @@ export const EcommerceProvider = ({ children }: { children: ReactNode }) => {
         setSelectedSizes,
         selectedLocations,
         setSelectedLocations,
+        openFilterDrawerMobile,
+        setOpenFilterDrawerMobile,
+        selectedSort,
+        setSelectedSort,
         handleCategoryChange,
         handleConditionChange,
         handleSizeChange,
         handleLocationChange,
-        openFilterDrawerMobile,
-        setOpenFilterDrawerMobile,
       }}
     >
       {children}

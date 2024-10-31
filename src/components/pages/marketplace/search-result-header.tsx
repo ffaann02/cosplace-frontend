@@ -57,7 +57,6 @@ const TagStyle = {
 
 const SearchResultHeader = () => {
   const searchParams = useSearchParams();
-  const [selectedSort, setSelectedSort] = useState("ราคาสูง-ต่ำ");
   const [hoverSort, setHoverSort] = useState(false);
   const {
     selectedCategories,
@@ -70,6 +69,8 @@ const SearchResultHeader = () => {
     setSelectedLocations,
     openFilterDrawerMobile,
     setOpenFilterDrawerMobile,
+    selectedSort,
+    setSelectedSort,
   } = useFilter();
 
   const handleMenuClick = ({ key }: { key: string }) => {

@@ -62,7 +62,7 @@ const Navbar = () => {
                 หน้าหลัก
               </span>
             </Link>
-            <Link href="/marketplace" passHref className="my-auto">
+            <Link href="/select-service" passHref className="my-auto">
               <span className="text-primary-600 hover:text-primary-800">
                 Marketplace
               </span>

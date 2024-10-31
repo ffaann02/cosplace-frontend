@@ -7,6 +7,7 @@ export interface SearchResultCardProps {
   price: number;
   location: string;
   image?: string;
+  createdAt?: string;
 }
 
 const SearchResultCard: React.FC<SearchResultCardProps> = ({
@@ -28,8 +29,8 @@ const SearchResultCard: React.FC<SearchResultCardProps> = ({
         width={200}
         height={200}
       />
-      <div className="pl-2 py-1.5 relative flex-grow flex flex-col">
-        <h5 className="font-light text-primary-700">{name}</h5>
+      <div className="pl-2.5 py-2 relative flex-grow flex flex-col">
+        <h5 className="font-light text-primary-700 text-xl">{name}</h5>
         <div className="mt-auto">
           <h6 className=" bg-primary-100 text-primary-600 px-2 py-1 rounded-lg w-fit mb-2">
             ฿ {price}

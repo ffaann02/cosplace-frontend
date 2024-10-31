@@ -1,0 +1,13 @@
+[
+    { "name": "Vintage Lamp", "price": 120, "location": "ภาคเหนือ", "createdAt": "2023-10-10 08:20:45" },
+    { "name": "Wooden Table", "price": 250, "location": "ภาคตะวันออกเฉียงเหนือ", "createdAt": "2023-09-18 15:42:31" },
+    { "name": "Classic Sofa", "price": 500, "location": "ภาคกลาง", "createdAt": "2023-08-22 13:17:09" },
+    { "name": "Antique Vase", "price": 350, "location": "ภาคตะวันออก", "createdAt": "2023-07-12 09:05:43" },
+    { "name": "Ceramic Plate", "price": 80, "location": "ภาคตะวันตก", "createdAt": "2023-06-01 11:23:35" },
+    { "name": "Leather Bag", "price": 220, "location": "ภาคใต้", "createdAt": "2023-05-14 17:30:21" },
+    { "name": "Handmade Basket", "price": 40, "location": "ภาคกลาง", "createdAt": "2023-04-25 12:11:17" },
+    { "name": "Decorative Mirror", "price": 300, "location": "ต่างประเทศ", "createdAt": "2023-03-07 18:02:10" },
+    { "name": "Bamboo Chair", "price": 150, "location": "ภาคเหนือ", "createdAt": "2023-02-19 10:45:30" },
+    { "name": "Traditional Rug", "price": 90, "location": "ภาคตะวันออกเฉียงเหนือ", "createdAt": "2023-01-29 14:22:54" }
+  ]
+  
