@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/router";
 import {
   Button,
   Divider,
@@ -13,6 +14,7 @@ import { FaChevronDown } from "react-icons/fa";
 import { CloseOutlined } from "@ant-design/icons";
 import { useFilter } from "@/context/e-commerce-context";
 import { CiFilter } from "react-icons/ci";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
 
 const items: MenuProps["items"] = [
   {
@@ -54,7 +56,8 @@ const TagStyle = {
 };
 
 const SearchResultHeader = () => {
-  const [selectedSort, setSelectedSort] = useState("ลงขายล่าสุด-เก่าสุด");
+  const searchParams = useSearchParams();
+  const [selectedSort, setSelectedSort] = useState("ราคาสูง-ต่ำ");
   const [hoverSort, setHoverSort] = useState(false);
   const {
     selectedCategories,
@@ -115,7 +118,12 @@ const SearchResultHeader = () => {
     <>
       <div className="lg:flex lg:justify-between">
         <div className="flex justify-between">
-          <h3 className="text-primary-800">ผลลัพธ์การค้นหา</h3>
+          <h3 className="text-primary-800 flex">
+            ผลลัพธ์การค้นหา
+            <label className="text-secondary-600 font-light ml-2">
+              {searchParams.get("search") && `'${searchParams.get("search")}'`}
+            </label>
+          </h3>
           <div
             className="flex text-secondary-700 lg:hidden cursor-pointer"
             onClick={handleOpenFilterDrawerMobile}
