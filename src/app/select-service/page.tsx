@@ -26,7 +26,7 @@ const SelectService = () => {
             onClick={() => handleSelectService("search")}
             className={`relative flex w-[200px] h-[200px] lg:w-[240px] lg:h-[240px] border border-secondary-200 rounded-full 
             drop-shadow-md bg-white text-primary-300 cursor-pointer transition-all duration-200 ease-in-out
-            ${selectedService === "search" ? "border-[4px]" : ""}`}
+            ${selectedService === "search" ? "border-[4px]" : ""} hover:border-[3px]`}
           >
             <FaCheckCircle
               className={`text-5xl absolute right-2 top-4 bg-white rounded-full transition-all duration-200 ease-in-out
@@ -48,7 +48,7 @@ const SelectService = () => {
             onClick={() => handleSelectService("custom")}
             className={`relative flex w-[200px] h-[200px] lg:w-[240px] lg:h-[240px] border border-secondary-200 rounded-full 
             drop-shadow-md bg-white text-primary-300 cursor-pointer transition-all duration-200 ease-in-out
-            ${selectedService === "custom" ? "border-[4px]" : ""}`}
+            ${selectedService === "custom" ? "border-[4px]" : ""} hover:border-[3px]`}
           >
             <FaCheckCircle
               className={`text-5xl absolute right-2 top-4 bg-white rounded-full transition-all duration-200 ease-in-out
@@ -70,7 +70,7 @@ const SelectService = () => {
             onClick={() => handleSelectService("service")}
             className={`relative flex w-[200px] h-[200px] lg:w-[240px] lg:h-[240px] border border-secondary-200 rounded-full 
             drop-shadow-md bg-white text-primary-300 cursor-pointer transition-all duration-200 ease-in-out
-            ${selectedService === "service" ? "border-[4px]" : ""}`}
+            ${selectedService === "service" ? "border-[4px]" : ""} hover:border-[3px]`}
           >
             <FaCheckCircle
               className={`text-5xl absolute right-2 top-4 bg-white rounded-full transition-all duration-200 ease-in-out
@@ -144,9 +144,11 @@ const SelectService = () => {
         }
       >
         <button
+          disabled={!selectedService}
           className="text-xl bg-secondary-100 text-primary-400 px-8 py-3 rounded-3xl 
       tracking-wide flex justify-self-center mt-16 border-2 border-secondary-200 hover:text-primary-600
-      transition-all duration-200 ease-in-out hover:border-primary-300"
+      transition-all duration-200 ease-in-out hover:border-primary-300 disabled:opacity-50 disabled:hover:text-primary-400 
+        disabled:hover:border-secondary-200 disabled:cursor-not-allowed"
         >
           ถัดไป
         </button>

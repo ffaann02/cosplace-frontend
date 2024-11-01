@@ -5,6 +5,8 @@ export const antTheme = {
     colorError: "#E35454",
     colorTextBase: "#653f29",
     colorLink: "#bb763b",
+    arrowSize: "12px",
+    arrowOffset: "16px"
   },
 };
 
