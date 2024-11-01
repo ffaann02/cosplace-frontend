@@ -9,7 +9,7 @@ import Loading from "@/components/loading";
 import { Suspense } from "react";
 import BottomMenu from "@/components/layout/bottom-menu";
 import Footer from "@/components/layout/footer";
-import ChatButton from "@/components/popup/chat-button";
+import ChatButton from "@/components/popup/chat/chat-button";
 
 export const metadata: Metadata = {
   title: "CosBaanDeawGun",
@@ -23,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="font-Kanit bg-secondary-50">
+      <body className="font-Kanit bg-secondary-50 relative">
         <Suspense fallback={<Loading />}>
           <ConfigProvider theme={antTheme}>
             <AuthProvider>
