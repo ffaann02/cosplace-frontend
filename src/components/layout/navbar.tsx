@@ -9,6 +9,8 @@ import { roundedButton } from "@/config/theme";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/context/auth-context";
 import UserBadgeNavbar from "./user-badge-navbar";
+import { TbMessageFilled } from "react-icons/tb";
+
 
 const Navbar = () => {
   const searchParams = useSearchParams();
@@ -95,6 +97,12 @@ const Navbar = () => {
                 }
               />
             </AutoComplete>
+          </div>
+          <div
+            className="lg:hidden flex z-[500] right-8 border-primary-400 bottom-6 bg-primary-200 w-8 h-8 rounded-full
+    text-primary-500 my-auto ml-3 border cursor-pointer"
+          >
+            <TbMessageFilled className="text-lg m-auto" />
           </div>
         </div>
         <div className="my-auto mt-2">

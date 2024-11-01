@@ -9,6 +9,7 @@ import Loading from "@/components/loading";
 import { Suspense } from "react";
 import BottomMenu from "@/components/layout/bottom-menu";
 import Footer from "@/components/layout/footer";
+import ChatButton from "@/components/popup/chat-button";
 
 export const metadata: Metadata = {
   title: "CosBaanDeawGun",
@@ -31,6 +32,7 @@ export default function RootLayout({
                 <div className="flex flex-col min-h-dvh z-0 pt-16">
                   {children}
                 </div>
+                <ChatButton />
                 <BottomMenu />
               </AntdRegistry>
             </AuthProvider>
