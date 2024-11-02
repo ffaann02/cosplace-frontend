@@ -16,20 +16,8 @@ const ChatButton = () => {
   const [fade, setFade] = useState<boolean>(false);
 
   const handleOpenChatbox = () => {
-    const duration = 500;
-    if (!openChatbox) {
-      setFade(true);
-      setTimeout(() => {
-        setFade(false);
-        setOpenChatbox(true);
-      }, duration);
-    } else {
-      setFade(true);
-      setTimeout(() => {
-        setFade(false);
-        setOpenChatbox(false);
-      }, duration);
-    }
+    setOpenChatbox((prev) => !prev);
+    setFade(true);
   };
 
   useEffect(() => {
