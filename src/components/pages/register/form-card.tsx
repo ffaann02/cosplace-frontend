@@ -1,12 +1,8 @@
 import { RegisterFormValues } from "@/app/register/page";
-import { Button, Checkbox, DatePicker, Flex, Form, Input } from "antd";
+import { Button, Checkbox, DatePicker, Divider, Flex, Form, Input } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
-import {
-  FaGoogle,
-  FaLock,
-  FaUser,
-  FaRegUser,
-} from "react-icons/fa";
+import Link from "next/link";
+import { FaGoogle, FaLock, FaUser, FaRegUser } from "react-icons/fa";
 import { FiPhone } from "react-icons/fi";
 import { IoMail } from "react-icons/io5";
 
@@ -14,14 +10,15 @@ interface RegisterFormCardProps {
   onFinish: (values: RegisterFormValues) => void;
   accept: boolean;
   setAccept: (accept: boolean) => void;
+  errorMessage?: string;
 }
 
 const RegisterFormCard = ({
   onFinish,
   accept,
   setAccept,
+  errorMessage = "",
 }: RegisterFormCardProps) => {
-  
   const handleAcceptChange = (e: CheckboxChangeEvent) => {
     setAccept(e.target.checked);
   };
@@ -58,7 +55,13 @@ const RegisterFormCard = ({
         <Flex gap={8}>
           <Form.Item
             name="phoneNumber"
-            rules={[{ required: true, message: "โปรดกรอกเบอร์โทรศัพท์มือถือ" }]}
+            rules={[
+              { required: true, message: "โปรดกรอกเบอร์โทรศัพท์มือถือ" },
+              {
+                pattern: /^[0-9]{10}$/,
+                message: "เบอร์โทรศัพท์ต้องเป็นตัวเลข 10 หลัก",
+              },
+            ]}
           >
             <Input
               size="large"
@@ -88,7 +91,10 @@ const RegisterFormCard = ({
         </Form.Item>
         <Form.Item
           name="email"
-          rules={[{ required: true, message: "โปรดกรอก Email" }]}
+          rules={[
+            { required: true, message: "โปรดกรอกอีเมล" },
+            { type: "email", message: "รูปแบบอีเมลไม่ถูกต้อง" },
+          ]}
         >
           <Input size="large" prefix={<IoMail />} placeholder="Email" />
         </Form.Item>
@@ -124,8 +130,13 @@ const RegisterFormCard = ({
             placeholder="Confirm password"
           />
         </Form.Item>
+        <div className="text-left -mt-4 mb-6">
+            {errorMessage && (
+              <p className="text-red-500 text-sm">{errorMessage}</p>
+            )}
+          </div>
         <Form.Item
-          style={{ marginTop: -16, marginBottom: 12 }}
+          style={{ marginTop: -16, marginBottom: 12, display: "flex" }}
           name="accept"
           valuePropName="checked"
           rules={[
@@ -151,7 +162,14 @@ const RegisterFormCard = ({
           </Button>
         </Form.Item>
       </Form>
-      <p className="text-center -mt-2 mb-4 text-sm">หรือ</p>
+      <div className="text-center -mt-2 mb-4 text-sm flex justify-center gap-x-2">
+        <p className="text-neutral-400">มีบัญชีอยู่แล้ว? </p>
+        <Link href={"/login"} className="hover:underline">
+          เข้าสู่ระบบ
+        </Link>
+      </div>
+      {/* <p className="text-center -mt-2 mb-4 text-sm">หรือ</p> */}
+      <Divider>หรือ</Divider>
       <Button
         icon={<FaGoogle />}
         size="large"
