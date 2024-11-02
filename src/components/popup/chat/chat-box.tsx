@@ -1,5 +1,6 @@
 import { FaChevronDown } from "react-icons/fa";
-import Chat from "./chat";
+import ChatList from "./chat-list";
+import ChatArea from "./chat-area";
 
 interface ChatBoxProps {
   open: boolean;
@@ -16,10 +17,9 @@ const ChatBox: React.FC<ChatBoxProps> = ({
 }) => {
   return (
     <div
-      className={`max-w-lg w-full h-[50vh] bg-white rounded-t-lg fixed bottom-[36px] right-4 z-[200]
-      drop-shadow-md border border-primary-200 transition-opacity duration-500 
-      ${open ? "block" : "hidden"} ${fade && open ? "opacity-100" : "opacity-0"} 
-      ${fade && !open ? "opacity-0" : "opacity-100"}`}
+      className={`max-w-lg w-full bottom-0 bg-white rounded-t-lg fixed right-4 
+        z-[200] drop-shadow-md border border-primary-200 transition-opacity 
+        duration-500 ${open ? "block" : "hidden"}`}
     >
       <div className="bg-primary-100 py-1 border-b border-primary-200 rounded-t-lg drop-shadow-sm">
         <div className="px-3 flex justify-between">
@@ -29,11 +29,9 @@ const ChatBox: React.FC<ChatBoxProps> = ({
           </button>
         </div>
       </div>
-      <div className="w-full h-full bg-white grid grid-cols-6">
-        <div className="col-span-2 border-r border-primary-200">
-          hello
-        </div>
-        <Chat />
+      <div className="w-full grid grid-cols-6">
+        <ChatList />
+        <ChatArea />
       </div>
     </div>
   );
