@@ -1,3 +1,4 @@
+export const runtime = 'edge'
 import ProfileHeader from "@/components/pages/profile/profile-header";
 
 const UserProfile = ({ params }: { params: { username: string } }) => {
