@@ -5,7 +5,7 @@ import { roundedButton } from "@/config/theme";
 import { useAuth } from "@/context/auth-context";
 import { Button, Flex, message, Typography } from "antd";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 
 const { Title } = Typography;
@@ -19,6 +19,7 @@ export interface LoginFormValues {
 const Login = () => {
   const router = useRouter();
   const { isAuthenticated, setIsAuthenticated, setUser } = useAuth();
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -34,14 +35,15 @@ const Login = () => {
       setUser({
         user_id: data.user,
         username: data.username,
-      })
-  
+      });
+
       router.push("/");
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        message.error(error.message);
+      if (error instanceof Error && (error as any).response) {
+        message.error((error as any).response.data.message);
+        setErrorMessage((error as any).response.data.message);
       } else {
-        message.error("Login failed");
+        // message.error("Login failed");
       }
     }
   };
@@ -56,7 +58,11 @@ const Login = () => {
           <Title level={1} className="text-center">
             &quot; แค่มองตากันก็เข้าใจอยู่ &quot;
           </Title>
-          <LoginFormCard onFinish={onFinish} />
+          <LoginFormCard
+            onFinish={onFinish}
+            errorMessage={errorMessage}
+            setErrorMessage={setErrorMessage}
+          />
           <div className="flex justify-center mt-6">
             <Button
               style={roundedButton}

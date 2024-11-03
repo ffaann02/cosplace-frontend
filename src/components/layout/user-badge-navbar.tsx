@@ -12,6 +12,7 @@ const items: MenuProps["items"] = [
     key: "1",
     label: "บัญชีของฉัน",
     icon: <LuUser2 />,
+    onClick: () => window.location.replace("/profile"),
   },
   {
     type: "divider",

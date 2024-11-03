@@ -6,9 +6,11 @@ import { FaGoogle, FaLock, FaUser } from "react-icons/fa";
 
 interface LoginFormCardProps {
   onFinish: (values: LoginFormValues) => void;
+  errorMessage?: string;
+  setErrorMessage?: (errorMessage: string) => void;
 }
 
-const LoginFormCard = ({ onFinish }: LoginFormCardProps) => {
+const LoginFormCard = ({ onFinish, errorMessage="" }: LoginFormCardProps) => {
   return (
     <div className="bg-primary-50 drop-shadow-sm border text-primary-800 border-primary-200 mx-auto p-6 pb-8 sm:px-6 rounded-3xl mt-8">
       <h3 className="text-center mb-4">
@@ -36,7 +38,12 @@ const LoginFormCard = ({ onFinish }: LoginFormCardProps) => {
             placeholder="Password"
           />
         </Form.Item>
-        <div className="-mt-4 flex justify-between">
+        <div className="-mt-4 text-left mb-4">
+          {errorMessage && (
+            <p className="text-red-500 text-sm">{errorMessage}</p>
+          )}
+        </div>
+        <div className="flex justify-between -mb-4">
           <Form.Item name="remember" valuePropName="checked">
             <Checkbox>จดจำบัญชี</Checkbox>
           </Form.Item>

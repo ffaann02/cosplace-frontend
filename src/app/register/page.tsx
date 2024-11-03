@@ -26,7 +26,8 @@ export interface RegisterFormValues {
 const Register = () => {
   const router = useRouter();
   const { isAuthenticated } = useAuth();
-  const [accept, setAccept] = useState(false);
+  const [accept, setAccept] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -44,10 +45,11 @@ const Register = () => {
       message.success("Register successful");
       router.push("/login");
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        message.error(error.message);
+      if (error instanceof Error && (error as any).response) {
+        message.error((error as any).response.data.message);
+        setErrorMessage((error as any).response.data.message);
       } else {
-        message.error("Register failed");
+        // message.error("Register failed");
       }
     }
   };
@@ -59,7 +61,7 @@ const Register = () => {
           <Title level={2} className="text-center">
             CosBaanDeawGun
           </Title>
-          <RegisterFormCard onFinish={onFinish} accept={accept} setAccept={setAccept} />
+          <RegisterFormCard onFinish={onFinish} accept={accept} setAccept={setAccept} errorMessage={errorMessage} />
           <div className="flex justify-center mt-6">
             <Button
               style={roundedButton}

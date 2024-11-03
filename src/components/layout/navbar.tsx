@@ -6,15 +6,19 @@ import { FaSearch } from "react-icons/fa";
 import { IoMenu } from "react-icons/io5";
 import DrawerSidebar from "./drawer-sidebar";
 import { roundedButton } from "@/config/theme";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/context/auth-context";
 import UserBadgeNavbar from "./user-badge-navbar";
+import { TbMessageFilled } from "react-icons/tb";
+
 
 const Navbar = () => {
+  const searchParams = useSearchParams();
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [options, setOptions] = useState<{ value: string }[]>([]);
   const { isAuthenticated, user, loading } = useAuth();
   const pathname = usePathname();
+  const router = useRouter();
 
   const showDrawer = () => {
     setOpenDrawer(true);
@@ -29,6 +33,14 @@ const Navbar = () => {
     setOptions(
       value ? mockData.filter((item) => item.value.includes(value)) : []
     );
+  };
+
+  const handleSearchSelect = (value: string) => {
+    if (value.trim() === "") {
+      router.push("/marketplace");
+    } else {
+      router.push(`/marketplace?search=${value}`);
+    }
   };
 
   if (pathname === "/login" || pathname === "/register") {
@@ -52,7 +64,7 @@ const Navbar = () => {
                 หน้าหลัก
               </span>
             </Link>
-            <Link href="/marketplace" passHref className="my-auto">
+            <Link href="/select-service" passHref className="my-auto">
               <span className="text-primary-600 hover:text-primary-800">
                 Marketplace
               </span>
@@ -68,10 +80,11 @@ const Navbar = () => {
               </span>
             </Link>
           </div>
-          <div className="w-full lg:w-3/5 my-auto ml-2">
+          <div className="w-full lg:w-3/5 my-auto ml-2 relative">
             <AutoComplete
               options={options}
               onSearch={handleSearch}
+              onSelect={handleSearchSelect}
               style={{ width: "100%" }}
             >
               <Input
@@ -79,8 +92,17 @@ const Navbar = () => {
                 placeholder="ค้นหาชุด, ชื่อตัวละคร, ของตกแต่ง"
                 style={{ borderRadius: 16 }}
                 prefix={<FaSearch />}
+                onPressEnter={(e) =>
+                  handleSearchSelect((e.target as HTMLInputElement).value)
+                }
               />
             </AutoComplete>
+          </div>
+          <div
+            className="lg:hidden flex z-[500] right-8 border-primary-400 bottom-6 bg-primary-200 w-8 h-8 rounded-full
+    text-primary-500 my-auto ml-3 border cursor-pointer"
+          >
+            <TbMessageFilled className="text-lg m-auto" />
           </div>
         </div>
         <div className="my-auto mt-2">

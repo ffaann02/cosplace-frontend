@@ -1,9 +1,22 @@
+"use client";
+import FilterBar from "@/components/pages/marketplace/filter-bar";
+import SearchResult from "@/components/pages/marketplace/search-result";
+import { EcommerceProvider } from "@/context/e-commerce-context";
+import { useRouter } from "next/router";
+
 const Marketplace = () => {
+
+  // const router = useRouter();
+  // const { search } = router.query;
+  // console.log(search);
+
   return (
-    <div className="section-wrapper flex-grow h-full">
-      <div className="section-container grid grid-cols-10 gap-x-4">
-        <div className="col-span-2 bg-red-200">ตัวช่วยการค้นหา</div>
-        <div className="col-span-8 bg-blue-200">ตัวช่วยการค้นหา</div>
+    <div className="mt-8 lg:mt-12 flex-grow min-h-screen flex">
+      <div className="w-full lg:max-w-[80rem] 2xl:max-w-[86rem] section-container grid grid-cols-10 gap-x-2 pl-0 lg:pl-4 flex-grow relative">
+        <EcommerceProvider>
+          <FilterBar />
+          <SearchResult />
+        </EcommerceProvider>
       </div>
     </div>
   );
