@@ -49,7 +49,7 @@ const Register = () => {
         message.error((error as any).response.data.message);
         setErrorMessage((error as any).response.data.message);
       } else {
-        message.error("Register failed");
+        // message.error("Register failed");
       }
     }
   };

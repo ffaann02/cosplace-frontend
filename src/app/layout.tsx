@@ -23,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="font-Kanit bg-secondary-50 relative">
+      <body className="font-Kanit bg-white relative">
         <Suspense fallback={<Loading />}>
           <ConfigProvider theme={antTheme}>
             <AuthProvider>

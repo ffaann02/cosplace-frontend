@@ -1,6 +1,9 @@
 import { FaChevronDown } from "react-icons/fa";
 import ChatList from "./chat-list";
 import ChatArea from "./chat-area";
+import { Button } from "antd";
+import Link from "next/link";
+import { useAuth } from "@/context/auth-context";
 
 interface ChatBoxProps {
   open: boolean;
@@ -15,6 +18,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({
   fade,
   handleOpenChatbox,
 }) => {
+  const { isAuthenticated } = useAuth();
   return (
     <div
       className={`max-w-lg w-full bottom-0 bg-white rounded-t-lg fixed right-4 
@@ -30,8 +34,23 @@ const ChatBox: React.FC<ChatBoxProps> = ({
         </div>
       </div>
       <div className="w-full grid grid-cols-6">
-        <ChatList />
-        <ChatArea />
+        {isAuthenticated ? (
+          <>
+            <ChatList />
+            <ChatArea />
+          </>
+        ) : (
+          <div className="h-[40vh] col-span-full flex bg-gradient-to-br from-primary-100 to-primary-200 ">
+            <div className="m-auto justify-items-center">
+              <h4 className="text-primary-800 mb-2">
+                โปรดเข้าสู่ระบบเพื่อใช้งานแชท
+              </h4>
+              <Link href="/login">
+                <Button size="large">เข้าสู่ระบบ</Button>
+              </Link>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
