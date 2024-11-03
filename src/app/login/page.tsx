@@ -43,7 +43,7 @@ const Login = () => {
         message.error((error as any).response.data.message);
         setErrorMessage((error as any).response.data.message);
       } else {
-        message.error("Login failed");
+        // message.error("Login failed");
       }
     }
   };
@@ -58,7 +58,11 @@ const Login = () => {
           <Title level={1} className="text-center">
             &quot; แค่มองตากันก็เข้าใจอยู่ &quot;
           </Title>
-          <LoginFormCard onFinish={onFinish} errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
+          <LoginFormCard
+            onFinish={onFinish}
+            errorMessage={errorMessage}
+            setErrorMessage={setErrorMessage}
+          />
           <div className="flex justify-center mt-6">
             <Button
               style={roundedButton}

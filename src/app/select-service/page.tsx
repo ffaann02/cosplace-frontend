@@ -9,18 +9,18 @@ import { RiScissorsCutLine } from "react-icons/ri";
 
 const SelectService = () => {
   const [selectedService, setSelectedService] = useState<string | null>(null);
-  console.log(selectedService);
 
   const handleSelectService = (service: string) => {
     setSelectedService(service);
   };
 
   return (
-    <div className="mt-12 lg:mt-16 w-full lg:max-w-[80rem] 2xl:max-w-[86rem] mx-auto">
-      <h2 className="text-center text-primary-800 mb-8 md:mb-16">
+    <div className="w-full lg:max-w-[80rem] 2xl:max-w-[86rem] mx-auto flex mt-8
+    flex-col flex-grow">
+      <h2 className="text-center  text-primary-800 mt-16">
         โปรดเลือกบริการ
       </h2>
-      <div className="hidden md:flex lg:flex-row justify-center gap-x-12 lg:gap-x-24">
+      <div className="hidden md:flex lg:flex-row justify-center gap-x-12 lg:gap-x-24 my-auto">
         <div className="w-fit">
           <div
             onClick={() => handleSelectService("search")}
@@ -65,7 +65,7 @@ const SelectService = () => {
             ประกาศหาร้าน Custom
           </h4>
         </div>
-        <div className="w-fit">
+        <div className="w-fit mb-auto mt-0">
           <div
             onClick={() => handleSelectService("service")}
             className={`relative flex w-[200px] h-[200px] lg:w-[240px] lg:h-[240px] border border-secondary-200 rounded-full 
@@ -145,7 +145,7 @@ const SelectService = () => {
       >
         <button
           disabled={!selectedService}
-          className="text-xl bg-secondary-100 text-primary-400 px-8 py-3 rounded-3xl 
+          className="text-xl bg-secondary-100 text-primary-400 px-8 py-3 rounded-3xl mb-24 
       tracking-wide flex justify-self-center mt-16 border-2 border-secondary-200 hover:text-primary-600
       transition-all duration-200 ease-in-out hover:border-primary-300 disabled:opacity-50 disabled:hover:text-primary-400 
         disabled:hover:border-secondary-200 disabled:cursor-not-allowed"
