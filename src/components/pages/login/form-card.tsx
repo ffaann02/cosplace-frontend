@@ -8,14 +8,15 @@ interface LoginFormCardProps {
   onFinish: (values: LoginFormValues) => void;
   errorMessage?: string;
   setErrorMessage?: (errorMessage: string) => void;
+  fetching?: boolean;
 }
 
-const LoginFormCard = ({ onFinish, errorMessage="" }: LoginFormCardProps) => {
+const LoginFormCard = ({ onFinish, errorMessage="",fetching=false }: LoginFormCardProps) => {
   return (
     <div className="bg-primary-50 drop-shadow-sm border text-primary-800 border-primary-200 mx-auto p-6 pb-8 sm:px-6 rounded-3xl mt-8">
-      <h3 className="text-center mb-4">
+      <p className="text-md sm:text-lg md:text-xl text-center mb-4">
         เริ่มต้นใช้งานและสนุกไปกับการคอสเพลย์ได้เลย!
-      </h3>
+      </p>
       <Form name="login" initialValues={{ remember: true }} onFinish={onFinish}>
         <Form.Item
           name="username"
@@ -52,7 +53,7 @@ const LoginFormCard = ({ onFinish, errorMessage="" }: LoginFormCardProps) => {
           </Button>
         </div>
         <Form.Item>
-          <Button size="large" block type="primary" htmlType="submit">
+          <Button loading={fetching} size="large" block type="primary" htmlType="submit">
             ลงชื่อเข้าใช้งาน
           </Button>
         </Form.Item>
