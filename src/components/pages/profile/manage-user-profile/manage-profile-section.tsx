@@ -1,5 +1,6 @@
 import React from "react";
 import { userAccountButtons, shopAccountButtons } from "./left-sidebar";
+import PersonalInfo from "./personal-info";
 
 interface ManageProfileSectionProps {
   currentMenu: string;
@@ -18,7 +19,8 @@ const ManageProfileSection: React.FC<ManageProfileSectionProps> = ({
 
   return (
     <div className="col-span-2 px-4 w-full">
-      <h4 className="text-primary-800 mt-1">{label}</h4>
+      <h4 className="text-primary-800 mt-1 mb-7">{label}</h4>
+      {currentMenu === "profile" && <PersonalInfo />}
     </div>
   );
 };
