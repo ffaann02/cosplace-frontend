@@ -11,6 +11,7 @@ interface RegisterFormCardProps {
   accept: boolean;
   setAccept: (accept: boolean) => void;
   errorMessage?: string;
+  fetching?: boolean;
 }
 
 const RegisterFormCard = ({
@@ -18,6 +19,7 @@ const RegisterFormCard = ({
   accept,
   setAccept,
   errorMessage = "",
+  fetching = false,
 }: RegisterFormCardProps) => {
   const handleAcceptChange = (e: CheckboxChangeEvent) => {
     setAccept(e.target.checked);
@@ -26,34 +28,35 @@ const RegisterFormCard = ({
   return (
     <div
       className="bg-primary-50 drop-shadow-sm border text-primary-800 border-primary-200 
-        mx-auto p-6 pb-8 sm:px-6 rounded-3xl mt-8"
+        mx-auto p-6 sm:px-6 rounded-3xl mt-4"
     >
-      <h3 className="text-center mb-4">สมัครบัญชีเพื่อใช้บริการแพลตฟอร์ม</h3>
+      <p className="text-xl lg:text-2xl text-center mb-4">
+        สมัครบัญชีเพื่อใช้บริการแพลตฟอร์ม
+      </p>
       <Form name="login" initialValues={{ remember: true }} onFinish={onFinish}>
         <Flex gap={8}>
           <Form.Item
+            style={{ width: "50%" }}
             name="firstname"
             rules={[{ required: true, message: "โปรดกรอกชื่อจริง" }]}
           >
             <Input
               size="large"
               prefix={<FaRegUser />}
-              placeholder="First name"
+              placeholder="Firstname"
             />
           </Form.Item>
           <Form.Item
+            style={{ width: "50%" }}
             name="lastname"
             rules={[{ required: true, message: "โปรดกรอกนามสกุล" }]}
           >
-            <Input
-              size="large"
-              prefix={<FaRegUser />}
-              placeholder="Last name"
-            />
+            <Input size="large" prefix={<FaRegUser />} placeholder="Lastname" />
           </Form.Item>
         </Flex>
         <Flex gap={8}>
           <Form.Item
+            style={{ width: "50%" }}
             name="phoneNumber"
             rules={[
               { required: true, message: "โปรดกรอกเบอร์โทรศัพท์มือถือ" },
@@ -70,7 +73,7 @@ const RegisterFormCard = ({
             />
           </Form.Item>
           <Form.Item
-            className="w-1/2"
+            style={{ width: "50%" }}
             name="dateOfBirth"
             rules={[{ required: true, message: "โปรดเลือกวันเกิด" }]}
           >
@@ -83,60 +86,76 @@ const RegisterFormCard = ({
           </Form.Item>
         </Flex>
 
-        <Form.Item
-          name="username"
-          rules={[{ required: true, message: "โปรดกรอก Username" }]}
-        >
-          <Input size="large" prefix={<FaUser />} placeholder="Username" />
-        </Form.Item>
-        <Form.Item
-          name="email"
-          rules={[
-            { required: true, message: "โปรดกรอกอีเมล" },
-            { type: "email", message: "รูปแบบอีเมลไม่ถูกต้อง" },
-          ]}
-        >
-          <Input size="large" prefix={<IoMail />} placeholder="Email" />
-        </Form.Item>
-        <Form.Item
-          name="password"
-          rules={[{ required: true, message: "โปรดกรอกรหัสผ่าน" }]}
-        >
-          <Input
-            size="large"
-            prefix={<FaLock />}
-            type="password"
-            placeholder="Password"
-          />
-        </Form.Item>
-        <Form.Item
-          name="confirmPassword"
-          rules={[
-            { required: true, message: "โปรดกรอกรหัสผ่าน" },
-            ({ getFieldValue }) => ({
-              validator(_, value) {
-                if (!value || getFieldValue("password") === value) {
-                  return Promise.resolve();
-                }
-                return Promise.reject(new Error("รหัสผ่านไม่ตรงกัน"));
+        <Flex gap={8}>
+          <Form.Item
+            style={{ width: "40%" }}
+            name="username"
+            rules={[{ required: true, message: "โปรดกรอก Username" }]}
+          >
+            <Input size="large" prefix={<FaUser />} placeholder="Username" />
+          </Form.Item>
+          <Form.Item
+            style={{ width: "60%" }}
+            name="email"
+            rules={[
+              { required: true, message: "โปรดกรอกอีเมล" },
+              { type: "email", message: "รูปแบบอีเมลไม่ถูกต้อง" },
+            ]}
+          >
+            <Input size="large" prefix={<IoMail />} placeholder="Email" />
+          </Form.Item>
+        </Flex>
+        <Flex gap={8}>
+          <Form.Item
+            style={{ width: "50%" }}
+            name="password"
+            rules={[
+              { required: true, message: "โปรดกรอกรหัสผ่าน" },
+              { min: 8, message: "รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัวอักษร" },
+              { max: 50, message: "รหัสผ่านต้องมีความยาวไม่เกิน 50 ตัวอักษร" },
+              {
+                pattern: /[A-Za-z]/,
+                message: "รหัสผ่านต้องมีตัวอักษรอย่างน้อย 1 ตัว",
               },
-            }),
-          ]}
-        >
-          <Input
-            size="large"
-            prefix={<FaLock />}
-            type="password"
-            placeholder="Confirm password"
-          />
-        </Form.Item>
+            ]}
+          >
+            <Input
+              size="large"
+              prefix={<FaLock />}
+              type="password"
+              placeholder="Password"
+            />
+          </Form.Item>
+          <Form.Item
+            style={{ width: "50%" }}
+            name="confirmPassword"
+            rules={[
+              { required: true, message: "โปรดกรอกรหัสผ่าน" },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue("password") === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(new Error("รหัสผ่านไม่ตรงกัน"));
+                },
+              }),
+            ]}
+          >
+            <Input
+              size="large"
+              prefix={<FaLock />}
+              type="password"
+              placeholder="Confirm password"
+            />
+          </Form.Item>
+        </Flex>
         <div className="text-left -mt-4 mb-6">
-            {errorMessage && (
-              <p className="text-red-500 text-sm">{errorMessage}</p>
-            )}
-          </div>
+          {errorMessage && (
+            <p className="text-red-500 text-sm">{errorMessage}</p>
+          )}
+        </div>
         <Form.Item
-          style={{ marginTop: -16, marginBottom: 12, display: "flex" }}
+          style={{ marginBottom: 12, display: "flex" }}
           name="accept"
           valuePropName="checked"
           rules={[
@@ -152,6 +171,7 @@ const RegisterFormCard = ({
         </Form.Item>
         <Form.Item>
           <Button
+            loading={fetching}
             disabled={!accept}
             size="large"
             block
