@@ -34,10 +34,10 @@ const getBase64 = (file: FileType): Promise<string> =>
   });
 
 const options: SelectProps["options"] = [
-  { value: "gold" },
-  { value: "lime" },
-  { value: "green" },
-  { value: "cyan" },
+  { value: "gold", key: "gold" },
+  { value: "lime", key: "lime" },
+  { value: "green", key: "green" },
+  { value: "cyan", key: "cyan" },
 ];
 
 const tagRender: SelectProps["tagRender"] = (props) => {
@@ -137,7 +137,7 @@ const CustomPost = () => {
               <Upload
                 action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
                 listType="picture-card"
-                fileList={fileList}
+                fileList={fileList.map((file, idx) => ({ ...file, key: idx }))}
                 onPreview={handlePreview}
                 onChange={handleChange}
               >
@@ -201,7 +201,7 @@ const CustomPost = () => {
             <Form.Item style={{ width: "100%", position: "relative" }}>
               <label>แนบลิงก์ประกอบ</label>
               <Space direction="vertical" style={{ width: "100%" }}>
-                <Space.Compact style={{width:"100%"}}>
+                <Space.Compact style={{ width: "100%" }}>
                   <Input
                     onPressEnter={addLink}
                     value={linkInput}
@@ -213,12 +213,13 @@ const CustomPost = () => {
                   </Button>
                 </Space.Compact>
               </Space>
-              <List
+              {/* <List
                 size="small"
                 bordered
                 dataSource={links}
                 renderItem={(link, index) => (
                   <List.Item
+                    key={link + index}
                     actions={[
                       <Button
                         type="link"
@@ -226,14 +227,36 @@ const CustomPost = () => {
                         onClick={() => removeLink(index)}
                       >
                         ลบ
-                      </Button>,
+                      </Button>
                     ]}
                   >
                     <a onClick={() => openNewTabWithParams(link)}>{link}</a>
                   </List.Item>
                 )}
                 style={{ marginTop: 12 }}
-              />
+              /> */}
+              <div className="mt-2 ml-2">
+                {links.map((link, index) => (
+                  <div
+                    key={link + index}
+                    className="flex justify-between items-center"
+                  >
+                    <a
+                      className="hover:underline"
+                      onClick={() => openNewTabWithParams(link)}
+                    >
+                      {link}
+                    </a>
+                    <Button
+                      type="link"
+                      danger
+                      onClick={() => removeLink(index)}
+                    >
+                      ลบ
+                    </Button>
+                  </div>
+                ))}
+              </div>
             </Form.Item>
           </Form>
         </div>
