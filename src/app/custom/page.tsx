@@ -65,6 +65,12 @@ const CustomPost = () => {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [links, setLinks] = useState<string[]>([]);
   const [linkInput, setLinkInput] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [minPrice, setMinPrice] = useState<number | null>(null);
+  const [maxPrice, setMaxPrice] = useState<number | null>(null);
+  const [animeName, setAnimeName] = useState<string>("");
+  const [tags, setTags] = useState<string[]>([]);
 
   const handlePreview = async (file: UploadFile) => {
     if (!file.url && !file.preview) {
@@ -90,6 +96,18 @@ const CustomPost = () => {
     setLinks(newLinks);
   };
 
+  const handleSubmit = () => {
+    console.log({
+      title,
+      description,
+      minPrice,
+      maxPrice,
+      tags,
+      links,
+      fileList,
+    });
+  };
+
   const uploadButton = (
     <button style={{ border: 0, background: "none" }} type="button">
       <PlusOutlined />
@@ -104,28 +122,42 @@ const CustomPost = () => {
           เขียนโพสต์จ้างร้านค้า และบริการ
         </h3>
         <div className="px-4 py-2 flex flex-col">
-          <Form layout="vertical" style={{ marginTop: 12 }}>
+          <Form
+            layout="vertical"
+            style={{ marginTop: 12 }}
+            onFinish={handleSubmit}
+          >
             {/* Title Field */}
-            <Form.Item style={{ width: "100%", position: "relative" }}>
-              <label>ชื่องาน</label>
+            <Form.Item
+              style={{ width: "100%", position: "relative" }}
+              label="ชื่องาน"
+              name="title"
+              rules={[{ required: true, message: "กรุณากรอกชื่องาน" }]}
+            >
               <Input
                 showCount
                 maxLength={50}
                 placeholder="ชื่อ"
-                value={"test"}
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
                 size="large"
               />
             </Form.Item>
 
             {/* Description Field */}
-            <Form.Item style={{ width: "100%", position: "relative" }}>
-              <label>รายละเอียดของงาน</label>
+            <Form.Item
+              style={{ width: "100%", position: "relative" }}
+              label="รายละเอียดของงาน"
+              name="description"
+              rules={[{ required: true, message: "กรุณากรอกรายละเอียดของงาน" }]}
+            >
               <TextArea
                 minLength={20}
                 showCount
                 maxLength={200}
                 placeholder="รายละเอียด"
-                value={"test"}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 size="large"
                 autoSize={{ minRows: 2 }}
               />
@@ -159,7 +191,11 @@ const CustomPost = () => {
 
             <Flex gap={8}>
               {/* Price Range Start Field */}
-              <Form.Item style={{ width: "100%", position: "relative" }}>
+              <Form.Item
+                style={{ width: "100%", position: "relative" }}
+                name="minPrice"
+                rules={[{ required: true, message: "กรุณากรอกราคาต่ำสุด" }]}
+              >
                 <label>ราคาต่ำสุด</label>
                 <InputNumber
                   min={0}
@@ -167,11 +203,17 @@ const CustomPost = () => {
                   placeholder="ราคาขั้นต่ำ"
                   style={{ width: "100%" }}
                   size="large"
+                  value={minPrice}
+                  onChange={(value) => setMinPrice(value)}
                 />
               </Form.Item>
 
               {/* Price Range End Field */}
-              <Form.Item style={{ width: "100%", position: "relative" }}>
+              <Form.Item
+                rules={[{ required: true, message: "กรุณากรอกราคาสูงสุด" }]}
+                style={{ width: "100%", position: "relative" }}
+                name="maxPrice"
+              >
                 <label>ราคาสูงสุด</label>
                 <InputNumber
                   min={0}
@@ -179,9 +221,32 @@ const CustomPost = () => {
                   placeholder="ราคาสูงสุด"
                   style={{ width: "100%" }}
                   size="large"
+                  value={maxPrice}
+                  onChange={(value) => setMaxPrice(value)}
                 />
               </Form.Item>
             </Flex>
+
+            {/* Anime Name Field */}
+            <Form.Item
+              style={{ width: "100%", position: "relative" }}
+              label="ชื่ออนิเมะ ภาพยนตร์ หรือซีรีย์"
+              name="animeName"
+              rules={[
+                {
+                  required: true,
+                  message: "กรุณากรอกชื่ออนิเมะ ภาพยนตร์ หรือซีรีย์ ของตัวละครที่คอสเพลย์",
+                },
+              ]}
+            >
+              <Input
+                placeholder="ชื่ออนิเมะ ภาพยนตร์ หรือซีรีย์"
+                style={{ width: "100%" }}
+                size="large"
+                value={animeName}
+                onChange={(e) => setAnimeName(e.target.value)}
+              />
+            </Form.Item>
 
             {/* Tags Field */}
             <Form.Item style={{ width: "100%", position: "relative" }}>
@@ -190,7 +255,8 @@ const CustomPost = () => {
                 size="large"
                 mode="multiple"
                 tagRender={tagRender}
-                defaultValue={["gold", "cyan"]}
+                value={tags}
+                onChange={(value) => setTags(value)}
                 style={{ width: "100%" }}
                 options={options}
                 placeholder="เลือกแท็ก"
@@ -213,28 +279,6 @@ const CustomPost = () => {
                   </Button>
                 </Space.Compact>
               </Space>
-              {/* <List
-                size="small"
-                bordered
-                dataSource={links}
-                renderItem={(link, index) => (
-                  <List.Item
-                    key={link + index}
-                    actions={[
-                      <Button
-                        type="link"
-                        danger
-                        onClick={() => removeLink(index)}
-                      >
-                        ลบ
-                      </Button>
-                    ]}
-                  >
-                    <a onClick={() => openNewTabWithParams(link)}>{link}</a>
-                  </List.Item>
-                )}
-                style={{ marginTop: 12 }}
-              /> */}
               <div className="mt-2 ml-2">
                 {links.map((link, index) => (
                   <div
@@ -257,6 +301,13 @@ const CustomPost = () => {
                   </div>
                 ))}
               </div>
+            </Form.Item>
+
+            {/* Submit Button */}
+            <Form.Item style={{ width: "100%", position: "relative" }}>
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
             </Form.Item>
           </Form>
         </div>
