@@ -24,21 +24,24 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-Kanit bg-white relative">
-        <Suspense fallback={<Loading />}>
-          <ConfigProvider theme={antTheme}>
+        <ConfigProvider theme={antTheme}>
+          <AntdRegistry>
+            {/* <Loading /> */}
             <AuthProvider>
-              <AntdRegistry>
-                <Navbar />
+              <Navbar />
+            </AuthProvider>
+            <Suspense fallback={<Loading />}>
+              <AuthProvider>
                 <div className="flex flex-col min-h-dvh z-0 pt-16">
                   {children}
                 </div>
-                {/* <ChatButton /> */}
-                <BottomMenu />
-              </AntdRegistry>
-            </AuthProvider>
-          </ConfigProvider>
-        </Suspense>
-        <Footer/>
+              </AuthProvider>
+            </Suspense>
+            {/* <ChatButton /> */}
+            <BottomMenu />
+          </AntdRegistry>
+        </ConfigProvider>
+        <Footer />
       </body>
     </html>
   );
