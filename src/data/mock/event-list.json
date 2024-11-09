@@ -2,57 +2,92 @@
     {
       "start_date": "2023-11-01",
       "end_date": "2023-11-02",
-      "name": "Cosplay Festival",
-      "location": "Bangkok",
-      "image_cover": "https://example.com/images/cosplay-festival.jpg"
+      "name": "TOYOTA GAZOO Racing Motorsport ChiangMai Cosplay Contest 2024",
+      "location": "สนามกีฬาสมโภชเชียงใหม่ 700 ปี จ.เชียงใหม่",
+      "image_cover": "https://propsops.net/event/logo/2024/toyotagazoo-cosplaycontest2024.png"
     },
     {
       "start_date": "2023-11-05",
       "end_date": "2023-11-06",
-      "name": "Anime Expo",
-      "location": "Chiang Mai",
-      "image_cover": "https://example.com/images/anime-expo.jpg"
+      "name": "Central Chonburi Cosplay Contest 3",
+      "location": "Central Chonburi",
+      "image_cover": "https://propsops.net/event/logo/2024/centralchonburi-cosplaycontest3.png"
     },
     {
       "start_date": "2023-11-10",
       "end_date": "2023-11-11",
-      "name": "Comic Con",
-      "location": "Phuket",
-      "image_cover": "https://example.com/images/comic-con.jpg"
+      "name": "AEON Digital Loy Krathong Cosplay Contest",
+      "location": "ลานคนเมือง ศาลาว่าการ กทม.",
+      "image_cover": "https://propsops.net/event/logo/2024/AEONDigitalLoyKrathong.png"
     },
     {
       "start_date": "2023-11-15",
       "end_date": "2023-11-16",
-      "name": "Manga Fair",
-      "location": "Pattaya",
-      "image_cover": "https://example.com/images/manga-fair.jpg"
+      "name": "Miraicos SS3 : Superstar",
+      "location": "Mชั้น 4 T21 Dance Studio Terminal 21 Korat จ.นครราชสีมา",
+      "image_cover": "https://propsops.net/event/logo/2024/miraicos-superstar.png"
     },
     {
       "start_date": "2023-11-20",
       "end_date": "2023-11-21",
-      "name": "Game Show",
-      "location": "Khon Kaen",
-      "image_cover": "https://example.com/images/game-show.jpg"
+      "name": "Dream World x Anime Event Thailand :. มหัศจรรย์วันคอสเพลย์ ปี 3",
+      "location": "สวนสนุก Dream World ปทุมธานี",
+      "image_cover": "https://propsops.net/event/logo/2024/dreamworld-ait2024.png"
     },
     {
       "start_date": "2023-11-25",
       "end_date": "2023-11-26",
-      "name": "Otaku Fest",
-      "location": "Hat Yai",
-      "image_cover": "https://example.com/images/otaku-fest.jpg"
+      "name": "THE MALL JAPAN DISCOVERY 2024 “FLOWER SYMPHONY” Cosplay Contest",
+      "location": "GRAND HALL ชั้น 1 The Mall Korat จ.นครราชสีมา",
+      "image_cover": "https://propsops.net/event/logo/2024/themalljapan-flower.png"
     },
     {
       "start_date": "2023-11-30",
       "end_date": "2023-12-01",
-      "name": "Cosplay Parade",
-      "location": "Nakhon Ratchasima",
-      "image_cover": "https://example.com/images/cosplay-parade.jpg"
+      "name": "oon Manga Cos Festival : Autumn Wind",
+      "location": "หอประชุมกานรัตน์ สโมสรทหารอากาศ พิพิธภัณฑ์กองทัพอากาศ",
+      "image_cover": "https://propsops.net/event/logo/2024/moonmangacosfestival-autumnwind.png"
     },
     {
       "start_date": "2023-12-05",
       "end_date": "2023-12-06",
-      "name": "Anime Gathering",
-      "location": "Udon Thani",
-      "image_cover": "https://example.com/images/anime-gathering.jpg"
+      "name": "Take A Break! :Delicious in Dungeon Only Event Thailand",
+      "location": "ห้องสุโขทัย ชั้น 7 ศูนย์การค้า JJ Mall กำแพงเพชร",
+      "image_cover": "https://propsops.net/event/logo/2024/takeabreak.png"
+    },
+    {
+      "start_date": "2023-12-10",
+      "end_date": "2023-12-11",
+      "name": "KOKORO cos #5 : Maid & Butler",
+      "location": "MCC Hall The Mall บางแค หลักสอง",
+      "image_cover": "https://propsops.net/event/logo/2024/kokorocos5.png"
+    },
+    {
+      "start_date": "2023-12-15",
+      "end_date": "2023-12-16",
+      "name": "CosNatsu Winter",
+      "location": "สถานีกลางกรุงเทพอภิวัฒน์ บางซื่อ",
+      "image_cover": "https://propsops.net/event/logo/2024/cosnatsu-winter.png"
+    },
+    {
+      "start_date": "2023-12-20",
+      "end_date": "2023-12-21",
+      "name": "ประกวดคอสเพลย์ธีมสามก๊ก ในงาน จีนาภิวัฒน์ ครั้งที่ 9",
+      "location": "เดอะมิตร-ติ้ง รูม ชั้น 5 สามย่านมิตรทาวน์ สามย่าน",
+      "image_cover": "https://propsops.net/event/logo/2024/chinapiwat9.png"
+    },
+    {
+      "start_date": "2023-12-25",
+      "end_date": "2023-12-26",
+      "name": "Nakama Christmas Party",
+      "location": "ชั้น B, Hall Event Diana Complex Hatyai จ.สงขลา",
+      "image_cover": "https://propsops.net/event/logo/2024/nakama-christmasparty.png"
+    },
+    {
+      "start_date": "2023-12-30",
+      "end_date": "2023-12-31",
+      "name": "Maruya #41 :Raid Boss Party",
+      "location": "Royal Paragon Hall Siam Paragon สยาม",
+      "image_cover": "https://propsops.net/event/logo/2024/maruya41-2.png"
     }
   ]

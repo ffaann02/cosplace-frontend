@@ -34,6 +34,7 @@ const Events = () => {
               location={event.location}
               start_date={event.start_date}
               end_date={event.end_date}
+              image_cover={event.image_cover}
             />
           ))}
         </div>
