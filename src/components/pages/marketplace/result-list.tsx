@@ -10,7 +10,7 @@ const ResultList = () => {
           name={product.name}
           price={product.price}
           location={product.location}
-          // image={product.image}
+          image={product.image_cover}
           createdAt={product.createdAt}
         />
       ))}

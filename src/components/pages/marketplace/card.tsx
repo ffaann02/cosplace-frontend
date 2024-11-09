@@ -23,7 +23,7 @@ const SearchResultCard: React.FC<SearchResultCardProps> = ({
       id="search-result-card"
     >
       <Image
-        className="rounded-t-lg object-cover w-full h-[60%]"
+        className="object-contain rounded-t-lg w-full h-[60%]"
         src={image || "/images/sad-cat.jpg"}
         alt="placeholder"
         width={200}
