@@ -4,7 +4,11 @@ import { Button, Input, Space } from "antd";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-const SearchPeople = () => {
+const SearchPeople = ({
+  search_query,
+}: {
+  search_query: string;
+}) => {
   const [searchValue, setSearchValue] = useState<string>("");
   const router = useRouter();
 
