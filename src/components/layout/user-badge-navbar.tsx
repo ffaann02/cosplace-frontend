@@ -10,7 +10,7 @@ import { SlLogout } from "react-icons/sl";
 const items: MenuProps["items"] = [
   {
     key: "1",
-    label: "บัญชีของฉัน",
+    label: "จัดการบัญชีของฉัน",
     icon: <LuUser2 />,
     onClick: () => window.location.replace("/profile"),
   },
