@@ -1,4 +1,4 @@
-import { useRouter, useSearchParams } from "next/navigation";
+export const runtime = 'edge';
 import PersonCard from "@/components/pages/friends/person-card";
 import SearchPeople from "@/components/pages/friends/search-people";
 
