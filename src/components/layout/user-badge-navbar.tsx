@@ -84,9 +84,9 @@ const UserBadgeNavbar = ({ user }: { user: User | null }) => {
                   marginBottom: "auto",
                 }}
               />
-              {/* <p className="my-auto text-[16px] text-primary-800 mb-1 tracking-wide">
+              <p className="my-auto text-[16px] text-primary-800 mb-1 tracking-wide">
               {user?.username}
-            </p> */}
+            </p>
               <FaChevronDown className="text-xs mt-0.5 mb-0.5 mr-0.5 text-primary-800" />
             </Space>
           </a>

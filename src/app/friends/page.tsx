@@ -10,7 +10,7 @@ const Friends = ({ searchParams }: { searchParams: SearchParams}) => {
   const searchQuery = searchParams?.search || "";
   return (
     <div className="w-full lg:max-w-[80rem] 2xl:max-w-[86rem] section-container pt-12 md:pt-16 px-4">
-      <SearchPeople />
+      <SearchPeople search_query={searchQuery} />
       <h3 className="text-primary-800 mb-2">คำขอเพิ่มเพื่อน</h3>
       <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 lg:gap-4">
         {Array.from({ length: 12 }).map((_, index) => (

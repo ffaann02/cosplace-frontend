@@ -32,7 +32,7 @@ export default function RootLayout({
                 <div className="flex flex-col min-h-dvh z-0 pt-16">
                   {children}
                 </div>
-                <ChatButton />
+                {/* <ChatButton /> */}
                 <BottomMenu />
               </AntdRegistry>
             </AuthProvider>

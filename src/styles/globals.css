@@ -233,11 +233,53 @@ h4 {
 
 /* Style the scrollbar thumb */
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #d2a365; /* Color of the scrollbar thumb */
+  background-color: #d2a365
+  ; /* Color of the scrollbar thumb */
   border-radius: 8px; /* Rounded corners */
   border: 2px solid #f1f1f1; /* Space around thumb */
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: #d2a365; /* Color when hovered */
+  background-color: #d2a365
+  ; /* Color when hovered */
 }
+
+.ant-profile-uploader .ant-upload-list-item-container {
+  width: 164px !important;
+  height: 164px !important;
+  background-color: white;
+  border-radius: 100%;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 1200px) {
+  .ant-profile-uploader .ant-upload-list-item-container,
+  .ant-profile-uploader .ant-upload {
+    width: 150px !important;
+    height: 150px !important;
+  }
+}
+
+@media (max-width: 992px) {
+  .ant-profile-uploader .ant-upload-list-item-container,
+  .ant-profile-uploader .ant-upload {
+    width: 120px !important;
+    height: 120px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .ant-profile-uploader .ant-upload-list-item-container,
+  .ant-profile-uploader .ant-upload {
+    width: 156px !important;
+    height: 156px !important;
+  }
+}
+
+/* @media (max-width: 576px) {
+  .ant-profile-uploader .ant-upload-list-item-container,
+  .ant-profile-uploader .ant-upload {
+    width: 80px !important;
+    height: 80px !important;
+  }
+} */
