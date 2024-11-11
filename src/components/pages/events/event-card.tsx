@@ -31,7 +31,7 @@ const EventCard: React.FC<EventCardProps> = ({
     id="search-result-card"
       >
         <Image
-          className="object-cover w-full h-[200px] rounded-t"
+          className="object-contain w-full h-[200px] rounded-t"
           src={image_cover || "/images/sad-cat.jpg"}
           alt="placeholder"
           width={200}
@@ -49,7 +49,7 @@ const EventCard: React.FC<EventCardProps> = ({
             />
             <div className="flex mt-1">
               <IoLocationOutline className="my-auto mr-1 text-primary-800 text-sm" />
-              <h6 className="text-sm text-primary-500 font-light">
+              <h6 className="text-sm text-primary-500 font-light truncate">
                 {location}
               </h6>
             </div>

@@ -9,15 +9,10 @@ interface LeftSideBarProps {
 }
 
 export const userAccountButtons = [
-  { label: "ข้อมูลส่วนตัวและบัญชี", menu: "profile" },
-  { label: "รหัสผ่านและการเข้าถึง", menu: "password" },
+  { label: "ข้อมูลบัญชีผู้ใช้", menu: "account" },
+  { label: "โปรไฟล์โซเชียล", menu: "profile" },
+  { label: "รหัสผ่านและความปลอดภัย", menu: "password"},
   { label: "การแจ้งเตือน", menu: "notifications" },
-];
-
-export const shopAccountButtons = [
-  { label: "ข้อมูลส่วนตัวและบัญชี", menu: "shopProfile" },
-  { label: "รหัสผ่านและการเข้าถึง", menu: "shopPassword" },
-  { label: "การแจ้งเตือน", menu: "shopNotifications" },
 ];
 
 const LeftSideBar: React.FC<LeftSideBarProps> = ({
@@ -25,9 +20,9 @@ const LeftSideBar: React.FC<LeftSideBarProps> = ({
   selectMenu,
 }) => {
   return (
-    <div className="col-span-2 px-4 w-full">
-      <h3 className="text-primary-800">จัดการบัญชีของคุณ</h3>
-      <h4 className="mt-6 text-primary-700">บัญชีผู้ใช้งาน</h4>
+    <div className="px-4 w-full">
+      <h3 className="text-primary-800 text-2xl hidden md:block">จัดการบัญชีของคุณ</h3>
+      <h4 className="mt-6 text-primary-700 text-lg xl:text-xl">บัญชีผู้ใช้งาน</h4>
       <div className="flex flex-col gap-y-4 mt-2">
         {userAccountButtons.map((button) => (
           <button
@@ -44,35 +39,6 @@ const LeftSideBar: React.FC<LeftSideBarProps> = ({
             />
             <span
               className={`ml-4 text-sm mt-0.5`}
-            >
-              {button.label}
-            </span>
-          </button>
-        ))}
-      </div>
-      <h4 className="mt-12 text-primary-700">บัญชีของร้านค้า</h4>
-      <div className="flex flex-col gap-y-4 mt-2">
-        {shopAccountButtons.map((button) => (
-          <button
-            key={button.menu}
-            className={`flex rounded-lg px-4 py-3 w-full ${
-              currentMenu === button.menu ? "bg-primary-100" : "bg-transparent"
-            }`}
-            onClick={() => selectMenu(button.menu)}
-          >
-            <FaUser
-              className={`my-auto ${
-                currentMenu === button.menu
-                  ? "text-primary-600"
-                  : "text-primary-400"
-              }`}
-            />
-            <span
-              className={`ml-4 text-sm mt-0.5 ${
-                currentMenu === button.menu
-                  ? "text-primary-600"
-                  : "text-primary-400"
-              }`}
             >
               {button.label}
             </span>
