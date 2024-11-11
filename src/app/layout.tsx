@@ -26,19 +26,19 @@ export default function RootLayout({
       <body className="font-Kanit bg-white relative">
         <ConfigProvider theme={antTheme}>
           <AntdRegistry>
+            <Suspense fallback={<Loading />}>
             {/* <Loading /> */}
             <AuthProvider>
               <Navbar />
             </AuthProvider>
-            <Suspense fallback={<Loading />}>
               <AuthProvider>
                 <div className="flex flex-col min-h-dvh z-0 pt-16">
                   {children}
                 </div>
               </AuthProvider>
-            </Suspense>
             {/* <ChatButton /> */}
             <BottomMenu />
+            </Suspense>
           </AntdRegistry>
         </ConfigProvider>
         <Footer />

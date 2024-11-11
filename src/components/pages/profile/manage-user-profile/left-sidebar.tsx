@@ -9,8 +9,9 @@ interface LeftSideBarProps {
 }
 
 export const userAccountButtons = [
-  { label: "ข้อมูลบัญชีผู้ใช้", menu: "profile" },
-  { label: "รหัสผ่านและการเข้าถึง", menu: "password" },
+  { label: "ข้อมูลบัญชีผู้ใช้", menu: "account" },
+  { label: "โปรไฟล์โซเชียล", menu: "profile" },
+  { label: "รหัสผ่านและความปลอดภัย", menu: "password"},
   { label: "การแจ้งเตือน", menu: "notifications" },
 ];
 

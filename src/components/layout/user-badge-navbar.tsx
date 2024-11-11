@@ -1,49 +1,56 @@
 import { logout } from "@/api/auth";
 import { User } from "@/context/auth-context";
 import { Avatar, Badge, Dropdown, MenuProps, Space } from "antd";
+import { useRouter } from "next/navigation";
 import { FaChevronDown } from "react-icons/fa";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { IoChatboxOutline, IoSettingsOutline } from "react-icons/io5";
 import { LuBellRing, LuUser2 } from "react-icons/lu";
 import { SlLogout } from "react-icons/sl";
 
-const items: MenuProps["items"] = [
-  {
-    key: "1",
-    label: "จัดการบัญชีของฉัน",
-    icon: <LuUser2 />,
-    onClick: () => window.location.replace("/profile"),
-  },
-  {
-    type: "divider",
-  },
-  {
-    key: "2",
-    label: "แจ้งเตือน",
-    icon: <IoIosNotificationsOutline />,
-  },
-  {
-    key: "3",
-    label: "แชท",
-    icon: <IoChatboxOutline />,
-  },
-  {
-    key: "4",
-    label: "ตั้งค่า",
-    icon: <IoSettingsOutline />,
-  },
-  {
-    type: "divider",
-  },
-  {
-    key: "5",
-    label: "ออกจากระบบ",
-    icon: <SlLogout />,
-    onClick: logout,
-  },
-];
-
 const UserBadgeNavbar = ({ user }: { user: User | null }) => {
+  const router = useRouter();
+
+  const navigateToProfile = () => {
+    router.push("/profile");
+  };
+
+  const items: MenuProps["items"] = [
+    {
+      key: "1",
+      label: "จัดการบัญชีของฉัน",
+      icon: <LuUser2 />,
+      onClick: navigateToProfile,
+    },
+    {
+      type: "divider",
+    },
+    {
+      key: "2",
+      label: "แจ้งเตือน",
+      icon: <IoIosNotificationsOutline />,
+    },
+    {
+      key: "3",
+      label: "แชท",
+      icon: <IoChatboxOutline />,
+    },
+    {
+      key: "4",
+      label: "ตั้งค่า",
+      icon: <IoSettingsOutline />,
+    },
+    {
+      type: "divider",
+    },
+    {
+      key: "5",
+      label: "ออกจากระบบ",
+      icon: <SlLogout />,
+      onClick: logout,
+    },
+  ];
+
   return (
     <div className="hidden lg:flex">
       <Badge
