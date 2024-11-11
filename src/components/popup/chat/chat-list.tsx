@@ -21,6 +21,7 @@ const ChatList = ({
   } = useChat();
 
   useEffect(() => {
+    if(!isOpen) return;
     socket.connect();
     getFriendListWithLastMessage();
 
