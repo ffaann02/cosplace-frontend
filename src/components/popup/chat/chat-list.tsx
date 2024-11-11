@@ -1,85 +1,64 @@
 import Search from "antd/es/input/Search";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { ChatMessage, socket } from "@/api/socket";
+import { socket } from "@/api/socket";
+import { useAuth } from "@/context/auth-context";
+import { ChatListInterface, useChat } from "@/context/chat-context";
 
-interface ChatList {
-  userId: string;
-  name: string;
-  profileImageUrl?: string;
-  lastMessage: string;
-}
+const ChatList = ({
+  isOpen,
+}: {
+  isOpen: boolean;
+}) => {
 
-const mockChatList: ChatList[] = [
-  {
-    userId: "1",
-    name: "John Doe",
-    lastMessage: "Hello",
-    profileImageUrl: "https://randomuser",
-  },
-  {
-    userId: "2",
-    name: "Michael Smith",
-    lastMessage: "Hi",
-    profileImageUrl: "https://randomuser",
-  },
-  {
-    userId: "3",
-    name: "James Bond",
-    lastMessage: "Hey",
-    profileImageUrl: "https://randomuser",
-  },
-  {
-    userId: "4",
-    name: "Kevin Hart",
-    lastMessage: "Hey",
-    profileImageUrl: "https://randomuser",
-  },
-  {
-    userId: "5",
-    name: "George Clooney",
-    lastMessage: "Hey",
-    profileImageUrl: "https://randomuser",
-  },
-];
-
-const ChatList = () => {
-
-  const [chatId, setChatId] = useState<string>("");
-  const [userId, setUserId] = useState<string>("");
-  const [username, setUsername] = useState<string>("");
-  const [chatWith, setChatWith] = useState<string>("");
-
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const { user } = useAuth();
+  const {
+    chatList,
+    setChatList,
+    setCurrentChatId,
+    setReceiverId,
+    setRecieverName,
+  } = useChat();
 
   useEffect(() => {
-    // Connect socket if it's not already connected
     socket.connect();
+    getFriendListWithLastMessage();
 
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [isOpen]);
 
   useEffect(() => {
-    function messageEvent(message: ChatMessage) {
-      console.log("Received message:", message);
-      setMessages((prevMessages) => [...prevMessages, message]);
+    function friendListEvent(friendList: ChatListInterface[]) {
+      setChatList(friendList);
     }
-    socket.on("message", messageEvent);
+    socket.on("friendList", friendListEvent);
 
     return () => {
-      socket.off("message");
+      socket.off("friendList");
     };
   }, []);
 
-  const openChat = (senderId: string, receiverId: string) => {
+  useEffect(() => {
+    if (chatList.length > 0 && user?.user_id) {
+      selectChat(user.user_id, chatList[0].userId);
+    }
+  }, [chatList]);
+
+  const getFriendListWithLastMessage = () => {
+    socket.emit('openChatBox', user?.user_id);
+  }
+
+  const selectChat = (senderId: string, receiverId: string) => {
     const sortedIds = [senderId, receiverId].sort();
     const roomId = `${sortedIds[0]}-${sortedIds[1]}`;
-    setChatId(roomId);
-    setChatWith(receiverId);
+    console.log(`${senderId} Opening chat with, ${receiverId} in room ${roomId}`);
+    setCurrentChatId(roomId);
+    setReceiverId(receiverId);
+    setRecieverName(chatList.find((chat) => chat.userId === receiverId)?.name || "");
     socket.emit('joinRoom', roomId);
-  };
+  }
 
   return (
     <div className="col-span-2 border-r flex flex-col border-primary-200 h-full p-2 pr-0 max-h-[50vh]">
@@ -87,11 +66,11 @@ const ChatList = () => {
         <Search placeholder="ค้นหาเพื่อน" />
       </div>
       <div className="flex flex-col gap-y-2 mt-4 overflow-y-auto flex-grow custom-scrollbar">
-
-        {mockChatList.map((chat) => (
+        {chatList?.map((chat) => (
           <div
             key={chat.userId}
-            className="flex items-center border-primary-200"
+            className="flex items-center border-primary-200 cursor-pointer hover:bg-primary-100"
+            onClick={() => user?.user_id && selectChat(user.user_id, chat.userId)}
           >
             <Image
               src={"/images/sad-cat.jpg"}
@@ -106,6 +85,12 @@ const ChatList = () => {
             </div>
           </div>
         ))}
+        {chatList.length === 0 && (
+          <div>
+            <p className="text-center text-sm text-primary-400 my-2">ไม่มีพบรายชื่อเพื่อน</p>
+            <p className="text-center text-xs text-primary-400 my-2">กรุณาเพิ่มเพื่อนก่อนเริ่มแชท</p>
+          </div>
+        )}
       </div>
     </div>
   );
