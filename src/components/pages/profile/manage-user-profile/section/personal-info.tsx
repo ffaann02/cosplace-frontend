@@ -15,22 +15,37 @@ import ImgCrop from "antd-img-crop";
 import moment from "moment";
 import { apiClient, apiClientWithAuth } from "@/api";
 import { useAuth } from "@/context/auth-context";
-import { formatDate } from "@/utils/dateformat";
+import { useInternalMessage } from "antd/es/message/useMessage";
+import useDeleteConfirm from "@/hooks/use-confirm-modal";
 
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 
 interface FormData {
   username: string;
-  displayName: string;
-  firstName: string;
-  lastName: string;
-  dateOfBirth: moment.Moment | null;
+  display_name: string;
+  first_name: string;
+  last_name: string;
+  date_of_birth: moment.Moment | null;
   email: string;
-  phoneNumber: string;
+  phone_number: string;
   gender: string;
 }
 
+const initialFormData: FormData = {
+  username: "",
+  display_name: "",
+  first_name: "",
+  last_name: "",
+  date_of_birth: null,
+  email: "",
+  phone_number: "",
+  gender: "",
+};
+
 const PersonalInfo = () => {
+  const [isFetched, setIsFetched] = useState<boolean>(false);
+  const [updating, setUpdating] = useState<boolean>(false);
+  const showDeleteConfirm = useDeleteConfirm();
   const [profileImageFile, setProfileImageFile] = useState<UploadFile | null>({
     uid: "-1",
     name: "image.png",
@@ -38,51 +53,48 @@ const PersonalInfo = () => {
     url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
   });
 
-  const [formData, setFormData] = useState<FormData>({
-    username: "",
-    displayName: "",
-    firstName: "",
-    lastName: "",
-    dateOfBirth: null,
-    email: "",
-    phoneNumber: "",
-    gender: "",
-  });
+  const [form] = Form.useForm();
+  const [defaultFormData, setDefaultFormData] =
+    useState<FormData>(initialFormData);
 
   const { user } = useAuth();
-
   useEffect(() => {
     const fetchUserProfile = async () => {
+      if (isFetched) return;
       const fetchUsername = user?.username;
       try {
         const response = await apiClient.get(`user/${fetchUsername}`);
         const {
           username,
-          display_name: displayName,
-          first_name: firstName,
-          last_name: lastName,
-          date_of_birth: dateOfBirth,
+          display_name,
+          first_name,
+          last_name,
+          date_of_birth,
           email,
-          phone_number: phoneNumber,
+          phone_number,
           gender,
         } = response.data;
-        const convertedDate = moment(dateOfBirth, "YYYY-MM-DD");
-        setFormData({
+        const convertedDate = moment(date_of_birth, "YYYY-MM-DD");
+
+        const userData = {
           username,
-          displayName,
-          firstName,
-          lastName,
-          dateOfBirth: convertedDate,
+          display_name,
+          first_name,
+          last_name,
+          date_of_birth: convertedDate,
           email,
-          phoneNumber,
+          phone_number,
           gender,
-        });
+        };
+        form.setFieldsValue(userData);
+        setDefaultFormData(userData);
+        setIsFetched(true);
       } catch (error) {
         console.error("Error fetching profile data:", error);
       }
     };
 
-    if (user && user.user_id && !formData.username) {
+    if (user && user.user_id && !isFetched) {
       fetchUserProfile();
     }
   }, [user]);
@@ -106,21 +118,36 @@ const PersonalInfo = () => {
     imgWindow?.document.write(image.outerHTML);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
-
-  const handleDateChange = (date: moment.Moment | null) => {
-    setFormData((prevData) => ({ ...prevData, dateOfBirth: date }));
-  };
-
-  const handleGenderChange = (value: string) => {
-    setFormData((prevData) => ({ ...prevData, gender: value }));
-  };
-
   const onRemove = () => {
     setProfileImageFile(null);
+  };
+
+  const onSubmit = async () => {
+    setUpdating(true);
+    try {
+      const response = await apiClientWithAuth.put("user/edit", form.getFieldsValue());
+      const updatedUserData = response.data.user;
+      form.setFieldsValue(updatedUserData);
+      setDefaultFormData(updatedUserData);
+      setUpdating(false);
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      setUpdating(false);
+    }
+  };
+
+  const handleSubmitChange = async () => {
+    const onCancel = () => {};
+    showDeleteConfirm(
+      onSubmit,
+      onCancel,
+      "คุณต้องการเปลี่ยนแปลงข้อมูลใช่หรือไม่?",
+      ""
+    );
+  };
+
+  const onCancelChange = () => {
+    form.setFieldsValue(defaultFormData);
   };
 
   return (
@@ -128,12 +155,7 @@ const PersonalInfo = () => {
       <div className="hidden md:block">
         <Divider style={{ ...divider, marginBottom: 16 }} />
       </div>
-      <Form
-        layout="vertical"
-        onFinish={() => {
-          console.log("Form data:", formData);
-        }}
-      >
+      <Form layout="vertical" onFinish={handleSubmitChange} form={form}>
         <div className="w-full flex flex-col md:flex-row mb-0 md:mb-4">
           <div
             className="overflow-hidden w-fit h-fit bg-primary-50 border border-primary-200 rounded-xl 
@@ -174,93 +196,80 @@ const PersonalInfo = () => {
           <div className="w-full">
             <div className="flex flex-col sm:flex-row gap-x-2">
               <Form.Item
+                name="username"
                 label="ชื่อบัญผู้ใช้ (Username)"
                 style={{ width: "100%" }}
               >
-                <Input
-                  placeholder="ชื่อ"
-                  value={formData.username}
-                  size="large"
-                  disabled
-                />
+                <Input placeholder="ชื่อ" size="large" disabled />
               </Form.Item>
               <Form.Item
+                name="display_name"
                 label="ชื่อโปรไฟล์ (Display Name)"
                 style={{ width: "100%" }}
               >
-                <Input
-                  placeholder="ชื่อ"
-                  value={formData.displayName}
-                  size="large"
-                  onChange={handleInputChange}
-                />
+                <Input placeholder="ชื่อ" size="large" />
               </Form.Item>
             </div>
             <div className="flex flex-col sm:flex-row gap-x-2">
               <Form.Item
+                name="first_name"
                 label="ชื่อจริง (First Name)"
                 style={{ width: "100%" }}
               >
-                <Input
-                  name="firstName"
-                  placeholder="ชื่อจริง"
-                  value={formData.firstName}
-                  size="large"
-                  onChange={handleInputChange}
-                />
+                <Input name="first_name" placeholder="ชื่อจริง" size="large" />
               </Form.Item>
-              <Form.Item label="นามสกุล (Last Name)" style={{ width: "100%" }}>
-                <Input
-                  name="lastName"
-                  placeholder="นามสกุล"
-                  value={formData.lastName}
-                  size="large"
-                  onChange={handleInputChange}
-                />
+              <Form.Item
+                name="last_name"
+                label="นามสกุล (Last Name)"
+                style={{ width: "100%" }}
+              >
+                <Input name="last_name" placeholder="นามสกุล" size="large" />
               </Form.Item>
             </div>
           </div>
         </div>
         <div className="flex flex-col sm:flex-row gap-x-2">
-          <Form.Item label="วันเกิด (Date of Birth)" style={{ width: "100%" }}>
+          <Form.Item
+            name="date_of_birth"
+            label="วันเกิด (Date of Birth)"
+            style={{ width: "100%" }}
+          >
             <DatePicker
               style={{ width: "100%" }}
               size="large"
+              name="date_of_birth"
               placeholder="วันเกิด"
               format="YYYY-MM-DD"
-              value={formData.dateOfBirth}
-              onChange={handleDateChange}
             />
           </Form.Item>
-          <Form.Item label="อีเมล (Email)" style={{ width: "100%" }}>
-            <Input
-              name="email"
-              placeholder="อีเมล"
-              value={formData.email}
-              size="large"
-              onChange={handleInputChange}
-            />
+          <Form.Item
+            name="email"
+            label="อีเมล (Email)"
+            style={{ width: "100%" }}
+          >
+            <Input name="email" placeholder="อีเมล" size="large" />
           </Form.Item>
         </div>
         <div className="flex flex-col sm:flex-row gap-x-2">
           <Form.Item
+            name="phone_number"
             label="เบอร์โทรศัพท์ (Phone Number)"
             style={{ width: "100%" }}
           >
             <Input
-              name="phoneNumber"
+              name="phone_number"
               placeholder="เบอร์โทรศัพท์"
-              value={formData.phoneNumber}
               size="large"
-              onChange={handleInputChange}
             />
           </Form.Item>
-          <Form.Item label="เพศ (Gender)" style={{ width: "100%" }}>
+          <Form.Item
+            name="gender"
+            label="เพศ (Gender)"
+            style={{ width: "100%" }}
+          >
             <Select
               size="large"
               placeholder="เพศ"
-              value={formData.gender}
-              onChange={handleGenderChange}
               options={[
                 { label: "ชาย", value: "male" },
                 { label: "หญิง", value: "female" },
@@ -270,11 +279,24 @@ const PersonalInfo = () => {
           </Form.Item>
         </div>
         <div className="flex gap-2">
-          <Button size="large" type="default">
-            ยกเลิก
-          </Button>
+          <Popconfirm
+            title="ต้องการยกเลิกการเปลี่ยนแปลงหรือไม่?"
+            onConfirm={onCancelChange}
+            onCancel={() => {}}
+            okText="ใช่"
+            cancelText="ไม่"
+          >
+            <Button size="large" type="default" loading={updating}>
+              ยกเลิก
+            </Button>
+          </Popconfirm>
           <Form.Item>
-            <Button htmlType="submit" size="large" type="primary">
+            <Button
+              htmlType="submit"
+              size="large"
+              type="primary"
+              loading={updating}
+            >
               บันทึก
             </Button>
           </Form.Item>
