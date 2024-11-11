@@ -95,7 +95,7 @@ const PersonalInfo = () => {
     };
 
     if (user && user.user_id && !isFetched) {
-      fetchUserProfile();
+      // fetchUserProfile();
     }
   }, [user]);
 
