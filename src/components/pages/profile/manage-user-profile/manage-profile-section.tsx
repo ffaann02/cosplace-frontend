@@ -2,6 +2,7 @@ import React from "react";
 import { userAccountButtons } from "./left-sidebar";
 import PersonalInfo from "./section/personal-info";
 import { Tabs } from "antd";
+import SocialProfile from "./section/social-profile";
 
 interface ManageProfileSectionProps {
   currentMenu: string;
@@ -20,9 +21,11 @@ const ManageProfileSection: React.FC<ManageProfileSectionProps> = ({
 
   const renderContent = (menu: string) => {
     switch (menu) {
-      case "profile":
-        return <PersonalInfo />;
+      case "account":
+        return <PersonalInfo />
       // Add more cases for other menus
+      case "profile":
+        return <SocialProfile />
       default:
         return <div>Unknown Menu</div>;
     }
