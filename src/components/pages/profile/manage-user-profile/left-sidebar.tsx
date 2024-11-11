@@ -1,24 +1,25 @@
 import { divider } from "@/config/theme";
 import { Divider } from "antd";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { FaUser } from "react-icons/fa";
 
 interface LeftSideBarProps {
   currentMenu: string;
-  selectMenu: (menu: string) => void;
 }
 
 export const userAccountButtons = [
   { label: "ข้อมูลบัญชีผู้ใช้", menu: "account" },
-  { label: "โปรไฟล์โซเชียล", menu: "profile" },
+  { label: "โปรไฟล์โซเชียล", menu: "social" },
   { label: "รหัสผ่านและความปลอดภัย", menu: "password"},
   { label: "การแจ้งเตือน", menu: "notifications" },
 ];
 
 const LeftSideBar: React.FC<LeftSideBarProps> = ({
   currentMenu,
-  selectMenu,
 }) => {
+  const router = useRouter();
+
   return (
     <div className="px-4 w-full">
       <h3 className="text-primary-800 text-2xl hidden md:block">จัดการบัญชีของคุณ</h3>
@@ -32,7 +33,9 @@ const LeftSideBar: React.FC<LeftSideBarProps> = ({
                 ? "bg-primary-100 text-primary-700"
                 : "bg-transparent text-primary-500 hover:text-primary-700"
             }`}
-            onClick={() => selectMenu(button.menu)}
+            onClick={() => {
+              router.push(`/profile?menu=${button.menu}`)
+            }}
           >
             <FaUser
               className={`my-auto`}
