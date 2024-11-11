@@ -12,7 +12,7 @@ const UserBadgeNavbar = ({ user }: { user: User | null }) => {
   const router = useRouter();
 
   const navigateToProfile = () => {
-    router.push("/profile");
+    router.push("/profile?menu=account");
   };
 
   const items: MenuProps["items"] = [
@@ -62,23 +62,23 @@ const UserBadgeNavbar = ({ user }: { user: User | null }) => {
           marginBottom: "auto",
         }}
       >
-        <Avatar shape="circle" size="default" style={{
-          marginTop: 5,
-          background: "#ecdcbc",
-          border: "1px solid #e2c799",
-        }}>
-          <LuBellRing className="text-primary-600"/>
+        <Avatar
+          shape="circle"
+          size="default"
+          style={{
+            marginTop: 5,
+            background: "#ecdcbc",
+            border: "1px solid #e2c799",
+          }}
+        >
+          <LuBellRing className="text-primary-600" />
         </Avatar>
       </Badge>
       <div
         className="hidden lg:flex cursor-pointer bg-white hover:bg-primary-50 pl-1.5 pr-2 py-1 
         border border-primary-200 ml-4 rounded-lg transition-all ease-linear duration-100"
       >
-        <Dropdown
-          menu={{ items }}
-          className="my-auto"
-          placement="bottomRight"
-        >
+        <Dropdown menu={{ items }} className="my-auto" placement="bottomRight">
           <a onClick={(e) => e.preventDefault()}>
             <Space className="">
               <Avatar
@@ -92,8 +92,8 @@ const UserBadgeNavbar = ({ user }: { user: User | null }) => {
                 }}
               />
               <p className="my-auto text-[16px] text-primary-800 mb-1 tracking-wide">
-              {user?.username}
-            </p>
+                {user?.username}
+              </p>
               <FaChevronDown className="text-xs mt-0.5 mb-0.5 mr-0.5 text-primary-800" />
             </Space>
           </a>

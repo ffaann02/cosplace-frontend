@@ -283,3 +283,11 @@ h4 {
     height: 80px !important;
   }
 } */
+
+.preview-image-modal div .ant-modal-content{
+  padding: 0;
+}
+
+.ant-upload-list{
+  display: none;
+}
