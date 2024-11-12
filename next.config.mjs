@@ -9,6 +9,7 @@ const nextConfig = {
       "example.com",
       "scontent.fbkk28-1.fna.fbcdn.net",
       "scontent.fbkk28-1.fna.fbcdn.net",
+      "i.ibb.co"
     ],
   },
 };

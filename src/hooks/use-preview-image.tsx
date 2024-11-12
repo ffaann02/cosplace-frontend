@@ -6,7 +6,7 @@ const usePreviewImage = () => {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
 
   const openPreview = useCallback((src: string) => {
-    console.log(src); // Logs the image URL when opening the preview
+    console.log(src);
     setImageSrc(src);
     setIsModalVisible(true);
   }, []);
