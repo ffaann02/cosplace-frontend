@@ -86,7 +86,7 @@ const AccountInfo = () => {
     };
 
     if (user && user.user_id && !isFetched) {
-      // fetchUserProfile();  
+      fetchUserProfile();  
     }
   }, [user]);
 
@@ -94,8 +94,11 @@ const AccountInfo = () => {
   const onSubmit = async () => {
     setUpdating(true);
     try {
-      const response = await apiClientWithAuth.put("user/edit", form.getFieldsValue());
+      // console.log("updating profile");
+      const response = await apiClientWithAuth.put("/user/edit", form.getFieldsValue());
       const updatedUserData = response.data.user;
+      const convertedDate = moment(updatedUserData.date_of_birth,"YYYY-MM-DD");
+      updatedUserData.date_of_birth = convertedDate;
       form.setFieldsValue(updatedUserData);
       setDefaultFormData(updatedUserData);
       setUpdating(false);
