@@ -3,7 +3,7 @@ import { apiClient, apiClientWithAuth } from ".";
 import { API_BASE_URL } from "@/config/api";
 
 export const login = async (username: string, password: string) => {
-  console.log(API_BASE_URL)
+  console.log(API_BASE_URL);
   try {
     const response = await apiClient.post("/auth/login", {
       username,
@@ -22,35 +22,32 @@ export const login = async (username: string, password: string) => {
   }
 };
 
-export const register = async (
-    firstname: string, 
-    lastname: string,
-    phoneNumber: string,
-    dateOfBirth: string,
-    username: string,
-    email: string,
-    password: string
-) => {
-    try{
-        console.log(firstname, lastname, phoneNumber, dateOfBirth, username, email, password);
-        const response = await apiClient.post("/auth/register", {
-            first_name: firstname,
-            last_name: lastname,
-            phone_number: phoneNumber,
-            date_of_birth: dateOfBirth,
-            username,
-            email,
-            password,
-        });
-        if (response.status !== 201) {
-            throw new Error("Register failed");
-        }
-        const { token, user } = response.data;
-        return { token, user };
-    }catch(error: unknown){
-        console.log("register error", error);
-        throw error;
+export interface User {
+  first_name: string;
+  last_name: string;
+  phone_number: string;
+  date_of_birth: string;
+  gender: string;
+  username: string;
+  email: string;
+  password: string;
+}
+
+export const register = async (registering_user: User) => {
+  try {
+    // console.log(firstname, lastname, phoneNumber, dateOfBirth, username, email, password);
+    const response = await apiClient.post("/auth/register", {
+      ...registering_user,
+    });
+    if (response.status !== 201) {
+      throw new Error("Register failed");
     }
+    const { token, user } = response.data;
+    return { token, user };
+  } catch (error: unknown) {
+    console.log("register error", error);
+    throw error;
+  }
 };
 
 export const logout = async () => {
