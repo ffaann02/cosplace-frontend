@@ -4,6 +4,7 @@ import ChatArea from "./chat-area";
 import { Button } from "antd";
 import Link from "next/link";
 import { useAuth } from "@/context/auth-context";
+import { ChatProvider } from "@/context/chat-context";
 
 interface ChatBoxProps {
   open: boolean;
@@ -36,8 +37,10 @@ const ChatBox: React.FC<ChatBoxProps> = ({
       <div className="w-full grid grid-cols-6">
         {isAuthenticated ? (
           <>
-            <ChatList />
-            <ChatArea />
+            <ChatProvider>
+              <ChatList isOpen={open}/>
+              <ChatArea />
+            </ChatProvider>
           </>
         ) : (
           <div className="h-[40vh] col-span-full flex bg-gradient-to-br from-primary-100 to-primary-200 ">

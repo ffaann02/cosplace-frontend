@@ -1,6 +1,7 @@
+"use client";
 import React from "react";
 import { userAccountButtons } from "./left-sidebar";
-import PersonalInfo from "./section/personal-info";
+import PersonalInfo from "./section/account-info";
 import { Tabs } from "antd";
 import SocialProfile from "./section/social-profile";
 
@@ -24,7 +25,7 @@ const ManageProfileSection: React.FC<ManageProfileSectionProps> = ({
       case "account":
         return <PersonalInfo />
       // Add more cases for other menus
-      case "profile":
+      case "social":
         return <SocialProfile />
       default:
         return <div>Unknown Menu</div>;
@@ -36,8 +37,9 @@ const ManageProfileSection: React.FC<ManageProfileSectionProps> = ({
       <h3 className="col-span-full h-fit block md:hidden">จัดการบัญชีของคุณ</h3>
       <div className="block md:hidden">
         <Tabs
+          size="small"
           defaultActiveKey={currentMenu}
-          onChange={(key) => console.log(key)}
+          // onChange={(key) => console.log(key)}
           className="w-full"
         >
           {userAccountButtons.map((btn) => (
