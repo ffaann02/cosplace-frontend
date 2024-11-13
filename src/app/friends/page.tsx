@@ -8,7 +8,7 @@ interface SearchParams {
 
 const Friends = async ({ searchParams }: { searchParams: SearchParams}) => {
   const searchQuery = searchParams?.search || "";
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  // await new Promise((resolve) => setTimeout(resolve, 2000));
   return (
     <div className="w-full lg:max-w-[80rem] 2xl:max-w-[86rem] section-container pt-12 md:pt-16 px-4">
       <SearchPeople search_query={searchQuery} />
