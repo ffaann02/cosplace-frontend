@@ -69,7 +69,7 @@ const SocialProfile = () => {
           user_id: user?.user_id,
           display_name: displayNameValue,
         });
-        setDisplayName(displayNameValue);
+        setDisplayName(response.data.display_name);
         setUpdatingProfileInfo(false);
         setEditingDisplayName(false);
       } catch (error) {
@@ -302,7 +302,7 @@ const SocialProfile = () => {
                         </div>
                       </Form.Item>
                     ) : (
-                      <div className="flex gap-x-2 justify-start md:justify-center">
+                      <div className="flex gap-x-2 justify-start sm:justify-center">
                         <p className="text-primary-600 text-xl">{displayName || "-"}</p>
                         <button
                           className="my-auto"
