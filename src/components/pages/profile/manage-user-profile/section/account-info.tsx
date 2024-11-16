@@ -69,7 +69,7 @@ const AccountInfo = () => {
       }
     };
 
-    if (user && user.user_id && !isFetched) {
+    if (user && user.user_id && user.username && !isFetched) {
       fetchUserProfile();
     }
   }, [user]);
