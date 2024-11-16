@@ -40,8 +40,6 @@ const Login = () => {
         username: data.username,
       });
       setFetching(false);
-
-      router.push("/");
     } catch (error: unknown) {
       setFetching(false);
       if (error instanceof Error && (error as any).response) {

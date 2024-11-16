@@ -1,22 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   Divider,
   Form,
-  message,
   Skeleton,
   Spin,
   Upload,
-  UploadProps,
 } from "antd";
-import ProfileHeader from "../../profile-header";
 import { FaEdit } from "react-icons/fa";
 import TextArea from "antd/es/input/TextArea";
 import Image from "next/image";
 import usePreviewImage from "@/hooks/use-preview-image";
 import ImgCrop from "antd-img-crop";
-import { before } from "node:test";
-import { set } from "date-fns";
 import { LoadingOutlined } from "@ant-design/icons";
 import { apiClient, apiClientWithAuth } from "@/api";
 import { useAuth } from "@/context/auth-context";
@@ -25,21 +20,37 @@ const SocialProfile = () => {
   const { user } = useAuth();
   const [form] = Form.useForm();
   const { openPreview, PreviewImageModal } = usePreviewImage();
-  const [username, setUsername] = useState<string>("test");
-  const [displayName, setDisplayName] = useState<string>("test");
+  const [isFetched, setIsFetched] = useState<boolean>(false);
   const [hoveringCover, setCoveringHover] = useState<boolean>(false);
   const [editingBio, setEditingBio] = useState<boolean>(false);
-  const [bio, setBio] = useState<string>("This is my bio");
-  const [coverImageUrl, setCoverImageUrl] = useState<string>(
-    "https://uploads.dailydot.com/2018/10/olli-the-polite-cat.jpg?auto=compress&fm=pjpg"
-  );
-  const [profileImageUrl, setProfileImageUrl] = useState<string>(
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXFajwhtgDi6dBSYXf110K6408BstkJ2Xe23N453vJncFSchmXXqUHuFQpgSGlBEd4_BA&usqp=CAU"
-  );
+  const [bio, setBio] = useState<string>("");
+  const [coverImageUrl, setCoverImageUrl] = useState<string>("");
+  const [profileImageUrl, setProfileImageUrl] = useState<string>("");
   const [uploadingCoverImage, setUploadingCoverImage] =
     useState<boolean>(false);
   const [uploadingProfileImage, setUploadingProfileImage] =
     useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (isFetched) return;
+      const userId = user?.user_id;
+      try {
+        const response = await apiClient.get(`/profile/${userId}`);
+        const profileData = response.data;
+        form.setFieldsValue(profileData);
+        setProfileImageUrl(profileData.profile_image_url);
+        setCoverImageUrl(profileData.cover_image_url);
+        setIsFetched(true);
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      }
+    };
+
+    if (user && user.user_id && !isFetched) {
+      fetchUserProfile();
+    }
+  }, [user]);
 
   const saveBio = () => {
     form.validateFields(["bio"]).then(() => {
@@ -66,7 +77,7 @@ const SocialProfile = () => {
       const base64Image = reader.result as string;
       try {
         setUploadingProfileImage(true);
-        const response = await apiClientWithAuth.post("/upload/image", {
+        const response = await apiClientWithAuth.post("/upload/profile-image", {
           user_id: user?.user_id,
           image: base64Image,
         });
@@ -88,7 +99,7 @@ const SocialProfile = () => {
       console.log("base64Image", base64Image);
       try {
         setUploadingCoverImage(true);
-        const response = await apiClientWithAuth.post("/upload/image", {
+        const response = await apiClientWithAuth.post("/upload/cover-image", {
           user_id: user?.user_id,
           image: base64Image,
         });
@@ -107,7 +118,19 @@ const SocialProfile = () => {
     <div className="w-full">
       <div className="">
         <Divider style={{ marginBottom: 16 }} />
-        <Form
+        {
+          !isFetched? 
+            <div className="w-full flex flex-col justify-center mt-6">
+              <Skeleton.Avatar active size="large" shape="circle" style={{
+                width: 124,
+                height: 124,
+                margin: "auto",
+                display: "block"
+              }} />
+              <Skeleton active style={{marginTop:16}} />
+            </div>
+          : 
+          <Form
           layout="vertical"
           form={form}
           initialValues={{
@@ -141,8 +164,11 @@ const SocialProfile = () => {
               </div>
             ) : (
               <Image
-                src={coverImageUrl}
-                alt="Profile Header"
+                src={
+                  coverImageUrl ||
+                  "https://uploads.dailydot.com/2018/10/olli-the-polite-cat.jpg?auto=compress&fm=pjpg"
+                }
+                alt="Cover"
                 width={1920}
                 height={172}
                 onClick={() => handleOpenPreviewImage(coverImageUrl)}
@@ -153,8 +179,11 @@ const SocialProfile = () => {
             )}
             <div className="z-[21] w-[124px] h-[124px] relative ml-4 mr-auto sm:mx-auto cursor-pointer">
               <Image
-                src={profileImageUrl}
-                alt="Profile Header"
+                src={
+                  profileImageUrl ||
+                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXFajwhtgDi6dBSYXf110K6408BstkJ2Xe23N453vJncFSchmXXqUHuFQpgSGlBEd4_BA&usqp=CAU"
+                }
+                alt="Profile"
                 width={124}
                 height={124}
                 className="object-cover rounded-full border-2 border-white -mt-16 hover:brightness-125 
@@ -190,8 +219,10 @@ const SocialProfile = () => {
               </div>
             </div>
             <div className="text-left sm:text-center tracking-wide px-6 mt-2 w-full">
-              <p className="text-2xl text-primary-800">{displayName}</p>
-              <p className="text-lg text-primary-400">@{username}</p>
+              <p className="text-2xl text-primary-800">
+                {form.getFieldValue("display_name") || user?.username}
+              </p>
+              <p className="text-lg text-primary-400">@{user?.username}</p>
               <div className="md:text-md sm:px-0 w-full sm:max-w-[80%] xl:max-w-[60%] mr-auto sm:mx-auto mt-2">
                 {editingBio ? (
                   <Form.Item name="bio">
@@ -230,9 +261,7 @@ const SocialProfile = () => {
                   </Form.Item>
                 ) : (
                   <div>
-                    <p className="text-primary-600 text-sm">
-                      {bio || "No bio available"}
-                    </p>
+                    <p className="text-primary-600 text-sm">{bio || "-"}</p>
                     <Button
                       size="small"
                       className="mt-2"
@@ -245,7 +274,7 @@ const SocialProfile = () => {
               </div>
             </div>
           </div>
-        </Form>
+        </Form>}
       </div>
     </div>
   );
