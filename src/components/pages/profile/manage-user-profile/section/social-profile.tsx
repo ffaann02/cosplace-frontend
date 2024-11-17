@@ -208,6 +208,7 @@ const SocialProfile = () => {
                   </div>
                 ) : (
                   <Image
+                    unoptimized
                     src={
                       coverImageUrl ||
                       "https://uploads.dailydot.com/2018/10/olli-the-polite-cat.jpg?auto=compress&fm=pjpg"
@@ -222,6 +223,7 @@ const SocialProfile = () => {
                 )}
                 <div className="z-[21] w-[124px] h-[124px] relative ml-4 mr-auto sm:mx-auto cursor-pointer">
                   <Image
+                    unoptimized
                     src={
                       profileImageUrl ||
                       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXFajwhtgDi6dBSYXf110K6408BstkJ2Xe23N453vJncFSchmXXqUHuFQpgSGlBEd4_BA&usqp=CAU"
