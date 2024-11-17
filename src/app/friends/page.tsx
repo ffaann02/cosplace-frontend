@@ -16,6 +16,7 @@ const Friends = async ({ searchParams }: { searchParams: SearchParams}) => {
       <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 lg:gap-4">
         {Array.from({ length: 12 }).map((_, index) => (
           <PersonCard
+            type="request"
             key={index}
             username="user_name"
             display_name="display_name"
@@ -29,6 +30,7 @@ const Friends = async ({ searchParams }: { searchParams: SearchParams}) => {
       <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 lg:gap-4">
         {Array.from({ length: 12 }).map((_, index) => (
           <PersonCard
+            type="suggest"
             key={index}
             username="user_name"
             display_name="display_name"
