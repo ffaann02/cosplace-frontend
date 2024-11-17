@@ -1,5 +1,3 @@
-export const runtime = "edge";
-
 import { apiClient } from "@/api";
 import NotFound from "@/app/not-found";
 import ProfileHeader from "@/components/pages/profile/profile-header";

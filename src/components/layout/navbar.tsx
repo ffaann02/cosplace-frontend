@@ -7,19 +7,16 @@ import { IoMenu } from "react-icons/io5";
 import DrawerSidebar from "./drawer-sidebar";
 import { roundedButton } from "@/config/theme";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useAuth } from "@/context/auth-context";
 import UserBadgeNavbar from "./user-badge-navbar";
 import { TbMessageFilled } from "react-icons/tb";
-
+import { signIn, useSession } from "next-auth/react";
 
 const Navbar = () => {
-  const searchParams = useSearchParams();
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [options, setOptions] = useState<{ value: string }[]>([]);
-  const { isAuthenticated, user, loading } = useAuth();
+  const { data: session, status } = useSession();
   const pathname = usePathname();
   const router = useRouter();
-
   const showDrawer = () => {
     setOpenDrawer(true);
   };
@@ -121,14 +118,14 @@ const Navbar = () => {
           </Button>
         </div>
       </Flex>
-      {loading ? (
+      {status==="loading" ? (
         <div className="mx-2 scale-x-125 hidden lg:block">
           <Skeleton.Button active shape="default" size="default" />
         </div>
       ) : (
         <>
-          {isAuthenticated ? (
-            <UserBadgeNavbar user={user} />
+          {status === "authenticated" ? (
+            <UserBadgeNavbar username={session.user?.name} />
           ) : (
             <Link href="/login" passHref className="hidden lg:block">
               <div className="my-auto">

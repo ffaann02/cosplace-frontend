@@ -1,6 +1,5 @@
-import { logout } from "@/api/auth";
-import { User } from "@/context/auth-context";
 import { Avatar, Badge, Dropdown, MenuProps, Space } from "antd";
+import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { FaChevronDown } from "react-icons/fa";
 import { IoIosNotificationsOutline } from "react-icons/io";
@@ -8,7 +7,7 @@ import { IoChatboxOutline, IoSettingsOutline } from "react-icons/io5";
 import { LuBellRing, LuUser2 } from "react-icons/lu";
 import { SlLogout } from "react-icons/sl";
 
-const UserBadgeNavbar = ({ user }: { user: User | null }) => {
+const UserBadgeNavbar = ({ username }: { username: string | null | undefined }) => {
   const router = useRouter();
 
   const navigateToProfile = () => {
@@ -47,7 +46,7 @@ const UserBadgeNavbar = ({ user }: { user: User | null }) => {
       key: "5",
       label: "ออกจากระบบ",
       icon: <SlLogout />,
-      onClick: logout,
+      onClick: () => signOut({callbackUrl: "/"}),
     },
   ];
 
@@ -92,7 +91,7 @@ const UserBadgeNavbar = ({ user }: { user: User | null }) => {
                 }}
               />
               <p className="my-auto text-[16px] text-primary-800 mb-1 tracking-wide">
-                {user?.username}
+                {username}
               </p>
               <FaChevronDown className="text-xs mt-0.5 mb-0.5 mr-0.5 text-primary-800" />
             </Space>

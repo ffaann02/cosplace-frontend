@@ -15,8 +15,9 @@ import React, { useEffect, useState } from "react";
 import ImgCrop from "antd-img-crop";
 import moment from "moment";
 import { apiClient, apiClientWithAuth } from "@/api";
-import { useAuth } from "@/context/auth-context";
+// import { useAuth } from "@/context/auth-context";
 import useDeleteConfirm from "@/hooks/use-confirm-modal";
+import { useSession } from "next-auth/react";
 
 interface FormData {
   username: string;
@@ -39,6 +40,7 @@ const initialFormData: FormData = {
 };
 
 const AccountInfo = () => {
+  const {data: session} = useSession();
   const [isFetched, setIsFetched] = useState<boolean>(false);
   const [updating, setUpdating] = useState<boolean>(false);
   const showDeleteConfirm = useDeleteConfirm();
@@ -47,11 +49,10 @@ const AccountInfo = () => {
   const [defaultFormData, setDefaultFormData] =
     useState<FormData>(initialFormData);
 
-  const { user } = useAuth();
   useEffect(() => {
     const fetchUserProfile = async () => {
       if (isFetched) return;
-      const fetchUsername = user?.username;
+      const fetchUsername = session?.user?.name;
       try {
         const response = await apiClient.get(`user/${fetchUsername}`);
         const { date_of_birth } = response.data;
@@ -68,11 +69,8 @@ const AccountInfo = () => {
         console.error("Error fetching profile data:", error);
       }
     };
-
-    if (user && user.user_id && user.username && !isFetched) {
-      fetchUserProfile();
-    }
-  }, [user]);
+    fetchUserProfile();
+  }, [session]);
 
   const onSubmit = async () => {
     setUpdating(true);

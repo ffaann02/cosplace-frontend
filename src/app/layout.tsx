@@ -4,40 +4,41 @@ import { AntdRegistry } from "@ant-design/nextjs-registry";
 import Navbar from "@/components/layout/navbar";
 import { ConfigProvider } from "antd";
 import { antTheme } from "@/config/theme";
-import { AuthProvider } from "@/context/auth-context";
+// import { AuthProvider } from "@/context/auth-context";
 import Loading from "@/components/loading";
 import { Suspense } from "react";
 import BottomMenu from "@/components/layout/bottom-menu";
 import Footer from "@/components/layout/footer";
 import ChatButton from "@/components/popup/chat/chat-button";
+import { getServerSession } from "next-auth";
+import SessionProvider from "@/context/session-provider";
 
 export const metadata: Metadata = {
   title: "CosBaanDeawGun",
   description: "ทุกอย่างที่เกี่ยวกับคอสเพลย์จบในเว็บไซต์เดียว",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getServerSession();
   return (
     <html lang="en">
       <body className="font-Kanit bg-white relative">
         <ConfigProvider theme={antTheme}>
           <AntdRegistry>
             <Suspense fallback={<Loading />}>
-            {/* <Loading /> */}
-            <AuthProvider>
-              <Navbar />
-            </AuthProvider>
-              <AuthProvider>
+              {/* <Loading /> */}
+              <SessionProvider session={session}>
+                <Navbar />
                 <div className="flex flex-col min-h-dvh z-0 pt-16">
                   {children}
                 </div>
                 <ChatButton />
-              </AuthProvider>
-            <BottomMenu />
+                <BottomMenu />
+              </SessionProvider>
             </Suspense>
           </AntdRegistry>
         </ConfigProvider>
