@@ -1,4 +1,3 @@
 
-import authOptions from "@/libs/auth";
-
-export { authOptions as GET, authOptions as POST };
+export {GET,POST} from "../../../../libs/auth";
+export const runtime = "edge";

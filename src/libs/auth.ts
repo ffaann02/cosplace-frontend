@@ -1,10 +1,9 @@
 import axios from "axios";
 import NextAuth from "next-auth";
-import { serialize } from 'cookie';
 import CredentialsProvider from "next-auth/providers/credentials";
 import { cookies } from "next/headers";
 
-export const authOptions = NextAuth({
+export const {auth,handlers: {GET,POST}} = NextAuth({
     providers: [
         CredentialsProvider({
             name: 'Credentials',
@@ -74,12 +73,10 @@ export const authOptions = NextAuth({
         },
         session: async ({ session, token }) => {
             if (session.user) {
-                session.user.id = token.id;
+                session.user.id = token.id as string;
                 session.user.name = token.name;
             }
             return session;
         }
     }
 });
-
-export default authOptions;

@@ -1,9 +1,9 @@
 import PersonCard from "@/components/pages/friends/person-card";
 import SearchPeople from "@/components/pages/friends/search-people";
-import { getServerSession } from "next-auth";
+import  getServerSession  from "next-auth";
 import { useSession } from "next-auth/react";
 import { apiClientWithAuth } from "@/api";
-import authOptions from "@/libs/auth";
+import { auth } from "@/libs/auth";
 
 interface SearchParams {
   [key: string]: string | undefined;
@@ -11,7 +11,7 @@ interface SearchParams {
 
 const Friends = async ({ searchParams }: { searchParams: SearchParams }) => {
   const searchQuery = searchParams?.search || "";
-  const session:any = await getServerSession(authOptions);
+  const session = await auth();
   console.log(session);
   try{
     const [requestsResponse, suggestionsResponse] = await Promise.all([

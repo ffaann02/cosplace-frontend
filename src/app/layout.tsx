@@ -10,8 +10,9 @@ import { Suspense } from "react";
 import BottomMenu from "@/components/layout/bottom-menu";
 import Footer from "@/components/layout/footer";
 import ChatButton from "@/components/popup/chat/chat-button";
-import { getServerSession } from "next-auth";
+import getServerSession  from "next-auth";
 import SessionProvider from "@/context/session-provider";
+import { auth } from "@/libs/auth";
 
 export const metadata: Metadata = {
   title: "CosBaanDeawGun",
@@ -23,7 +24,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession();
+  const session = await auth();
   return (
     <html lang="en">
       <body className="font-Kanit bg-white relative">
