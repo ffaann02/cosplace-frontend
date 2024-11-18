@@ -15,10 +15,10 @@ import usePreviewImage from "@/hooks/use-preview-image";
 import ImgCrop from "antd-img-crop";
 import { LoadingOutlined } from "@ant-design/icons";
 import { apiClient, apiClientWithAuth } from "@/api";
-import { useAuth } from "@/context/auth-context";
+import { useSession } from "next-auth/react";
 
 const SocialProfile = () => {
-  const { user } = useAuth();
+  const { data: session } = useSession();
   const [form] = Form.useForm();
   const { openPreview, PreviewImageModal } = usePreviewImage();
   const [isFetched, setIsFetched] = useState<boolean>(false);
@@ -34,12 +34,14 @@ const SocialProfile = () => {
   const [updatingProfileInfo, setUpdatingProfileInfo] = useState<boolean>(false);
   const [editingDisplayName, setEditingDisplayName] = useState<boolean>(false);
   const [displayName, setDisplayName] = useState<string>("");
+  
+  console.log(session?.user.id);
 
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       if (isFetched) return;
-      const userId = user?.user_id;
+      const userId = session?.user?.id;
       try {
         const response = await apiClient.get(`/profile/${userId}`);
         const profileData = response.data;
@@ -54,10 +56,8 @@ const SocialProfile = () => {
       }
     };
 
-    if (user && user.user_id && !isFetched) {
-      fetchUserProfile();
-    }
-  }, [user]);
+    fetchUserProfile();
+  }, [session]);
 
   const saveDisplayName = async () => {
     form.validateFields(["display_name"]).then(async () => {
@@ -66,7 +66,7 @@ const SocialProfile = () => {
       try {
         setUpdatingProfileInfo(true);
         const response = await apiClientWithAuth.post("/profile/display-name", {
-          user_id: user?.user_id,
+          user_id: session?.user?.id,
           display_name: displayNameValue,
         });
         setDisplayName(response.data.display_name);
@@ -85,7 +85,7 @@ const SocialProfile = () => {
       try {
         setUpdatingProfileInfo(true);
         const response = await apiClientWithAuth.post("/profile/bio", {
-          user_id: user?.user_id,
+          user_id: session?.user?.id,
           bio: bioValue,
         });
         console.log("Response from saving bio:", response);
@@ -122,7 +122,7 @@ const SocialProfile = () => {
       try {
         setUploadingProfileImage(true);
         const response = await apiClientWithAuth.post("/upload/profile-image", {
-          user_id: user?.user_id,
+          user_id: session?.user?.id,
           image: base64Image,
         });
         const image_url = response.data.image_url;
@@ -144,7 +144,7 @@ const SocialProfile = () => {
       try {
         setUploadingCoverImage(true);
         const response = await apiClientWithAuth.post("/upload/cover-image", {
-          user_id: user?.user_id,
+          user_id: session?.user?.id,
           image: base64Image,
         });
         console.log(response);
@@ -316,7 +316,7 @@ const SocialProfile = () => {
                     )}
                   </div>
 
-                  <p className="text-md text-primary-400">@{user?.username}</p>
+                  <p className="text-md text-primary-400">@{session?.user?.name}</p>
                   <div className="md:text-md sm:px-0 w-full sm:max-w-[80%] xl:max-w-[60%] mr-auto sm:mx-auto mt-2">
                     {editingBio ? (
                       <Form.Item name="bio">

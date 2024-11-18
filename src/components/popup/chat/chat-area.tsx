@@ -7,11 +7,11 @@ import Message from "./message";
 import { ChatMessage, useChat } from "@/context/chat-context";
 import { useEffect, useState, useRef } from "react";
 import { socket } from "@/api/socket";
-import { useAuth } from "@/context/auth-context";
+import { useSession } from "next-auth/react";
 
 const ChatArea = () => {
 
-  const { user } = useAuth();
+  const {data:session} = useSession();
   const {
     currentChatId,
     senderId,
@@ -54,7 +54,7 @@ const ChatArea = () => {
   const sendMessage = () => {
     const chatMessageFormat = {
       chatId: currentChatId,
-      senderId: user?.user_id,
+      senderId: session?.user.id,
       receiverId: receiverId,
       type: "text",
       message: {
@@ -160,7 +160,7 @@ const ChatArea = () => {
               <Message
                 key={message.messageId}
                 message={message.message.text}
-                side={message.senderId === user?.user_id ? "sender" : "receiver"}
+                side={message.senderId === session?.user.id ? "sender" : "receiver"}
                 type="text"
                 profileImageUrl="/images/sad-cat.jpg"
                 onClickFunction={() => handleMessagesClick(index)}

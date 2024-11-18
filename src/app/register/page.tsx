@@ -2,13 +2,13 @@
 import { register, User } from "@/api/auth";
 import RegisterFormCard from "@/components/pages/register/form-card";
 import { roundedButton } from "@/config/theme";
-import { useAuth } from "@/context/auth-context";
 import { Button, Flex, message, Typography } from "antd";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { format } from "date-fns";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 const { Title } = Typography;
 
@@ -27,16 +27,16 @@ export interface RegisterFormValues {
 
 const Register = () => {
   const router = useRouter();
-  const { isAuthenticated } = useAuth();
+  const {status} = useSession();
   const [accept, setAccept] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [fetching, setFetching] = useState<boolean>(false);
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (status === "authenticated") {
       router.push("/");
     }
-  }, [isAuthenticated, router]);
+  }, [status, router]);
 
   const onFinish = async (values: RegisterFormValues) => {
     try {

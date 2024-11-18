@@ -1,5 +1,7 @@
 "use client";
+import { apiClientWithAuth } from "@/api";
 import { Button } from "antd";
+import { set } from "date-fns";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -24,6 +26,7 @@ const PersonCard = ({
   const router = useRouter();
   const [alreadyAdded, setAlreadyAdded] = useState<boolean>(false);
   const [alreadyAccepted, setAlreadyAccepted] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const navigateToProfile = (username: string) => {
     router.push(`/profile/${username}`);
   };
@@ -39,7 +42,26 @@ const PersonCard = ({
 
   const onAddFriend = async () => {
     console.log("Add friend");
-    setAlreadyAdded(true);
+    try{
+      setLoading(true);
+      const response = await apiClientWithAuth.post("/friend/add", {
+        user_id: "",
+        friend_username: "admin1",
+      });
+      console.log(response.data);
+      setLoading(false);
+      setAlreadyAdded(true);
+    }
+    catch(e){
+      console.log(e)
+      setLoading(false);
+      setAlreadyAdded(false);
+    }
+  };
+
+  const onCancelAddFriend = async () => {
+    console.log("Cancel add friend");
+    setAlreadyAdded(false);
   };
 
   const onIgnoreSuggestion = async () => {
@@ -47,8 +69,10 @@ const PersonCard = ({
   };
 
   return (
-    <div className="font-light rounded-lg border border-neutral-100 bg-neutral-50 hover:cursor-pointer
-    hover:bg-primary-50 hover:border-primary-200">
+    <div
+      className="font-light rounded-lg border border-neutral-100 bg-neutral-50 hover:cursor-pointer
+    hover:bg-primary-50 hover:border-primary-200"
+    >
       <Image
         className="object-cover w-full h-[200px] rounded-t"
         src={"/images/sad-cat.jpg"}
@@ -60,45 +84,69 @@ const PersonCard = ({
       <div className="p-2 pt-1">
         <h4 className="text-primary-800">{display_name}</h4>
         <p className="-mt-1 text-sm text-primary-600 mb-4">@{username}</p>
-        {type === "request" && (
-          alreadyAccepted ? (
+        {type === "request" &&
+          (alreadyAccepted ? (
             <div>
-              <p className="text-primary-700 font-normal text-center p-2 bg-primary-100 rounded-lg">ยอมรับคำขอแล้ว</p>
-              <p className="text-primary-500 font-normal text-center p-2 rounded-lg text-sm mt-2">คุณเป็นเพื่อนกันแล้ว</p>
+              <p className="text-primary-700 font-normal text-center p-2 bg-primary-100 rounded-lg">
+                ยอมรับคำขอแล้ว
+              </p>
+              <p className="text-primary-500 font-normal text-center p-2 rounded-lg text-sm mt-2">
+                คุณเป็นเพื่อนกันแล้ว
+              </p>
               {/* <Button style={{ width: "100%", marginTop: 8 }} type="default">
                 ยกเลิกคำขอ
               </Button> */}
             </div>
           ) : (
             <div>
-              <Button style={{ width: "100%" }} type="primary" onClick={onAcceptRequest}>
+              <Button
+                style={{ width: "100%" }}
+                type="primary"
+                onClick={onAcceptRequest}
+              >
                 ยอมรับคำขอเพิ่มเพื่อน
               </Button>
-              <Button style={{ width: "100%", marginTop: 8 }} type="default" onClick={onRejectRequest}>
+              <Button
+                style={{ width: "100%", marginTop: 8 }}
+                type="default"
+                onClick={onRejectRequest}
+              >
                 ปฏิเสธคำขอ
               </Button>
             </div>
-          )
-        )}
-        {type === "suggest" && (
-          alreadyAdded ? (
+          ))}
+        {type === "suggest" &&
+          (alreadyAdded ? (
             <div>
-              <p className="text-primary-700 font-normal text-center p-2 bg-primary-100 rounded-lg">ส่งคำขอเพิ่มเพื่อนแล้ว</p>
-              <Button style={{ width: "100%", marginTop: 8 }} type="default">
+              <p className="text-primary-700 font-normal text-center p-2 bg-primary-100 rounded-lg">
+                ส่งคำขอเพิ่มเพื่อนแล้ว
+              </p>
+              <Button
+                style={{ width: "100%", marginTop: 8 }}
+                type="default"
+                onClick={onCancelAddFriend}
+              >
                 ยกเลิกคำขอ
               </Button>
             </div>
           ) : (
             <div>
-              <Button style={{ width: "100%" }} type="primary" onClick={onAddFriend}>
+              <Button
+                style={{ width: "100%" }}
+                type="primary"
+                onClick={onAddFriend}
+              >
                 เพิ่มเพื่อน
               </Button>
-              <Button style={{ width: "100%", marginTop: 8 }} type="default" onClick={onIgnoreSuggestion}>
+              <Button
+                style={{ width: "100%", marginTop: 8 }}
+                type="default"
+                onClick={onIgnoreSuggestion}
+              >
                 ไม่สนใจ
               </Button>
             </div>
-          )
-        )}
+          ))}
       </div>
     </div>
   );
