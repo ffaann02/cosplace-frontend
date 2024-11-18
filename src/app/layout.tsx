@@ -1,3 +1,4 @@
+export const runtime = "edge";
 import type { Metadata } from "next";
 import "../styles/globals.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
