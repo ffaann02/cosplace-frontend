@@ -1,7 +1,4 @@
-// app/profile/page.tsx
-
 "use client";
-
 import { useSearchParams } from "next/navigation";
 import LeftSideBar from "@/components/pages/profile/manage-user-profile/left-sidebar";
 import ManageProfileSection from "@/components/pages/profile/manage-user-profile/manage-profile-section";

@@ -140,14 +140,12 @@ const SocialProfile = () => {
     reader.readAsDataURL(file);
     reader.onload = async () => {
       const base64Image = reader.result as string;
-      console.log("base64Image", base64Image);
       try {
         setUploadingCoverImage(true);
         const response = await apiClientWithAuth.post("/upload/cover-image", {
           user_id: session?.user?.id,
           image: base64Image,
         });
-        console.log(response);
         const image_url = response.data.image_url;
         setCoverImageUrl(image_url);
       } catch (error) {
