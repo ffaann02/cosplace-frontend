@@ -34,6 +34,8 @@ const SocialProfile = () => {
   const [updatingProfileInfo, setUpdatingProfileInfo] = useState<boolean>(false);
   const [editingDisplayName, setEditingDisplayName] = useState<boolean>(false);
   const [displayName, setDisplayName] = useState<string>("");
+  
+  console.log(session?.user.id);
 
 
   useEffect(() => {

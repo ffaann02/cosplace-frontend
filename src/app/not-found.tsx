@@ -1,3 +1,4 @@
+export const runtime = "edge";
 import { roundedButton } from "@/config/theme";
 import { Button } from "antd";
 import Link from "next/link";
