@@ -1,7 +1,8 @@
 "use client";
+import { useAuth } from "@/context/auth-context";
 import usePreviewImage from "@/hooks/use-preview-image";
 import { Button, Tabs, TabsProps } from "antd";
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -39,7 +40,8 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   coverImageUrl,
 }) => {
   const [currentTab, setCurrentTab] = useState<string>("1");
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
+  const {user} = useAuth();
   const { openPreview, PreviewImageModal } = usePreviewImage();
 
   const handleChangeTab = (key: string) => {
@@ -100,7 +102,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
           items={items}
           onChange={handleChangeTab}
         />
-        {session?.user.name === username ? (
+        {user?.username === username ? (
           <Link href="/profile?menu=account" className="mt-2">
             <div className="gap-x-2 hidden md:flex">
               <Button type="default" size="large" className="">

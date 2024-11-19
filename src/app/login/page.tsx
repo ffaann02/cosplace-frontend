@@ -37,12 +37,13 @@ const Login = () => {
       const { username, password } = values;
       const data = await login(username, password);
       setIsAuthenticated(true);
+      console.log(data)
       setUser({
         user_id: data.user_id,
         username: data.username,
       });
-      setFetching(false);
-      window.location.reload();
+      setFetching(false)
+      // window.location.reload();
       // router.push("/");
     } catch (error: unknown) {
       setFetching(false);
