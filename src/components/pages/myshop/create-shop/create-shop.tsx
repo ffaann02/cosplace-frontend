@@ -13,7 +13,7 @@ import {
 } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { apiClientWithAuth } from "@/api";
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
 import ImgCrop from "antd-img-crop";
 import Image from "next/image";
 import TextArea from "antd/es/input/TextArea";
@@ -47,7 +47,7 @@ const productTypeOptions = [
 const CreateShop = () => {
   const [form1] = useForm();
   const [form2] = useForm();
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
   const [shopImageProfileUrl, setShopImageProfileUrl] = useState<string | null>(
     null
   );
