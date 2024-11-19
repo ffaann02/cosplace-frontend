@@ -7,7 +7,11 @@ import {
   IoMaleOutline,
   IoTransgenderOutline,
 } from "react-icons/io5";
-import { SearchOutlined, StarOutlined, TrophyOutlined } from "@ant-design/icons";
+import {
+  SearchOutlined,
+  StarOutlined,
+  TrophyOutlined,
+} from "@ant-design/icons";
 import dayjs from "dayjs";
 import EventCard from "../../events/event-card";
 import eventList from "@/data/mock/event-list.json";
@@ -107,22 +111,28 @@ const SearchBox = () => {
           </Form.Item>
         </div>
         <label className="text-lg">เลือกจากผู้ที่สนใจเข้าร่วมกิจกรรม</label>
-        <div className="flex w-full max-w-full overflow-x-scroll overflow-y-hidden gap-2 p-2" id="search-box-event-container">
+        <div
+          className="flex w-full max-w-full overflow-x-scroll overflow-y-hidden gap-2 p-2"
+          id="search-box-event-container"
+        >
           {eventList.map((event, index) => (
-            <div className="w-[256px] bg-red-200">
-              <EventCard
-                key={index}
-                name={event.name}
-                location={event.location}
-                start_date={event.start_date}
-                end_date={event.end_date}
-                image_cover={event.image_cover}
-              />
-            </div>
+            <EventCard
+              key={index}
+              name={event.name}
+              location={event.location}
+              start_date={event.start_date}
+              end_date={event.end_date}
+              image_cover={event.image_cover}
+            />
           ))}
         </div>
         <div className="mt-4 mb-2">
-          <Button type="primary" htmlType="submit" size="large" icon={<SearchOutlined/>}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            size="large"
+            icon={<SearchOutlined />}
+          >
             ค้นหา Cosplayer
           </Button>
         </div>
