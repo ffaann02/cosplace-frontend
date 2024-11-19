@@ -1,10 +1,12 @@
 import { RegisterFormValues } from "@/app/register/page";
-import { Button, Checkbox, DatePicker, Divider, Flex, Form, Input } from "antd";
+import { Button, Checkbox, DatePicker, Divider, Flex, Form, Input, Select } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
 import Link from "next/link";
 import { FaGoogle, FaLock, FaUser, FaRegUser } from "react-icons/fa";
 import { FiPhone } from "react-icons/fi";
 import { IoMail } from "react-icons/io5";
+
+const { Option } = Select;
 
 interface RegisterFormCardProps {
   onFinish: (values: RegisterFormValues) => void;
@@ -33,31 +35,31 @@ const RegisterFormCard = ({
       <p className="text-xl lg:text-2xl text-center mb-4">
         สมัครบัญชีเพื่อใช้บริการแพลตฟอร์ม
       </p>
-      <Form name="login" initialValues={{ remember: true }} onFinish={onFinish}>
+      <Form name="register" initialValues={{ remember: true }} onFinish={onFinish}>
         <Flex gap={8}>
           <Form.Item
             style={{ width: "50%" }}
-            name="firstname"
+            name="first_name"
             rules={[{ required: true, message: "โปรดกรอกชื่อจริง" }]}
           >
             <Input
               size="large"
               prefix={<FaRegUser />}
-              placeholder="Firstname"
+              placeholder="ชื่อจริง"
             />
           </Form.Item>
           <Form.Item
             style={{ width: "50%" }}
-            name="lastname"
+            name="last_name"
             rules={[{ required: true, message: "โปรดกรอกนามสกุล" }]}
           >
-            <Input size="large" prefix={<FaRegUser />} placeholder="Lastname" />
+            <Input size="large" prefix={<FaRegUser />} placeholder="นามสกุล" />
           </Form.Item>
         </Flex>
         <Flex gap={8}>
           <Form.Item
-            style={{ width: "50%" }}
-            name="phoneNumber"
+            style={{ width: "40%" }}
+            name="phone_number"
             rules={[
               { required: true, message: "โปรดกรอกเบอร์โทรศัพท์มือถือ" },
               {
@@ -69,40 +71,51 @@ const RegisterFormCard = ({
             <Input
               size="large"
               prefix={<FiPhone />}
-              placeholder="Phone number"
+              placeholder="เบอร์โทรศัพท์"
             />
           </Form.Item>
           <Form.Item
-            style={{ width: "50%" }}
-            name="dateOfBirth"
+            style={{ width: "40%" }}
+            name="date_of_birth"
             rules={[{ required: true, message: "โปรดเลือกวันเกิด" }]}
           >
             <DatePicker
               size="large"
-              placeholder="Date of birth"
+              placeholder="วันเกิด"
               format="YYYY-MM-DD"
               style={{ width: "100%" }}
             />
           </Form.Item>
+          <Form.Item
+            style={{ width: "20%" }}
+            name="gender"
+            rules={[{ required: true, message: "โปรดเลือกเพศ" }]}
+          >
+            <Select size="large" placeholder="เพศ">
+              <Option value="male">ชาย</Option>
+              <Option value="female">หญิง</Option>
+              <Option value="unspecified">ไม่ระบุ</Option>
+              <Option value="other">อื่นๆ</Option>
+            </Select>
+          </Form.Item>
         </Flex>
-
         <Flex gap={8}>
           <Form.Item
-            style={{ width: "40%" }}
+            style={{ width: "50%" }}
             name="username"
             rules={[{ required: true, message: "โปรดกรอก Username" }]}
           >
-            <Input size="large" prefix={<FaUser />} placeholder="Username" />
+            <Input size="large" prefix={<FaUser />} placeholder="ชื่อผู้ใช้" />
           </Form.Item>
           <Form.Item
-            style={{ width: "60%" }}
+            style={{ width: "50%" }}
             name="email"
             rules={[
               { required: true, message: "โปรดกรอกอีเมล" },
               { type: "email", message: "รูปแบบอีเมลไม่ถูกต้อง" },
             ]}
           >
-            <Input size="large" prefix={<IoMail />} placeholder="Email" />
+            <Input size="large" prefix={<IoMail />} placeholder="อีเมล" />
           </Form.Item>
         </Flex>
         <Flex gap={8}>
@@ -123,12 +136,12 @@ const RegisterFormCard = ({
               size="large"
               prefix={<FaLock />}
               type="password"
-              placeholder="Password"
+              placeholder="รหัสผ่าน"
             />
           </Form.Item>
           <Form.Item
             style={{ width: "50%" }}
-            name="confirmPassword"
+            name="confirm_password"
             rules={[
               { required: true, message: "โปรดกรอกรหัสผ่าน" },
               ({ getFieldValue }) => ({
@@ -145,7 +158,7 @@ const RegisterFormCard = ({
               size="large"
               prefix={<FaLock />}
               type="password"
-              placeholder="Confirm password"
+              placeholder="ยืนยันรหัสผ่าน"
             />
           </Form.Item>
         </Flex>
@@ -188,7 +201,6 @@ const RegisterFormCard = ({
           เข้าสู่ระบบ
         </Link>
       </div>
-      {/* <p className="text-center -mt-2 mb-4 text-sm">หรือ</p> */}
       <Divider>หรือ</Divider>
       <Button
         icon={<FaGoogle />}

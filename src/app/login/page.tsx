@@ -1,13 +1,12 @@
 "use client";
-import { login } from "@/api/auth";
 import LoginFormCard from "@/components/pages/login/form-card";
 import { roundedButton } from "@/config/theme";
-import { useAuth } from "@/context/auth-context";
 import { Button, Flex, message, Typography } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
+import { signIn, useSession } from "next-auth/react";
 
 const { Title } = Typography;
 
@@ -19,39 +18,25 @@ export interface LoginFormValues {
 
 const Login = () => {
   const router = useRouter();
-  const { isAuthenticated, setIsAuthenticated, setUser } = useAuth();
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [fetching, setFetching] = useState<boolean>(false);
+  const { status } = useSession();
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (status === "authenticated") {
       router.push("/");
     }
-  }, [isAuthenticated, router]);
+  }, [status, router]);
 
   const onFinish = async (values: LoginFormValues) => {
-    try {
-      setFetching(true);
-      const { username, password } = values;
-      const data = await login(username, password);
-      setIsAuthenticated(true);
-      setUser({
-        user_id: data.user,
-        username: data.username,
-      });
-      setFetching(false);
-
-      router.push("/");
-    } catch (error: unknown) {
-      setFetching(false);
-      if (error instanceof Error && (error as any).response) {
-        message.error((error as any).response.data.message);
-        setErrorMessage((error as any).response.data.message);
-      } else {
-        // message.error("Login failed");
-      }
-    }
+    await signIn("credentials", {
+      username: values.username,
+      password: values.password,
+      redirect: true,
+      callbackUrl: "/",
+    });
   };
+
 
   return (
     <div className="flex-grow px-6 flex flex-col -mt-16 pt-6">

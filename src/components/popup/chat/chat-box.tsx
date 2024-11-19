@@ -3,7 +3,7 @@ import ChatList from "./chat-list";
 import ChatArea from "./chat-area";
 import { Button } from "antd";
 import Link from "next/link";
-import { useAuth } from "@/context/auth-context";
+// import { useAuth } from "@/context/auth-context";
 import { ChatProvider } from "@/context/chat-context";
 import { NotificationProvider } from "@/context/notification-context";
 
@@ -20,7 +20,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({
   fade,
   handleOpenChatbox,
 }) => {
-  const { isAuthenticated } = useAuth();
+  // const { isAuthenticated } = useAuth();
   return (
     <div
       className={`max-w-lg w-full bottom-0 bg-white rounded-t-lg fixed right-4 
@@ -35,7 +35,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({
           </button>
         </div>
       </div>
-      <div className="w-full grid grid-cols-6">
+      {/* <div className="w-full grid grid-cols-6">
         {isAuthenticated ? (
           <>
             <ChatProvider>
@@ -57,7 +57,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({
             </div>
           </div>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

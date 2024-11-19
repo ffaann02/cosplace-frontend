@@ -1,64 +1,70 @@
 "use client";
-import { register } from "@/api/auth";
+import { register, User } from "@/api/auth";
 import RegisterFormCard from "@/components/pages/register/form-card";
 import { roundedButton } from "@/config/theme";
-import { useAuth } from "@/context/auth-context";
 import { Button, Flex, message, Typography } from "antd";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { format } from "date-fns";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 const { Title } = Typography;
 
 export interface RegisterFormValues {
-  firstname: string;
-  lastname: string;
-  phoneNumber: string;
-  dateOfBirth: string;
+  first_name: string;
+  last_name: string;
+  phone_number: string;
+  date_of_birth: string;
   username: string;
   email: string;
+  gender: string;
   password: string;
-  confirmPassword: string;
+  confirm_password: string;
   accept: boolean;
 }
 
 const Register = () => {
   const router = useRouter();
-  const { isAuthenticated } = useAuth();
+  const {status} = useSession();
   const [accept, setAccept] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [fetching, setFetching] = useState<boolean>(false);
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (status === "authenticated") {
       router.push("/");
     }
-  }, [isAuthenticated, router]);
+  }, [status, router]);
 
   const onFinish = async (values: RegisterFormValues) => {
-
     try {
       setFetching(true);
       const {
-        firstname,
-        lastname,
-        phoneNumber,
-        dateOfBirth,
+        first_name,
+        last_name,
+        phone_number,
+        date_of_birth,
+        gender,
         username,
         email,
         password,
       } = values;
-      const formatedDateOfBirth = format(new Date(dateOfBirth), "yyyy-MM-dd");
-      const data = await register(
-        firstname,
-        lastname,
-        phoneNumber,
-        formatedDateOfBirth,
+      const user:User = {
+        first_name,
+        last_name,
+        phone_number,
+        date_of_birth,
+        gender,
         username,
         email,
         password
+      }
+      const formatedDateOfBirth = format(new Date(date_of_birth), "yyyy-MM-dd");
+      user.date_of_birth = formatedDateOfBirth;
+      const data = await register(
+        user
       );
       setFetching(false);
       console.log(data);
@@ -76,7 +82,7 @@ const Register = () => {
   };
 
   return (
-    <div className="flex-grow px-6 flex flex-col -mt-16 pt-4">
+    <div className="flex-grow px-6 flex flex-col -mt-14 pt-2">
       <Flex className="h-full flex-grow">
         <div className="pb-12 pt-2 my-auto mx-auto w-full max-w-xl">
           <Link href="/" passHref className="my-auto text-center">

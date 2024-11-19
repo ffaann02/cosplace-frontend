@@ -1,8 +1,9 @@
 import { divider } from "@/config/theme";
-import { Divider } from "antd";
+import { Button, Divider } from "antd";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { FaUser } from "react-icons/fa";
+import { FaShop, FaShopLock } from "react-icons/fa6";
 
 interface LeftSideBarProps {
   currentMenu: string;
@@ -48,6 +49,17 @@ const LeftSideBar: React.FC<LeftSideBarProps> = ({
           </button>
         ))}
       </div>
+      <Button
+        icon={<FaShopLock className="text-xl mr-2"/>}
+        type="default"
+        className="mt-8 w-full"
+        onClick={() => {
+          router.push("/myshop");
+        }}
+        size="large"
+      >
+        เปิดร้านค้า
+      </Button>
     </div>
   );
 };

@@ -1,22 +1,24 @@
 import { useEffect, ComponentType } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/context/auth-context";
+import { useSession } from "next-auth/react";
 
 const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
   const ComponentWithAuth = (props: P) => {
     const router = useRouter();
-    const { isAuthenticated, loading } = useAuth();
+    const { status } = useSession();
 
     useEffect(() => {
-      if (!loading && !isAuthenticated) {
+      if (status==="authenticated") {
         router.push("/login");
       }
-    }, [loading, isAuthenticated, router]);
+    }, [status, router]);
 
     return <WrappedComponent {...props} />;
   };
 
-  ComponentWithAuth.displayName = `WithAuth(${WrappedComponent.displayName || WrappedComponent.name || "Component"})`;
+  ComponentWithAuth.displayName = `WithAuth(${
+    WrappedComponent.displayName || WrappedComponent.name || "Component"
+  })`;
 
   return ComponentWithAuth;
 };
