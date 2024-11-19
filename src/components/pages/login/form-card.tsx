@@ -25,7 +25,7 @@ const LoginFormCard = ({ onFinish, errorMessage="",fetching=false }: LoginFormCa
           <Input
             size="large"
             prefix={<FaUser />}
-            placeholder="Username or Email"
+            placeholder="ชื่อผู้ใช้ หรือ อีเมล"
           />
         </Form.Item>
         <Form.Item
@@ -36,7 +36,7 @@ const LoginFormCard = ({ onFinish, errorMessage="",fetching=false }: LoginFormCa
             size="large"
             prefix={<FaLock />}
             type="password"
-            placeholder="Password"
+            placeholder="รหัสผ่าน"
           />
         </Form.Item>
         <div className="-mt-4 text-left mb-4">

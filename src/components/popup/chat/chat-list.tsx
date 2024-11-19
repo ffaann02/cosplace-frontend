@@ -2,8 +2,8 @@ import Search from "antd/es/input/Search";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { socket } from "@/api/socket";
-import { useAuth } from "@/context/auth-context";
 import { ChatListInterface, useChat } from "@/context/chat-context";
+import { useSession } from "next-auth/react";
 
 const ChatList = ({
   isOpen,
@@ -11,7 +11,7 @@ const ChatList = ({
   isOpen: boolean;
 }) => {
 
-  const { user } = useAuth();
+  const {data: session} = useSession();
   const {
     chatList,
     setChatList,
@@ -41,17 +41,18 @@ const ChatList = ({
     };
   }, []);
 
+
   useEffect(() => {
-    if (chatList.length > 0 && user?.user_id) {
-      selectChat(user.user_id, chatList[0].userId);
+    if (chatList.length > 0 &&  session?.user.id ) {
+      selectChat(session?.user.id, chatList[0].userId);
     }
   }, [chatList]);
 
   const getFriendListWithLastMessage = () => {
-    socket.emit('openChatBox', user?.user_id);
+    socket.emit('openChatBox', session?.user.id);
   }
 
-  const selectChat = (senderId: string, receiverId: string) => {
+  const selectChat = (senderId: string | unknown, receiverId: string) => {
     const sortedIds = [senderId, receiverId].sort();
     const roomId = `${sortedIds[0]}-${sortedIds[1]}`;
     console.log(`${senderId} Opening chat with, ${receiverId} in room ${roomId}`);
@@ -71,7 +72,7 @@ const ChatList = ({
           <div
             key={chat.userId}
             className="flex items-center border-primary-200 cursor-pointer hover:bg-primary-100"
-            onClick={() => user?.user_id && selectChat(user.user_id, chat.userId)}
+            onClick={() => session?.user.id  && selectChat(session?.user.id, chat.userId)}
           >
             <Image
               src={"/images/sad-cat.jpg"}

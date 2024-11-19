@@ -45,7 +45,7 @@ const RegisterFormCard = ({
             <Input
               size="large"
               prefix={<FaRegUser />}
-              placeholder="Firstname"
+              placeholder="ชื่อจริง"
             />
           </Form.Item>
           <Form.Item
@@ -53,7 +53,7 @@ const RegisterFormCard = ({
             name="last_name"
             rules={[{ required: true, message: "โปรดกรอกนามสกุล" }]}
           >
-            <Input size="large" prefix={<FaRegUser />} placeholder="Lastname" />
+            <Input size="large" prefix={<FaRegUser />} placeholder="นามสกุล" />
           </Form.Item>
         </Flex>
         <Flex gap={8}>
@@ -71,7 +71,7 @@ const RegisterFormCard = ({
             <Input
               size="large"
               prefix={<FiPhone />}
-              placeholder="Phone number"
+              placeholder="เบอร์โทรศัพท์"
             />
           </Form.Item>
           <Form.Item
@@ -81,7 +81,7 @@ const RegisterFormCard = ({
           >
             <DatePicker
               size="large"
-              placeholder="Date of birth"
+              placeholder="วันเกิด"
               format="YYYY-MM-DD"
               style={{ width: "100%" }}
             />
@@ -91,7 +91,7 @@ const RegisterFormCard = ({
             name="gender"
             rules={[{ required: true, message: "โปรดเลือกเพศ" }]}
           >
-            <Select size="large" placeholder="Gender">
+            <Select size="large" placeholder="เพศ">
               <Option value="male">ชาย</Option>
               <Option value="female">หญิง</Option>
               <Option value="unspecified">ไม่ระบุ</Option>
@@ -105,7 +105,7 @@ const RegisterFormCard = ({
             name="username"
             rules={[{ required: true, message: "โปรดกรอก Username" }]}
           >
-            <Input size="large" prefix={<FaUser />} placeholder="Username" />
+            <Input size="large" prefix={<FaUser />} placeholder="ชื่อผู้ใช้" />
           </Form.Item>
           <Form.Item
             style={{ width: "50%" }}
@@ -115,7 +115,7 @@ const RegisterFormCard = ({
               { type: "email", message: "รูปแบบอีเมลไม่ถูกต้อง" },
             ]}
           >
-            <Input size="large" prefix={<IoMail />} placeholder="Email" />
+            <Input size="large" prefix={<IoMail />} placeholder="อีเมล" />
           </Form.Item>
         </Flex>
         <Flex gap={8}>
@@ -136,7 +136,7 @@ const RegisterFormCard = ({
               size="large"
               prefix={<FaLock />}
               type="password"
-              placeholder="Password"
+              placeholder="รหัสผ่าน"
             />
           </Form.Item>
           <Form.Item
@@ -158,7 +158,7 @@ const RegisterFormCard = ({
               size="large"
               prefix={<FaLock />}
               type="password"
-              placeholder="Confirm password"
+              placeholder="ยืนยันรหัสผ่าน"
             />
           </Form.Item>
         </Flex>

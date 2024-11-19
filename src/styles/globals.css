@@ -244,6 +244,29 @@ h4 {
   ; /* Color when hovered */
 }
 
+
+#search-box-event-container::-webkit-scrollbar {
+  width: 4px; /* Width of the scrollbar */
+}
+
+#search-box-event-container::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Color of the track */
+  border-radius: 8px; /* Rounded corners */
+}
+
+/* Style the scrollbar thumb */
+#search-box-event-container::-webkit-scrollbar-thumb {
+  background-color: #d2a365
+  ; /* Color of the scrollbar thumb */
+  border-radius: 8px; /* Rounded corners */
+  border: 1px solid #f1f1f1; /* Space around thumb */
+}
+
+#search-box-event-container::-webkit-scrollbar-thumb:hover {
+  background-color: #d2a365
+  ; /* Color when hovered */
+}
+
 .ant-profile-uploader .ant-upload-list-item-container {
   width: 164px !important;
   height: 164px !important;
