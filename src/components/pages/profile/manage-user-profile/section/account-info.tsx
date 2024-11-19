@@ -18,6 +18,8 @@ import { apiClient, apiClientWithAuth } from "@/api";
 // import { useAuth } from "@/context/auth-context";
 import useDeleteConfirm from "@/hooks/use-confirm-modal";
 import { useSession } from "next-auth/react";
+import { useAuth } from "@/context/auth-context";
+import { auth } from "@/libs/auth";
 
 interface FormData {
   username: string;
@@ -40,7 +42,8 @@ const initialFormData: FormData = {
 };
 
 const AccountInfo = () => {
-  const {data: session} = useSession();
+  // const {data: session} = useSession();
+  const {user} = useAuth();
   const [isFetched, setIsFetched] = useState<boolean>(false);
   const [updating, setUpdating] = useState<boolean>(false);
   const showDeleteConfirm = useDeleteConfirm();
@@ -52,7 +55,8 @@ const AccountInfo = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       if (isFetched) return;
-      const fetchUsername = session?.user?.name;
+      // const fetchUsername = session?.user?.name;
+      const fetchUsername = user?.username;
       try {
         const response = await apiClient.get(`user/${fetchUsername}`);
         const { date_of_birth } = response.data;
@@ -70,7 +74,7 @@ const AccountInfo = () => {
       }
     };
     fetchUserProfile();
-  }, [session]);
+  }, [user]);
 
   const onSubmit = async () => {
     setUpdating(true);

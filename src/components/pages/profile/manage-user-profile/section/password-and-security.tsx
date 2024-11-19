@@ -1,11 +1,13 @@
 import { apiClientWithAuth } from "@/api";
+import { useAuth } from "@/context/auth-context";
 import { Form, Input, Button, message, Popconfirm } from "antd";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 const PasswordAndSecurity = () => {
   const [form] = Form.useForm();
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
+  const {user} = useAuth();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string[]>([]);
   const onFinish = async (values: any) => {
@@ -18,7 +20,8 @@ const PasswordAndSecurity = () => {
       setError([]);
       setLoading(true);
       const response = await apiClientWithAuth.put("/auth/change-password", {
-        user_id: session?.user.id,
+        // user_id: session?.user.id,
+        user_id: user?.user_id,
         old_password,
         new_password,
         confirm_password,

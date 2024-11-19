@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import {  useEffect, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { signIn, useSession } from "next-auth/react";
+import { useAuth } from "@/context/auth-context";
+import { login } from "@/api/auth";
 
 const { Title } = Typography;
 
@@ -18,23 +20,39 @@ export interface LoginFormValues {
 
 const Login = () => {
   const router = useRouter();
+  const {user, setIsAuthenticated, setUser} = useAuth();
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [fetching, setFetching] = useState<boolean>(false);
-  const { status } = useSession();
+  // const { status } = useSession();
 
   useEffect(() => {
-    if (status === "authenticated") {
+    if (user?.user_id) {
       router.push("/");
     }
-  }, [status, router]);
+  }, [user, router]);
 
   const onFinish = async (values: LoginFormValues) => {
-    await signIn("credentials", {
-      username: values.username,
-      password: values.password,
-      redirect: true,
-      callbackUrl: "/",
-    });
+    try {
+      setFetching(true);
+      const { username, password } = values;
+      const data = await login(username, password);
+      setIsAuthenticated(true);
+      setUser({
+        user_id: data.user_id,
+        username: data.username,
+      });
+      setFetching(false);
+      window.location.reload();
+      // router.push("/");
+    } catch (error: unknown) {
+      setFetching(false);
+      if (error instanceof Error && (error as any).response) {
+        message.error((error as any).response.data.message);
+        setErrorMessage((error as any).response.data.message);
+      } else {
+        // message.error("Login failed");
+      }
+    }
   };
 
 

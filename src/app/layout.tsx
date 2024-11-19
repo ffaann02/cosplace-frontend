@@ -11,9 +11,10 @@ import { Suspense } from "react";
 import BottomMenu from "@/components/layout/bottom-menu";
 import Footer from "@/components/layout/footer";
 import ChatButton from "@/components/popup/chat/chat-button";
-import getServerSession  from "next-auth";
+import getServerSession from "next-auth";
 import SessionProvider from "@/context/session-provider";
 import { auth } from "@/libs/auth";
+import { AuthProvider } from "@/context/auth-context";
 
 export const metadata: Metadata = {
   title: "CosBaanDeawGun",
@@ -25,22 +26,20 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
   return (
     <html lang="en">
       <body className="font-Kanit bg-white relative">
         <ConfigProvider theme={antTheme}>
           <AntdRegistry>
             <Suspense fallback={<Loading />}>
-              {/* <Loading /> */}
-              <SessionProvider session={session}>
+              <AuthProvider>
                 <Navbar />
                 <div className="flex flex-col min-h-dvh z-0 pt-16">
                   {children}
                 </div>
                 <ChatButton />
                 <BottomMenu />
-              </SessionProvider>
+              </AuthProvider>
             </Suspense>
           </AntdRegistry>
         </ConfigProvider>

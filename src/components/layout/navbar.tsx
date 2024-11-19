@@ -10,12 +10,14 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import UserBadgeNavbar from "./user-badge-navbar";
 import { TbMessageFilled } from "react-icons/tb";
 import { signIn, useSession } from "next-auth/react";
+import { useAuth } from "@/context/auth-context";
 
 const Navbar = () => {
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [options, setOptions] = useState<{ value: string }[]>([]);
-  const { data: session, status } = useSession();
-  console.log(session);
+  const { user, isAuthenticated, loading } = useAuth();
+  // const { data: session, status } = useSession();
+  // console.log(session);
   const pathname = usePathname();
   const router = useRouter();
   const showDrawer = () => {
@@ -119,14 +121,14 @@ const Navbar = () => {
           </Button>
         </div>
       </Flex>
-      {status==="loading" ? (
+      {loading ? (
         <div className="mx-2 scale-x-125 hidden lg:block">
           <Skeleton.Button active shape="default" size="default" />
         </div>
       ) : (
         <>
-          {status === "authenticated" ? (
-            <UserBadgeNavbar username={session.user?.name} />
+          {isAuthenticated ? (
+            <UserBadgeNavbar username={user?.username} />
           ) : (
             <Link href="/login" passHref className="hidden lg:block">
               <div className="my-auto">
