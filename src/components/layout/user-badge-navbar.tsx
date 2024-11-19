@@ -1,3 +1,4 @@
+import { logout } from "@/api/auth";
 import { Avatar, Badge, Dropdown, MenuProps, Space } from "antd";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -46,7 +47,9 @@ const UserBadgeNavbar = ({ username }: { username: string | null | undefined }) 
       key: "5",
       label: "ออกจากระบบ",
       icon: <SlLogout />,
-      onClick: () => signOut({callbackUrl: "/"}),
+      onClick: () => signOut({callbackUrl: "/"}).then(()=>{
+        logout();
+      }),
     },
   ];
 

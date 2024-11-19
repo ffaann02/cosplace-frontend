@@ -31,7 +31,7 @@ const EventCard: React.FC<EventCardProps> = ({
     id="search-result-card"
       >
         <Image
-          className="object-contain w-full h-[200px] rounded-t"
+          className="object-contain w-full h-full max-h-[200px] rounded-t"
           src={image_cover || "/images/sad-cat.jpg"}
           alt="placeholder"
           width={200}
