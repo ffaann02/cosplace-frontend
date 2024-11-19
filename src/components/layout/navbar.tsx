@@ -15,6 +15,7 @@ const Navbar = () => {
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [options, setOptions] = useState<{ value: string }[]>([]);
   const { data: session, status } = useSession();
+  console.log(session);
   const pathname = usePathname();
   const router = useRouter();
   const showDrawer = () => {

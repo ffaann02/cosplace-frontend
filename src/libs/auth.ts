@@ -3,7 +3,7 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { cookies } from "next/headers";
 
-export const {auth,handlers: {GET,POST}} = NextAuth({
+export const { auth, handlers: { GET, POST }, signIn, signOut } = NextAuth({
     providers: [
         CredentialsProvider({
             name: 'Credentials',
