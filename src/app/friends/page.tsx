@@ -6,10 +6,101 @@ import { Button } from "antd";
 import Link from "next/link";
 import SearchBox from "@/components/pages/friends/matching/search-box";
 import Result from "@/components/pages/friends/matching/result";
+import PersonCard from "@/components/pages/friends/person-card";
 
 interface SearchParams {
   [key: string]: string | undefined;
 }
+
+const requestFriends = [
+  {
+    username: "johndoe",
+    display_name: "John Doe",
+    first_name: "John",
+    last_name: "Doe",
+    profile_image_url: "/images/sad-cat.jpg",
+  },
+  {
+    username: "janedoe",
+    display_name: "Jane Doe",
+    first_name: "Jane",
+    last_name: "Doe",
+    profile_image_url: "/images/sad-cat.jpg",
+  },
+  {
+    username: "johndoe",
+    display_name: "John Doe",
+    first_name: "John",
+    last_name: "Doe",
+    profile_image_url: "/images/sad-cat.jpg",
+  },
+  {
+    username: "janedoe",
+    display_name: "Jane Doe",
+    first_name: "Jane",
+    last_name: "Doe",
+    profile_image_url: "/images/sad-cat.jpg",
+  },
+  {
+    username: "johndoe",
+    display_name: "John Doe",
+    first_name: "John",
+    last_name: "Doe",
+    profile_image_url: "/images/sad-cat.jpg",
+  },
+  {
+    username: "janedoe",
+    display_name: "Jane Doe",
+    first_name: "Jane",
+    last_name: "Doe",
+    profile_image_url: "/images/sad-cat.jpg",
+  },
+];
+
+const suggestFriends = [
+  {
+    username: "johndoe",
+    display_name: "John Doe",
+    first_name: "John",
+    last_name: "Doe",
+    profile_image_url: "/images/sad-cat.jpg",
+  },
+  {
+    username: "janedoe",
+    display_name: "Jane Doe",
+    first_name: "Jane",
+    last_name: "Doe",
+    profile_image_url: "/images/sad-cat.jpg",
+  },
+  {
+    username: "johndoe",
+    display_name: "John Doe",
+    first_name: "John",
+    last_name: "Doe",
+    profile_image_url: "/images/sad-cat.jpg",
+  },
+  {
+    username: "janedoe",
+    display_name: "Jane Doe",
+    first_name: "Jane",
+    last_name: "Doe",
+    profile_image_url: "/images/sad-cat.jpg",
+  },
+  {
+    username: "johndoe",
+    display_name: "John Doe",
+    first_name: "John",
+    last_name: "Doe",
+    profile_image_url: "/images/sad-cat.jpg",
+  },
+  {
+    username: "janedoe",
+    display_name: "Jane Doe",
+    first_name: "Jane",
+    last_name: "Doe",
+    profile_image_url: "/images/sad-cat.jpg",
+  },
+];
 
 const Friends = async ({ searchParams }: { searchParams: SearchParams }) => {
   const searchQuery = searchParams?.search || "";
@@ -46,7 +137,7 @@ const Friends = async ({ searchParams }: { searchParams: SearchParams }) => {
         <>
           <h3 className="text-primary-800 mb-2">คำขอเพิ่มเพื่อน</h3>
           {/* Request Friends List */}
-          {/* 
+          
           <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 lg:gap-4">
             {requestFriends.map((friend: any, index: number) => (
               <PersonCard
@@ -60,10 +151,10 @@ const Friends = async ({ searchParams }: { searchParams: SearchParams }) => {
               />
             ))}
           </div> 
-          */}
+         
           <h3 className="text-primary-800 mt-16 mb-2">คนที่คุณอาจรู้จัก</h3>
           {/* Suggested Friends List */}
-          {/* 
+          
           <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 lg:gap-4">
             {suggestFriends.map((suggestion: any, index: number) => (
               <PersonCard
@@ -77,7 +168,7 @@ const Friends = async ({ searchParams }: { searchParams: SearchParams }) => {
               />
             ))}
           </div> 
-          */}
+         
         </>
       )}
       {type === "matching" && (
