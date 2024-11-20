@@ -5,6 +5,7 @@ import { Button } from "antd";
 import Link from "next/link";
 // import { useAuth } from "@/context/auth-context";
 import { ChatProvider } from "@/context/chat-context";
+import { NotificationProvider } from "@/context/notification-context";
 
 interface ChatBoxProps {
   open: boolean;
@@ -38,8 +39,10 @@ const ChatBox: React.FC<ChatBoxProps> = ({
         {isAuthenticated ? (
           <>
             <ChatProvider>
-              <ChatList isOpen={open}/>
-              <ChatArea />
+              <NotificationProvider>
+                <ChatList isOpen={open} />
+                <ChatArea isOpen={open}/>
+              </NotificationProvider>
             </ChatProvider>
           </>
         ) : (

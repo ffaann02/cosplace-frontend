@@ -7,32 +7,37 @@ import Message from "./message";
 import { ChatMessage, useChat } from "@/context/chat-context";
 import { useEffect, useState, useRef } from "react";
 import { socket } from "@/api/socket";
+import { convertToThaiMonth, displayMessageTime, formatMessageTime, getFriendListWithLastMessage } from "@/utils/chat";
 import { useSession } from "next-auth/react";
 
-const ChatArea = () => {
+const ChatArea = ({
+  isOpen,
+}: {
+  isOpen: boolean;
+}) => {
 
   const {data:session} = useSession();
   const {
+    chatList,
     currentChatId,
-    senderId,
-    senderName,
     receiverId,
     recieverName,
     messages,
     setMessages,
+    autoScrollMessageRef,
   } = useChat();
 
   const [inputMessage, setInputMessage] = useState("");
   const [isMessageClicked, setIsMessageClicked] = useState(false);
   const [messageClickedIndex, setMessageClickedIndex] = useState(-1);
-  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function messageEvent(message: ChatMessage) {
-      console.log("Received message:", message);
+      if (currentChatId !== message.chatId) return;
+      // console.log("Received message:", message);
       const prevMessages: ChatMessage[] = messages || [];
       setMessages?.([...prevMessages, message]);
-      // setMessages((prevMessages) => [...prevMessages, message]);
+      getFriendListWithLastMessage(session?.user.id as string);
     }
     socket.on("message", messageEvent);
 
@@ -43,7 +48,6 @@ const ChatArea = () => {
 
   useEffect(() => {
     socket.on("history", (message: ChatMessage[]) => {
-      console.log("history message:", message);
       setMessages?.(message);
     });
     return () => {
@@ -55,6 +59,7 @@ const ChatArea = () => {
     const chatMessageFormat = {
       chatId: currentChatId,
       senderId: session?.user.id,
+      senderName: session?.user.name,
       receiverId: receiverId,
       type: "text",
       message: {
@@ -66,69 +71,14 @@ const ChatArea = () => {
     setInputMessage("");
   };
 
-  const displayMessageTime = (message: ChatMessage, index: number) => {
-    if (index === 0) {
-      return true;
-    }
-    const previousMessage = (messages ?? [])[index - 1];
-    if (message.dateTimeFormatted.year !== previousMessage.dateTimeFormatted.year) {
-      return true;
-    }
-    if (message.dateTimeFormatted.month !== previousMessage.dateTimeFormatted.month) {
-      return true;
-    }
-    if (message.dateTimeFormatted.day !== previousMessage.dateTimeFormatted.day) {
-      return true;
-    }
-    if (message.dateTimeFormatted.hour !== previousMessage.dateTimeFormatted.hour) {
-      return true;
-    }
-    return false;
-  }
-
   const handleMessagesClick = (index: number) => {
     setMessageClickedIndex(index);
     setIsMessageClicked(!isMessageClicked);
   }
 
-  function convertToThaiMonth(month: number) {
-    switch (month) {
-      case 1:
-        return "ม.ค.";
-      case 2:
-        return "ก.พ.";
-      case 3:
-        return "มี.ค.";
-      case 4:
-        return "เม.ย.";
-      case 5:
-        return "พ.ค.";
-      case 6:
-        return "มิ.ย.";
-      case 7:
-        return "ก.ค.";
-      case 8:
-        return "ส.ค.";
-      case 9:
-        return "ก.ย.";
-      case 10:
-        return "ต.ค.";
-      case 11:
-        return "พ.ย.";
-      case 12:
-        return "ธ.ค.";
-      default:
-        return "";
-    }
-  }
-
-  function formatTime(hour: number, minute: number) {
-    return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
-  }
-
   useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    autoScrollMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, currentChatId, isOpen]);
 
   return (
     <div className="col-span-4 flex flex-col flex-grow">
@@ -150,13 +100,13 @@ const ChatArea = () => {
       </div>
       <div className="bg-white overflow-y-scroll h-[40vh] custom-scrollbar">
         {messages?.map((message, index) => (
-          <>
-            {displayMessageTime(message, index) && message.dateTimeFormatted && (
+          <div key={index}>
+            {displayMessageTime(messages, message, index) && message.dateTimeFormatted && (
               <div className="text-center text-sm text-primary-400 my-2" key={index}>
-                {message.dateTimeFormatted.day} {convertToThaiMonth(message.dateTimeFormatted.month)} {formatTime(message.dateTimeFormatted.hour, message.dateTimeFormatted.minute)}
+                {message.dateTimeFormatted.day} {convertToThaiMonth(message.dateTimeFormatted.month)} {formatMessageTime(message.dateTimeFormatted.hour, message.dateTimeFormatted.minute)}
               </div>
             )}
-            <div ref={scrollRef}>
+            <div ref={autoScrollMessageRef}>
               <Message
                 key={message.messageId}
                 message={message.message.text}
@@ -168,7 +118,7 @@ const ChatArea = () => {
                 dateTime={message.dateTimeFormatted}
               />
             </div>
-          </>
+          </div>
         ))}
         {currentChatId !== "" && messages?.length === 0 && (
           <p className="text-center text-primary-400 my-2">ไม่มีข้อความ</p>
