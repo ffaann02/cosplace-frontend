@@ -105,7 +105,7 @@ const suggestFriends = [
 const Friends = async ({ searchParams }: { searchParams: SearchParams }) => {
   const searchQuery = searchParams?.search || "";
   const type = searchParams?.type || "list"; // Default to "list"
-  const session = await auth();
+  // const session = await auth();
 
   return (
     <div className="w-full lg:max-w-[72rem] 2xl:max-w-[80rem] section-container pt-12 md:pt-16 px-4 flex flex-col gap-4">

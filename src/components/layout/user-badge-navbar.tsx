@@ -47,9 +47,10 @@ const UserBadgeNavbar = ({ username }: { username: string | null | undefined }) 
       key: "5",
       label: "ออกจากระบบ",
       icon: <SlLogout />,
-      onClick: () => signOut({callbackUrl: "/"}).then(()=>{
-        logout();
-      }),
+      // onClick: () => signOut({callbackUrl: "/"}).then(()=>{
+      //   logout();
+      // }),
+      onClick: logout,
     },
   ];
 

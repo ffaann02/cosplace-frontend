@@ -9,12 +9,13 @@ export const login = async (username: string, password: string) => {
       username,
       password,
     });
-
     if (response.status !== 200) {
       throw new Error("Login failed");
     }
-
-    const { user } = response.data;
+    const user = {
+      user_id: response.data.user_id,
+      username: response.data.username,
+    }
     return user;
   } catch (error: unknown) {
     console.log("login error", error);

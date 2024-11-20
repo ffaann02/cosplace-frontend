@@ -9,6 +9,7 @@ import { FaArrowRight } from "react-icons/fa";
 import { format } from "date-fns";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { useAuth } from "@/context/auth-context";
 
 const { Title } = Typography;
 
@@ -27,16 +28,17 @@ export interface RegisterFormValues {
 
 const Register = () => {
   const router = useRouter();
-  const {status} = useSession();
+  // const {status} = useSession();
+  const {user} = useAuth();
   const [accept, setAccept] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [fetching, setFetching] = useState<boolean>(false);
 
   useEffect(() => {
-    if (status === "authenticated") {
+    if (user?.user_id) {
       router.push("/");
     }
-  }, [status, router]);
+  }, [user, router]);
 
   const onFinish = async (values: RegisterFormValues) => {
     try {
@@ -69,7 +71,7 @@ const Register = () => {
       setFetching(false);
       console.log(data);
       message.success("Register successful");
-      router.push("/login");
+      window.location.reload();
     } catch (error: unknown) {
       setFetching(false);
       if (error instanceof Error && (error as any).response) {
