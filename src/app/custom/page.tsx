@@ -6,8 +6,7 @@ const CustomPost = () => {
   return (
     <div className="max-w-7xl mx-auto w-full h-full mt-12 grid grid-cols-5 gap-x-2 lg:gap-x-6 px-4">
       <div
-        className="divide-y col-span-full md:col-span-4 bg-neutral-50 rounded-xl pt-4 
-        drop-shadow-sm border border-neutral-100"
+        className="col-span-full md:col-span-4"
       >
         <h3 className="text-center mb-3 text-primary-800 font-light">
           เขียนโพสต์จ้างร้านค้า และบริการ
