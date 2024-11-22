@@ -7,8 +7,8 @@ import Message from "./message";
 import { ChatMessage, useChat } from "@/context/chat-context";
 import { useEffect, useState, useRef } from "react";
 import { socket } from "@/api/socket";
+import { useAuth } from "@/context/auth-context";
 import { convertToThaiMonth, displayMessageTime, formatMessageTime, getFriendListWithLastMessage } from "@/utils/chat";
-import { useSession } from "next-auth/react";
 
 const ChatArea = ({
   isOpen,
@@ -16,7 +16,7 @@ const ChatArea = ({
   isOpen: boolean;
 }) => {
 
-  const {data:session} = useSession();
+  const { user } = useAuth();
   const {
     chatList,
     currentChatId,
@@ -37,7 +37,7 @@ const ChatArea = ({
       // console.log("Received message:", message);
       const prevMessages: ChatMessage[] = messages || [];
       setMessages?.([...prevMessages, message]);
-      getFriendListWithLastMessage(session?.user.id as string);
+      getFriendListWithLastMessage(user?.user_id);
     }
     socket.on("message", messageEvent);
 
@@ -58,8 +58,8 @@ const ChatArea = ({
   const sendMessage = () => {
     const chatMessageFormat = {
       chatId: currentChatId,
-      senderId: session?.user.id,
-      senderName: session?.user.name,
+      senderId: user?.user_id,
+      senderName: user?.username,
       receiverId: receiverId,
       type: "text",
       message: {
@@ -110,7 +110,7 @@ const ChatArea = ({
               <Message
                 key={message.messageId}
                 message={message.message.text}
-                side={message.senderId === session?.user.id ? "sender" : "receiver"}
+                side={message.senderId === user?.user_id ? "sender" : "receiver"}
                 type="text"
                 profileImageUrl="/images/sad-cat.jpg"
                 onClickFunction={() => handleMessagesClick(index)}

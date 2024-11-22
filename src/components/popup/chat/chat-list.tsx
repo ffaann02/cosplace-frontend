@@ -1,12 +1,12 @@
 "use client";
 import Search from "antd/es/input/Search";
 import Image from "next/image";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { socket } from "@/api/socket";
+import { useAuth } from "@/context/auth-context";
 import { ChatListInterface, ChatMessage, useChat } from "@/context/chat-context";
 import { NotificationInterface, useNotification } from "@/context/notification-context";
 import { getFriendListWithLastMessage } from "@/utils/chat";
-import { useSession } from "next-auth/react";
 
 const ChatList = ({
   isOpen,
@@ -14,8 +14,7 @@ const ChatList = ({
   isOpen: boolean;
 }) => {
 
-  const {data: session} = useSession();
-
+  const { user } = useAuth();
   const {
     chatList,
     setChatList,
@@ -35,7 +34,7 @@ const ChatList = ({
       setCurrentChatId("");
     }
     socket.connect();
-    getFriendListWithLastMessage(session?.user.id as string);
+    getFriendListWithLastMessage(user?.user_id);
     return () => {
       socket.disconnect();
     };
@@ -56,14 +55,14 @@ const ChatList = ({
   // Select the first chat in the list by default
   // But not when chatlist is updated (Sort by new message)
   useEffect(() => {
-    if (chatList.length > 0 && session?.user.id && currentChatId === "") {
-      selectChat(session.user.id, chatList[0].userId);
+    if (chatList.length > 0 && user?.user_id && currentChatId === "") {
+      selectChat(user.user_id, chatList[0].userId);
     }
   }, [chatList]);
 
   useEffect(() => {
     function notificationEvent(notiData: NotificationInterface) {
-      getFriendListWithLastMessage((session?.user.id as string));
+      getFriendListWithLastMessage((user?.user_id));
       const newNotification: NotificationInterface = {
         notification_id: notiData.notification_id,
         send_from: notiData.send_from,
@@ -92,7 +91,7 @@ const ChatList = ({
     };
   }, [setNotifications, socket]);
 
-  const selectChat = (senderId: string | unknown, receiverId: string) => {
+  const selectChat = (senderId: string, receiverId: string) => {
     const sortedIds = [senderId, receiverId].sort();
     const roomId = `${sortedIds[0]}-${sortedIds[1]}`;
     setCurrentChatId(roomId);
@@ -101,17 +100,17 @@ const ChatList = ({
     markAsRead(receiverId);
     const data = {
       chatId: roomId,
-      userId: session?.user.id
+      userId: user?.user_id
     }
     socket.emit('joinRoom', data);
   }
 
   const checkUnreadMessage = (currentChatUserId: string) => {
-    return notifications?.filter((notification) => notification.sender_id === currentChatUserId && !notification.is_read && notification.reciever_id !== session?.user.id && !currentChatId.includes(currentChatUserId)).length > 0.;
+    return notifications?.filter((notification) => notification.sender_id === currentChatUserId && !notification.is_read && notification.reciever_id !== user?.user_id && !currentChatId.includes(currentChatUserId)).length > 0.;
   }
 
   const countUnreadMessage = (currentChatUserId: string) => {
-    return notifications?.filter((notification) => notification.sender_id === currentChatUserId && !notification.is_read && notification.reciever_id !== session?.user.id && !currentChatId.includes(currentChatUserId)).length;
+    return notifications?.filter((notification) => notification.sender_id === currentChatUserId && !notification.is_read && notification.reciever_id !== user?.user_id && !currentChatId.includes(currentChatUserId)).length;
   }
 
   const markAsRead = (currentChatUserId: string) => {
@@ -147,7 +146,7 @@ const ChatList = ({
           <div
             key={chat.userId}
             className="flex items-center border-primary-200 cursor-pointer hover:bg-primary-100"
-            onClick={() => session?.user.id  && selectChat(session?.user.id, chat.userId)}
+            onClick={() => user?.user_id && selectChat(user.user_id, chat.userId)}
           >
             <Image
               src={"/images/sad-cat.jpg"}
