@@ -1,3 +1,5 @@
+import { apiClientWithAuth } from "@/api";
+import { useAuth } from "@/context/auth-context";
 import {
   Button,
   Checkbox,
@@ -20,61 +22,56 @@ export interface Bank {
 const bankOptions: Bank[] = [
   {
     BankID: "BK0001",
-    Name: "กรุงธนพรีเวียส",
-    Logo: "https://i.ibb.co/C1c2QcN/Krungthon-Previous.png",
-  },
-  {
-    BankID: "BK0002",
     Name: "กรุงเทพ",
     Logo: "https://f.ptcdn.info/801/022/000/1409170288-b60f8c1e0e-o.png",
   },
   {
-    BankID: "BK0003",
+    BankID: "BK0002",
     Name: "กสิกรไทย",
     Logo: "https://www.kasikornbank.com/SiteCollectionDocuments/about/img/logo/logo.png",
   },
   {
-    BankID: "BK0004",
+    BankID: "BK0003",
     Name: "กรุงไทย",
     Logo: "https://image.makewebeasy.net/makeweb/m_750x0/uaNaSYLUC/DefaultData/logo%E0%B8%81%E0%B8%A3%E0%B8%B8%E0%B8%87%E0%B9%84%E0%B8%97%E0%B8%A2.png?v=202311151122",
   },
   {
-    BankID: "BK0005",
+    BankID: "BK0004",
     Name: "ออมสิน",
     Logo: "https://i.pinimg.com/originals/fa/4b/4a/fa4b4a6ef2f95136051607a7fba619ba.png",
   },
   {
-    BankID: "BK0006",
+    BankID: "BK0005",
     Name: "เกียรตินาคินภัทร",
     Logo: "https://www.dpa.or.th/storage/uploads/bank/dpa_bank_kkp@2x.png",
   },
   {
-    BankID: "BK0007",
+    BankID: "BK0006",
     Name: "ไทยพาณิชย์",
     Logo: "https://i.pinimg.com/736x/02/31/87/023187a2f2dc47bbdc809b43c7667b3a.jpg",
   },
   {
-    BankID: "BK0008",
+    BankID: "BK0007",
     Name: "ยูโอบี",
     Logo: "https://i.pinimg.com/originals/dc/7e/02/dc7e02db3345b40154d5d43ef3095c26.png",
   },
   {
-    BankID: "BK0009",
+    BankID: "BK0008",
     Name: "ทหารไทยธนชาติ",
     Logo: "https://image.bangkokbiznews.com/uploads/images/md/2021/10/1oO2JGrYCh9i5C7Qzrpk.jpg",
   },
   {
-    BankID: "BK0010",
+    BankID: "BK0009",
     Name: "กรุงศรี",
     Logo: "https://i.pinimg.com/736x/ed/80/c6/ed80c67f6f6b484e3a09c85801a5e3c2.jpg",
   },
   {
-    BankID: "BK0011",
+    BankID: "BK0010",
     Name: "ธ.อิสลาม",
     Logo: "https://i.pinimg.com/originals/06/70/69/067069fcbe69567ec81b0240996c0632.png",
   },
   {
-    BankID: "BK0012",
+    BankID: "BK0011",
     Name: "ธ.ก.ส.",
     Logo: "https://i.pinimg.com/originals/70/91/88/709188b0e0530a6d4d7fee80e5ea6ac2.png",
   },
@@ -101,6 +98,9 @@ const CreateShopStep2Form = ({
   setChecked,
   setFormData2
 }: CreateShopStep1FormProps) => {
+
+  const { user } = useAuth();
+
   const backStep = () => {
     setCurrentStep(0);
   };
@@ -110,13 +110,32 @@ const CreateShopStep2Form = ({
     setFormData2(form.getFieldsValue());
   };
 
+  const handleGetUserInformation = async () => {
+    try {
+      const reponse = await apiClientWithAuth.post("/user/info", {
+        user_id: user?.user_id,
+      });
+      autoFillInformation(reponse.data.phone_number, reponse.data.email);
+      console.log(reponse.data);
+    } catch (error) {
+      console.error("Error getting user information:", error);
+    }
+  }
+
+  const autoFillInformation = (phoneNumber: string, email: string) => {
+    form.setFieldsValue({
+      phone_number: phoneNumber,
+      email: email,
+    });
+  }
+
   return (
     <Form form={form} layout="vertical" onFinish={onFinish}>
       <div className="flex flex-col gap-y-4 w-full">
         <div className="col-span-3 bg-primary-50 rounded-xl drop-shadow-sm">
           <div className="ml-6 mt-4">
             <h3 className="text-primary-800">บัญชีร้านค้า</h3>
-            <button className="underline" type="button">
+            <button className="underline" type="button" onClick={() => handleGetUserInformation()}>
               ใช้ข้อมูลเดียวกับบัญชีผู้ใช้
             </button>
           </div>
@@ -207,16 +226,16 @@ const CreateShopStep2Form = ({
               <Form.Item
                 label="เลขบัญชีธนาคาร"
                 name="bank_account_number"
-                rules={[{ required: true, message: "โปรดระบุอีเมล" }]}
+                rules={[{ required: true, message: "โปรดระบุเลขบัญชีธนาคาร" }]}
                 style={{ width: "60%" }}
               >
-                <InputNumber
+                <Input
                   style={{ width: "100%" }}
-                  maxLength={15}
+                  maxLength={12}
                   size="large"
                   placeholder="เลขบัญชี"
                   onChange={(e) => {
-                    form.setFieldValue("bank_account_number", e);
+                    form.setFieldValue("bank_account_number", e.target.value);
                   }}
                 />
               </Form.Item>
@@ -324,7 +343,7 @@ const CreateShopStep2Form = ({
           okText="ยืนยัน"
           cancelText="ยกเลิก"
           onConfirm={onConfirm}
-          onCancel={() => {}}
+          onCancel={() => { }}
         >
           <Button
             type="primary"
