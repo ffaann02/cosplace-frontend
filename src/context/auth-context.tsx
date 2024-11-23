@@ -20,9 +20,11 @@ interface AuthContextType {
 export interface User {
   user_id: string;
   username: string;
-  role: string;
+  role?: "user" | "seller";
   seller_id?: string;
 }
+
+export type user_role = "user" | "seller";
 
 const fakeUser = {
   user_id: 1,

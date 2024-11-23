@@ -28,6 +28,7 @@ const SearchResultCard: React.FC<SearchResultCardProps> = ({
         alt="placeholder"
         width={200}
         height={200}
+        unoptimized
       />
       <div className="pl-2.5 py-2 relative flex-grow flex flex-col">
         <h5 className="font-light text-primary-700 text-xl">{name}</h5>
