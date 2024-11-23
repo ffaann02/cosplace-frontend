@@ -20,7 +20,10 @@ interface AuthContextType {
 export interface User {
   user_id: string;
   username: string;
+  role?: "user" | "seller";
 }
+
+export type user_role = "user" | "seller";
 
 const fakeUser = {
   user_id: 1,
@@ -46,6 +49,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
               setUser({
                 user_id: response.data.user_id,
                 username: response.data.username,
+                role: "seller"
               });
             }
             setIsAuthenticated(true);

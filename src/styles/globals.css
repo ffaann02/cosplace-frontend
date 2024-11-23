@@ -331,3 +331,7 @@ h4 {
 		background-position: 0% 50%;
 	}
 }
+
+.ant-upload-list-item-error{
+  border: 1px #d2a365 solid !important;
+}
