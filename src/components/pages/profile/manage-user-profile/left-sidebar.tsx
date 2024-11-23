@@ -1,4 +1,5 @@
 import { divider } from "@/config/theme";
+import { useAuth } from "@/context/auth-context";
 import { Button, Divider } from "antd";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -19,6 +20,8 @@ export const userAccountButtons = [
 const LeftSideBar: React.FC<LeftSideBarProps> = ({
   currentMenu,
 }) => {
+
+  const { user } = useAuth();
   const router = useRouter();
 
   return (
@@ -50,7 +53,7 @@ const LeftSideBar: React.FC<LeftSideBarProps> = ({
         ))}
       </div>
       <Button
-        icon={<FaShopLock className="text-xl mr-2"/>}
+        icon={user?.role === "seller" ? <FaShop className="text-xl mr-2"/> : <FaShopLock className="text-xl mr-2"/>}
         type="default"
         className="mt-8 w-full"
         onClick={() => {
@@ -58,7 +61,7 @@ const LeftSideBar: React.FC<LeftSideBarProps> = ({
         }}
         size="large"
       >
-        เปิดร้านค้า
+        {user?.role === "seller" ? "จัดการร้านค้า" : "เปิดร้านค้า"}
       </Button>
     </div>
   );

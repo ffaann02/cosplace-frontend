@@ -15,6 +15,8 @@ export const login = async (username: string, password: string) => {
     const user = {
       user_id: response.data.user_id,
       username: response.data.username,
+      role: response.data.role,
+      seller_id: response.data.seller_id,
     }
     return user;
   } catch (error: unknown) {

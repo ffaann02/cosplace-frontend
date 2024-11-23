@@ -5,12 +5,7 @@ import { useAuth } from "@/context/auth-context";
 import { Breadcrumb } from "antd";
 
 const MyShop = () => {
-  // const { user } = useAuth();
-  const user = {
-    user_id: 1,
-    username: "admin1",
-    role: "seller",
-  };
+  const { user } = useAuth();
 
   return (
     <div

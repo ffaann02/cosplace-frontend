@@ -1,11 +1,10 @@
 "use client";
-import { set } from "date-fns";
 import React, {
     createContext,
     useState,
-    useEffect,
     ReactNode,
     useContext,
+    useRef,
 } from "react";
 
 export interface ChatMessage {
@@ -51,6 +50,7 @@ interface ChatContextType {
     setRecieverName: (recieverName: string) => void;
     messages?: ChatMessage[];
     setMessages?: (messages: ChatMessage[]) => void;
+    autoScrollMessageRef: React.RefObject<HTMLDivElement>;
 }
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
@@ -64,11 +64,11 @@ const ChatProvider = ({ children }: { children: ReactNode }) => {
     const [receiverId, setReceiverId] = useState<string>("");
     const [recieverName, setRecieverName] = useState<string>("");
     const [messages, setMessages] = useState<ChatMessage[]>([]);
+    const autoScrollMessageRef = useRef<HTMLDivElement>(null);
 
     return (
         <ChatContext.Provider
-            value={{
-                chatList,
+            value={{ chatList,
                 setChatList,
                 currentChatId,
                 setCurrentChatId,
@@ -82,6 +82,7 @@ const ChatProvider = ({ children }: { children: ReactNode }) => {
                 setRecieverName,
                 messages,
                 setMessages,
+                autoScrollMessageRef,
             }}>
             {children}
         </ChatContext.Provider>

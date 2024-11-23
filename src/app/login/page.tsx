@@ -41,6 +41,8 @@ const Login = () => {
       setUser({
         user_id: data.user_id,
         username: data.username,
+        role: data.role,
+        seller_id: data.seller_id,
       });
       setFetching(false)
       // window.location.reload();
