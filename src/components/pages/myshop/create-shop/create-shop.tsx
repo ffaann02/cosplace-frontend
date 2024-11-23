@@ -22,6 +22,7 @@ import { FaEdit } from "react-icons/fa";
 import CreateShopStep1Form from "./create-shop-step1-form";
 import CreateShopStep2Form, { Bank } from "./create-shop-step2-form";
 import CreateShopStep3Form from "./create-shop-step3-form";
+import { useAuth } from "@/context/auth-context";
 
 const items = [
   {
@@ -47,7 +48,7 @@ const productTypeOptions = [
 const CreateShop = () => {
   const [form1] = useForm();
   const [form2] = useForm();
-  // const { data: session } = useSession();
+  const { user } = useAuth();
   const [shopImageProfileUrl, setShopImageProfileUrl] = useState<string | null>(
     null
   );
@@ -70,14 +71,14 @@ const CreateShop = () => {
     reader.onload = async () => {
       const base64Image = reader.result as string;
       try {
-        // setUploadingProfileImage(true);
-        // const response = await apiClientWithAuth.post("/upload/profile-image", {
-        //   user_id: session?.user?.id,
-        //   image: base64Image,
-        // });
-        // const image_url = response.data.image_url;
-        // setShopImageProfileUrl(image_url);
-        setShopImageProfileUrl(base64Image);
+        setUploadingProfileImage(true);
+        const response = await apiClientWithAuth.post("/shop/upload-image", {
+          user_id: user?.user_id,
+          image: base64Image,
+        });
+        const image_url = response.data.image_url;
+        setShopImageProfileUrl(image_url);
+        // setShopImageProfileUrl(base64Image);
       } catch (error) {
         console.error("Error uploading image:", error);
       } finally {
@@ -120,6 +121,7 @@ const CreateShop = () => {
           <CreateShopStep3Form
             formData1={formData1}
             formData2={formData2}
+            shopImageProfileUrl={shopImageProfileUrl}
             setCurrentStep={setCurrentStep}
           />
         );
