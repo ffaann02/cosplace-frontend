@@ -32,7 +32,7 @@ const ProductListTable = () => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const seller_id = "S-1"; // Replace with `user?.id` if dynamic
+        const seller_id = user?.seller_id; // Replace with `user?.id` if dynamic
         const response = await apiClientWithAuth.get(
           `/product?seller_id=${seller_id}`
         );

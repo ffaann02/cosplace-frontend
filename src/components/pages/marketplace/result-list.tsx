@@ -9,7 +9,7 @@ const ResultList = () => {
           key={index}
           name={product.name}
           price={product.price}
-          location={product.location}
+          region={product.location}
           image={product.image_cover}
           createdAt={product.createdAt}
         />

@@ -1,11 +1,12 @@
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { IoLocationOutline } from "react-icons/io5";
 
 export interface SearchResultCardProps {
   name: string;
   price: number;
-  location: string;
+  region: string;
   image?: string;
   createdAt?: string;
 }
@@ -13,17 +14,24 @@ export interface SearchResultCardProps {
 const SearchResultCard: React.FC<SearchResultCardProps> = ({
   name,
   price,
-  location,
+  region,
   image,
 }) => {
+
+  const router = useRouter();
+  const handleNavigate = (product_name:string) => {
+    router.push(`/marketplace/product/${product_name}`);
+  };
+
   return (
     <div
       className="h-80 bg-white rounded-lg border border-primary-200 drop-shadow-sm flex flex-col
     transition-all duration-100 ease-linear hover:drop-shadow-xl cursor-pointer"
       id="search-result-card"
+      onClick={handleNavigate.bind(this, name)}
     >
       <Image
-        className="object-contain rounded-t-lg w-full h-[60%]"
+        className="object-cover rounded-t-lg w-full h-[60%]"
         src={image || "/images/sad-cat.jpg"}
         alt="placeholder"
         width={200}
@@ -39,7 +47,7 @@ const SearchResultCard: React.FC<SearchResultCardProps> = ({
           <h6 className="flex">
             <IoLocationOutline className="my-auto mr-1 text-primary-800 text-sm" />
             <label className="text-xs text-primary-500 my-auto">
-              {location}
+              {region}
             </label>
           </h6>
         </div>

@@ -75,12 +75,6 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
         <p className="text-2xl text-primary-800">{displayName}</p>
         <p className="text-md text-primary-400">@{username}</p>
         <p className="text-lg text-primary-600 mt-2">{bio}</p>
-        {/* <p className="text-primary-600 text-sm md:text-md md:px-0 w-full md:max-w-[60%] 
-        xl:max-w-[40%] mr-auto md:mx-auto mt-2 md:mt-4">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut
-          doloremque magni blanditiis commodi adipisci ipsam in eius id
-          quibusdam temporibus.
-        </p> */}
         <div className="gap-x-2 mt-4 md:hidden flex -mb-2">
           <Button type="primary" size="large" className="">
             <IoMdPersonAdd className="text-lg" />
