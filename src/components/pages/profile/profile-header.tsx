@@ -2,24 +2,24 @@
 import { useAuth } from "@/context/auth-context";
 import usePreviewImage from "@/hooks/use-preview-image";
 import { Button, Tabs, TabsProps } from "antd";
-// import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { IoMdPersonAdd } from "react-icons/io";
 import { IoChatbubbleOutline, IoPersonOutline } from "react-icons/io5";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const items: TabsProps["items"] = [
   {
-    key: "1",
+    key: "profile",
     label: "โปรไฟล์",
   },
   {
-    key: "2",
+    key: "shop",
     label: "ร้านค้า",
   },
   {
-    key: "3",
+    key: "activity",
     label: "กิจกรรมที่เข้าร่วม",
   },
 ];
@@ -30,6 +30,7 @@ interface ProfileHeaderProps {
   username: string;
   displayName: string;
   bio?: string;
+  sellerId?: string;
 }
 
 const ProfileHeader: React.FC<ProfileHeaderProps> = ({
@@ -38,15 +39,28 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   bio,
   profileImageUrl,
   coverImageUrl,
+  sellerId = "",
 }) => {
-  const [currentTab, setCurrentTab] = useState<string>("1");
-  // const { data: session } = useSession();
-  const {user} = useAuth();
+  const { user } = useAuth();
   const { openPreview, PreviewImageModal } = usePreviewImage();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const currentTab = searchParams.get("tab") || "profile";
 
   const handleChangeTab = (key: string) => {
-    setCurrentTab(key);
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set("tab", key);
+    router.push(`?${newParams.toString()}`);
   };
+
+  useEffect(() => {
+    if (!searchParams.get("tab")) {
+      handleChangeTab("profile");
+    }
+  }, []);
+
+  // Filter items to exclude the "shop" tab if sellerId is not provided
+  const filteredItems = items.filter(item => item.key !== "shop" || sellerId);
 
   return (
     <div className="w-full relative bg-primary-50 border border-b-primary-100">
@@ -69,18 +83,11 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
         ease-linear duration-300"
         unoptimized
         onClick={() => openPreview(profileImageUrl || "/images/sad-cat.jpg")}
-
       />
       <div className="text-left md:text-center tracking-wide px-6 mt-2">
         <p className="text-2xl text-primary-800">{displayName}</p>
         <p className="text-md text-primary-400">@{username}</p>
         <p className="text-lg text-primary-600 mt-2">{bio}</p>
-        {/* <p className="text-primary-600 text-sm md:text-md md:px-0 w-full md:max-w-[60%] 
-        xl:max-w-[40%] mr-auto md:mx-auto mt-2 md:mt-4">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut
-          doloremque magni blanditiis commodi adipisci ipsam in eius id
-          quibusdam temporibus.
-        </p> */}
         <div className="gap-x-2 mt-4 md:hidden flex -mb-2">
           <Button type="primary" size="large" className="">
             <IoMdPersonAdd className="text-lg" />
@@ -98,8 +105,8 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
       >
         <Tabs
           size="large"
-          defaultActiveKey="1"
-          items={items}
+          activeKey={currentTab}
+          items={filteredItems}
           onChange={handleChangeTab}
         />
         {user?.username === username ? (
@@ -127,4 +134,5 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
     </div>
   );
 };
+
 export default ProfileHeader;

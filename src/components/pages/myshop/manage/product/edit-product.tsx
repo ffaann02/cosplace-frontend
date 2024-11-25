@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Form,
   Input,
@@ -9,28 +9,33 @@ import {
   Select,
   Row,
   Col,
-  GetProp,
-  UploadProps,
-  UploadFile,
-  Upload,
-  Image,
   Popconfirm,
   message,
+  Upload,
+  UploadFile,
+  Image,
+  GetProp,
+  UploadProps,
 } from "antd";
 import { useForm } from "antd/es/form/Form";
+import { PlusOutlined } from "@ant-design/icons";
+import { useRouter } from "next/navigation";
+import { apiClientWithAuth } from "@/api";
 import {
   categories_th,
   sizes,
   conditions,
   locations,
 } from "@/components/pages/marketplace/filter-bar-options";
-import { PlusOutlined } from "@ant-design/icons";
-import { apiClientWithAuth } from "@/api";
-import { useRouter } from "next/navigation";
-
 import { default as NextImage } from "next/image";
+import moment from "moment";
+import { useSearchParams } from "next/navigation";
+// import { ProductImage } from "./products";
+import { useAuth } from "@/context/auth-context";
+import { ProductImage } from "@/types/product";
 
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
+
 const { Option } = Select;
 
 const beforeUpload = (file: FileType) => {
@@ -53,7 +58,7 @@ const getBase64 = (file: FileType): Promise<string> =>
     reader.onerror = (error) => reject(error);
   });
 
-const AddProduct = () => {
+const EditProduct = () => {
   const [form] = useForm();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -61,6 +66,58 @@ const AddProduct = () => {
   const [isRentChecked, setIsRentChecked] = useState(false);
   const [creating, setCreating] = useState<boolean>(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const action = searchParams.get("action");
+  const product_id = searchParams.get("product_id");
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (product_id) {
+      // Fetch product data when product_id is available
+      fetchProductData(product_id as string);
+    }
+  }, [product_id]);
+
+  const fetchProductData = async (id: string) => {
+    try {
+      const response = await apiClientWithAuth.get(`/product/${id}`);
+      const productData = response.data;
+      console.log("Product data:", productData);
+
+      // Set form fields with the fetched data
+      form.setFieldsValue({
+        name: productData.name,
+        price: productData.price,
+        quantity: productData.quantity,
+        rent: productData.rent,
+        deposit: productData.deposit,
+        rent_return_date: productData.rent_return_date
+          ? moment(productData.rent_return_date)
+          : null,
+        description: productData.description,
+        category: productData.category,
+        condition: productData.condition,
+        size: productData.size,
+        region: productData.region,
+      });
+
+      // Set the rent checkbox state based on fetched data
+      setIsRentChecked(productData.rent);
+
+      const images = productData.product_images;
+
+      const formattedFileList = images.map((image: ProductImage) => ({
+        uid: image.product_image_id.toString(), // Ensure unique uid for each image
+        name: image.image_url, // Store the image URL
+        url: image.image_url, // Image URL for preview
+        preview: image.image_url, // Ensure preview is set to URL (or base64 if necessary)
+      }));
+
+      setFileList(formattedFileList);
+    } catch (error) {
+      message.error("เกิดข้อผิดพลาดในการโหลดข้อมูลสินค้า");
+    }
+  };
 
   const handlePreview = async (file: UploadFile) => {
     if (!file.url && !file.preview) {
@@ -74,6 +131,10 @@ const AddProduct = () => {
   const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) =>
     setFileList(newFileList);
 
+  const handleRemoveImage = (file: UploadFile) => {
+    console.log(file);
+  };
+
   const uploadButton = (
     <button style={{ border: 0, background: "none" }} type="button">
       <PlusOutlined />
@@ -83,51 +144,49 @@ const AddProduct = () => {
 
   const onFinish = (values: any) => {
     console.log("Form values:", values);
-    onConfirmCreate(values);
+    onConfirmUpdate(values);
   };
 
-  const onConfirmCreate = async (values: any) => {
-    const productData = values;
-    productData.rent_return_date = productData.rent_return_date?.format();
-    productData.created_by = "S-1";
-    console.log("Product data:", productData);
+  const onConfirmUpdate = async (values: any) => {
+    const updatedProductData = { ...values };
+    updatedProductData.rent_return_date =
+      updatedProductData.rent_return_date?.format();
+    updatedProductData.updated_by = user?.seller_id;
+
     try {
       setCreating(true);
-      const response = await apiClientWithAuth.post(
-        "/product/create",
-        productData
+      await apiClientWithAuth.put(
+        `/product/id/${product_id}`,
+        updatedProductData
       );
-      console.log(response);
-      const productId = response.data.product_id;
 
-      // Upload images
-      await Promise.all(
-        fileList.map(async (file) => {
-          try {
-            const image = await getBase64(file.originFileObj as FileType);
-            const imageData = {
-              product_id: productId,
-              image_url: image,
-            };
-            console.log(imageData);
-            const response = await apiClientWithAuth.post(
-              "/upload/product-image",
-              imageData
-            );
-            console.log(response);
-          } catch (err) {
-            console.error("Error uploading image:", err);
-            message.error("เกิดข้อผิดพลาดในการอัปโหลดรูปภาพ");
-          }
-        })
-      );
+      // // Upload images
+      // await Promise.all(
+      //   fileList.map(async (file) => {
+      //     try {
+      //       const image = await getBase64(file.originFileObj as FileType);
+      //       const imageData = {
+      //         product_id: product_id,
+      //         image_url: image,
+      //       };
+      //       const imageResponse = await apiClientWithAuth.post(
+      //         "/upload/product-image",
+      //         imageData
+      //       );
+      //       console.log(imageResponse);
+      //     } catch (err) {
+      //       console.error("Error uploading image:", err);
+      //       message.error("เกิดข้อผิดพลาดในการอัปโหลดรูปภาพ");
+      //     }
+      //   })
+      // );
 
       setCreating(false);
-      message.success("เพิ่มสินค้าเรียบร้อยแล้ว");
+      message.success("แก้ไขสินค้าเรียบร้อยแล้ว");
       router.push("/myshop?menu=products");
     } catch (err) {
-      console.log(err);
-      message.error("เกิดข้อผิดพลาดในการเพิ่มสินค้า");
+      console.error(err);
+      message.error("เกิดข้อผิดพลาดในการแก้ไขสินค้า");
       setCreating(false);
     }
   };
@@ -264,6 +323,7 @@ const AddProduct = () => {
             fileList={fileList}
             onPreview={handlePreview}
             onChange={handleChange}
+            onRemove={handleRemoveImage}
           >
             {fileList.length >= 5 ? null : uploadButton}
           </Upload>
@@ -350,11 +410,8 @@ const AddProduct = () => {
             ยกเลิก
           </Button>
           <Popconfirm
-            title="ยืนยันการเพิ่มสินค้า?"
+            title="ยืนยันการแก้ไขข้อมูลสินค้า?"
             onConfirm={() => form.submit()}
-            // onConfirm={() => {
-            //   onFinish(form.getFieldsValue());
-            // }} // Use form.submit() to trigger the form submission
             okText="ยืนยัน"
             okButtonProps={{ htmlType: "submit" }}
             cancelText="ยกเลิก"
@@ -366,7 +423,7 @@ const AddProduct = () => {
               //   htmlType="submit"
               style={{ marginLeft: 8 }}
             >
-              เพิ่มสินค้า
+              แก้ไขสินค้า
             </Button>
           </Popconfirm>
         </Form.Item>
@@ -375,4 +432,4 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+export default EditProduct;

@@ -3,32 +3,7 @@ import React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import AddProduct from "./add-product";
 import ProductListTable from "./product-list-table";
-
-export interface Product {
-  product_id: string;
-  name: string;
-  price: number;
-  quantity: number;
-  rent: boolean;
-  rent_deposit: number;
-  rent_return_date: string;  // Use string to represent time (ISO format) in JS/TS
-  description: string;
-  category: string;
-  condition: string;
-  size: string;
-  region: string;
-  created_by: string;
-  created_at: string;  // Same as above for timestamp
-  updated_at: string;  // Same as above for timestamp
-  deleted_at?: string | null;  // Nullable, depending on whether the record is deleted or not
-  product_images: ProductImage[];
-}
-
-export interface ProductImage{
-  product_image_id: number;
-  product_id: string;
-  image_url: string;
-}
+import EditProduct from "./edit-product";
 
 const Products = () => {
   const router = useRouter();
@@ -41,33 +16,52 @@ const Products = () => {
     router.push(`?${newParams.toString()}`);
   };
 
-  const renderContent = () => {
-    switch (searchParams.get("action")) {
+  const handleBreadcrumbClick = () => {
+    router.push("/myshop?menu=products");
+  };
+
+  const renderBreadcrumb = () => {
+    switch (action) {
       case "add-product":
-        return <AddProduct />;
+        return (
+          <Breadcrumb>
+            <Breadcrumb.Item onClick={handleBreadcrumbClick} className="cursor-pointer">
+              สินค้า
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>เพิ่มสินค้าใหม่</Breadcrumb.Item>
+          </Breadcrumb>
+        );
       case "edit-product":
-        return <div>Edit Product</div>;
+        return (
+          <Breadcrumb>
+            <Breadcrumb.Item onClick={handleBreadcrumbClick} className="cursor-pointer">
+              สินค้า
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>แก้ไขสินค้า</Breadcrumb.Item>
+          </Breadcrumb>
+        );
       default:
-        return <ProductListTable />;
+        return null;
     }
   };
 
-  const handleBreadcrumbClick = () => {
-    router.push("/myshop?menu=products");
+  const renderContent = () => {
+    switch (action) {
+      case "add-product":
+        return <AddProduct />;
+      case "edit-product":
+        return <EditProduct />;
+      default:
+        return <ProductListTable />;
+    }
   };
 
   return (
     <div className="text-primary-700">
       <h3>สินค้า</h3>
       <div className="mt-6">
-        {action === "add-product" ? (
-          <Breadcrumb >
-            <Breadcrumb.Item onClick={handleBreadcrumbClick} className="cursor-pointer">
-              สินค้า
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>เพิ่มสินค้าใหม่</Breadcrumb.Item>
-          </Breadcrumb>
-        ) : (
+        {renderBreadcrumb()}
+        {action !== "add-product" && action !== "edit-product" && (
           <div id="header" className="flex justify-between">
             <Button onClick={handleAddProduct}>เพิ่มสินค้าใหม่</Button>
             <div id="filter">

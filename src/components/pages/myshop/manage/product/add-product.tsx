@@ -29,6 +29,8 @@ import { apiClientWithAuth } from "@/api";
 import { useRouter } from "next/navigation";
 
 import { default as NextImage } from "next/image";
+import { auth } from "@/libs/auth";
+import { useAuth } from "@/context/auth-context";
 
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 const { Option } = Select;
@@ -54,6 +56,7 @@ const getBase64 = (file: FileType): Promise<string> =>
   });
 
 const AddProduct = () => {
+  const {user} = useAuth();
   const [form] = useForm();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -89,7 +92,7 @@ const AddProduct = () => {
   const onConfirmCreate = async (values: any) => {
     const productData = values;
     productData.rent_return_date = productData.rent_return_date?.format();
-    productData.created_by = "S-1";
+    productData.created_by = user?.seller_id;
     console.log("Product data:", productData);
     try {
       setCreating(true);

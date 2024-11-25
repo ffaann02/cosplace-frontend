@@ -114,10 +114,6 @@ const CreateCustomPostForm = () => {
     });
   };
 
-  //   const enableSubmit = () =>{
-  //     return title && description && minPrice && maxPrice && tags.length > 0;
-  //   };
-
   return (
     <div className="px-4 pt-2 flex flex-col">
       <Form layout="vertical" style={{ marginTop: 2 }} onFinish={handleSubmit}>
