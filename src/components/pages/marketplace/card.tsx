@@ -6,16 +6,18 @@ import { IoLocationOutline } from "react-icons/io5";
 export interface SearchResultCardProps {
   name: string;
   price: number;
+  quantity: number;
   region: string;
   image?: string;
   createdAt?: string;
 }
 
 const SearchResultCard: React.FC<SearchResultCardProps> = ({
-  name,
-  price,
-  region,
-  image,
+  name = "ชื่อสินค้า",
+  price = 0,
+  quantity = 0,
+  region = "ทั่วประเทศ",
+  image = "",
 }) => {
 
   const router = useRouter();
@@ -40,6 +42,7 @@ const SearchResultCard: React.FC<SearchResultCardProps> = ({
       />
       <div className="pl-2.5 py-2 relative flex-grow flex flex-col">
         <h5 className="font-light text-primary-700 text-xl">{name}</h5>
+        <p className="text-primary-600 text-sm">จำนวน: {quantity}</p>
         <div className="mt-auto">
           <h6 className=" bg-primary-100 text-primary-600 px-2 py-1 rounded-lg w-fit mb-2">
             ฿ {price}

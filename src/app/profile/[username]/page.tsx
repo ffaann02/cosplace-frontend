@@ -1,6 +1,7 @@
-export const runtime = "edge";
+export const dynamic = 'force-dynamic'
 import { apiClient } from "@/api";
 import NotFound from "@/app/not-found";
+import Feed from "@/components/pages/profile/feed";
 import ProfileHeader from "@/components/pages/profile/profile-header";
 
 const UserProfile = async ({ params }: { params: { username: string } }) => {
@@ -8,6 +9,7 @@ const UserProfile = async ({ params }: { params: { username: string } }) => {
 
   try {
     const response = await apiClient.get(`/profile/feed/${username}`);
+    console.log(response.data);
     const user = response.data;
 
     return (
@@ -18,8 +20,10 @@ const UserProfile = async ({ params }: { params: { username: string } }) => {
           bio={user.bio}
           profileImageUrl={user.profile_image_url}
           coverImageUrl={user.cover_image_url}
+          // sellerId={user.seller_id}
+          sellerId=""
         />
-        <div className="max-w-7xl mx-auto">hello</div>
+        <Feed profileData={user} />
       </div>
     );
   } catch (error) {

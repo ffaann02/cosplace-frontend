@@ -5,16 +5,16 @@ export interface Product {
     quantity: number;
     rent: boolean;
     rent_deposit: number;
-    rent_return_date: string; // Use string to represent time (ISO format) in JS/TS
+    rent_return_date: string;
     description: string;
     category: string;
     condition: string;
     size: string;
     region: string;
     created_by: string;
-    created_at: string; // Same as above for timestamp
-    updated_at: string; // Same as above for timestamp
-    deleted_at?: string | null; // Nullable, depending on whether the record is deleted or not
+    created_at: string;
+    updated_at: string;
+    deleted_at?: string | null;
     product_images: ProductImage[];
   }
   

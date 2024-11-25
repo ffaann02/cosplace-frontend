@@ -30,8 +30,9 @@ import {
 import { default as NextImage } from "next/image";
 import moment from "moment";
 import { useSearchParams } from "next/navigation";
-import { ProductImage } from "./products";
+// import { ProductImage } from "./products";
 import { useAuth } from "@/context/auth-context";
+import { ProductImage } from "@/types/product";
 
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 
@@ -155,7 +156,7 @@ const EditProduct = () => {
     try {
       setCreating(true);
       await apiClientWithAuth.put(
-        `/product/${product_id}`,
+        `/product/id/${product_id}`,
         updatedProductData
       );
 

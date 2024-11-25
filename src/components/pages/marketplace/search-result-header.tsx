@@ -1,49 +1,32 @@
 "use client";
-import { useState } from "react";
-import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
+  AutoComplete,
   Button,
   Divider,
   Dropdown,
+  Input,
   MenuProps,
+  Space,
   Tabs,
   TabsProps,
   Tag,
 } from "antd";
-import { FaChevronDown } from "react-icons/fa";
+import { FaChevronDown, FaSearch } from "react-icons/fa";
 import { CloseOutlined } from "@ant-design/icons";
-import { useFilter } from "@/context/e-commerce-context";
 import { CiFilter } from "react-icons/ci";
-import { useParams, usePathname, useSearchParams } from "next/navigation";
 
 const items: MenuProps["items"] = [
-  {
-    key: "1",
-    label: "ราคาสูง-ต่ำ",
-  },
-  {
-    key: "2",
-    label: "ราคาต่ำ-สูง",
-  },
-  {
-    key: "3",
-    label: "ลงขายล่าสุด",
-  },
+  { key: "1", label: "ราคาสูง-ต่ำ" },
+  { key: "2", label: "ราคาต่ำ-สูง" },
+  { key: "3", label: "ลงขายล่าสุด" },
 ];
 
 const itemsTab: TabsProps["items"] = [
-  {
-    key: "1",
-    label: "ราคาสูง-ต่ำ",
-  },
-  {
-    key: "2",
-    label: "ราคาต่ำ-สูง",
-  },
-  {
-    key: "3",
-    label: "ลงขายล่าสุด",
-  },
+  { key: "1", label: "ราคาสูง-ต่ำ" },
+  { key: "2", label: "ราคาต่ำ-สูง" },
+  { key: "3", label: "ลงขายล่าสุด" },
 ];
 
 const TagStyle = {
@@ -57,26 +40,49 @@ const TagStyle = {
 
 const SearchResultHeader = () => {
   const searchParams = useSearchParams();
+  const router = useRouter();
+
   const [hoverSort, setHoverSort] = useState(false);
-  const {
-    selectedCategories,
-    setSelectedCategories,
-    selectedConditions,
-    setSelectedConditions,
-    selectedSizes,
-    setSelectedSizes,
-    selectedLocations,
-    setSelectedLocations,
-    openFilterDrawerMobile,
-    setOpenFilterDrawerMobile,
-    selectedSort,
-    setSelectedSort,
-  } = useFilter();
+  const [selectedSort, setSelectedSort] = useState(
+    searchParams.get("sort") || "ราคาสูง-ต่ำ"
+  );
+  const [selectedFilters, setSelectedFilters] = useState({
+    categories: searchParams.getAll("category"),
+    conditions: searchParams.getAll("condition"),
+    sizes: searchParams.getAll("size"),
+    locations: searchParams.getAll("location"),
+  });
+  const searchValue = searchParams.get("search") || "";
+
+  useEffect(() => {
+    // Sync state with URL params on load
+    setSelectedSort(searchParams.get("sort") || "ราคาสูง-ต่ำ");
+    setSelectedFilters({
+      categories: searchParams.getAll("categoriy"),
+      conditions: searchParams.getAll("condition"),
+      sizes: searchParams.getAll("size"),
+      locations: searchParams.getAll("location"),
+    });
+  }, [searchParams]);
+
+  const updateURLParams = async (key: string, value: string | string[]) => {
+    const currentParams = new URLSearchParams(searchParams.toString());
+
+    if (Array.isArray(value)) {
+      currentParams.delete(key);
+      value.forEach((v) => currentParams.append(key, v));
+    } else {
+      currentParams.set(key, value);
+    }
+
+    router.push(`?${currentParams.toString()}`);
+  };
 
   const handleMenuClick = ({ key }: { key: string }) => {
     const selectedItem = items.find((item) => item?.key === key);
     if (selectedItem && "label" in selectedItem) {
       setSelectedSort(selectedItem.label as string);
+      updateURLParams("sort", selectedItem.label as string);
     }
   };
 
@@ -84,56 +90,79 @@ const SearchResultHeader = () => {
     const selectedItem = itemsTab.find((item) => item?.key === key);
     if (selectedItem && "label" in selectedItem) {
       setSelectedSort(selectedItem.label as string);
+      updateURLParams("sort", selectedItem.label as string);
     }
   };
 
-  // Remove filter from selected categories, conditions, sizes, or locations
-  const handleTagClose = (type: string, value: string) => {
-    switch (type) {
-      case "category":
-        setSelectedCategories(((prev: string[]) =>
-          prev.filter((item) => item !== value)) as unknown as string[]);
-        break;
-      case "condition":
-        setSelectedConditions(((prev: string[]) =>
-          prev.filter((item) => item !== value)) as unknown as string[]);
-        break;
-      case "size":
-        setSelectedSizes(((prev: string[]) =>
-          prev.filter((item) => item !== value)) as unknown as string[]);
-        break;
-      case "location":
-        setSelectedLocations(((prev: string[]) =>
-          prev.filter((item) => item !== value)) as unknown as string[]);
-        break;
-      default:
-        break;
-    }
+  const handleTagClose = (
+    type: keyof typeof selectedFilters,
+    value: string
+  ) => {
+    const updatedFilters = { ...selectedFilters };
+    updatedFilters[type] = updatedFilters[type].filter(
+      (item) => item !== value
+    );
+    setSelectedFilters(updatedFilters);
+    updateURLParams(type, updatedFilters[type]);
   };
 
-  const handleOpenFilterDrawerMobile = () => {
-    setOpenFilterDrawerMobile(!openFilterDrawerMobile);
+  const handleSearch = (value: string) => {
+    const currentParams = new URLSearchParams(searchParams.toString());
+  
+    console.log("Current URL Parameters:", decodeURIComponent(currentParams.toString()));
   };
 
   return (
     <>
       <div className="lg:flex lg:justify-between">
-        <div className="flex justify-between">
+        <div className="w-full my-auto relative mb-2 mr-2">
+          {/* <AutoComplete
+            options={searchValue ? [{ value: searchValue }] : []}
+            onSearch={handleSearch}
+            onSelect={(value) => updateURLParams("search", value)}
+            onFocus={() => updateURLParams("search", "")}
+            style={{ width: "100%" }}
+          > */}
+          <Space.Compact className="w-full">
+            <Input
+              size="large"
+              placeholder="ค้นหาชุด, ชื่อตัวละคร, ของตกแต่ง"
+              style={{
+                borderRadius: 16,
+                borderTopRightRadius: 0,
+                borderBottomRightRadius: 0,
+              }}
+              onPressEnter={(e) =>
+                updateURLParams(
+                  "search",
+                  (e.target as HTMLInputElement).value
+                ).then(() => handleSearch(searchValue))
+              }
+              prefix={<FaSearch />}
+            />
+            <Button
+              size="large"
+              type="default"
+              onClick={() =>
+                updateURLParams("search", searchValue).then(() =>
+                  handleSearch(searchValue)
+                )
+              }
+            >
+              ค้นหา
+            </Button>
+          </Space.Compact>
+          {/* </AutoComplete> */}
+        </div>
+        {/* <div className="flex justify-between">
           <h3 className="text-primary-800 flex">
             ผลลัพธ์การค้นหา
             <label className="text-secondary-600 font-light ml-2">
               {searchParams.get("search") && `'${searchParams.get("search")}'`}
             </label>
           </h3>
-          <div
-            className="flex text-secondary-700 lg:hidden cursor-pointer"
-            onClick={handleOpenFilterDrawerMobile}
-          >
-            <CiFilter className="my-auto mr-1 text-xl" />
-            <label className="my-auto text-sm">ตัวกรอง</label>
-          </div>
-        </div>
-        <div className="hidden lg:block">
+        </div> */}
+        <div className="hidden lg:block my-auto">
           <Dropdown
             onOpenChange={(open) => setHoverSort(open)}
             menu={{
@@ -153,7 +182,7 @@ const SearchResultHeader = () => {
             </Button>
           </Dropdown>
         </div>
-        <div className="block lg:hidden">
+        <div className="block lg:hidden my-auto">
           <Tabs
             defaultActiveKey="1"
             items={itemsTab}
@@ -162,7 +191,7 @@ const SearchResultHeader = () => {
         </div>
       </div>
       <div className="hidden lg:block">
-        <Divider
+        {/* <Divider
           className="bg-secondary-100"
           style={{
             marginLeft: 0,
@@ -170,46 +199,46 @@ const SearchResultHeader = () => {
             marginTop: 6,
             marginBottom: 4,
           }}
-        />
+        /> */}
       </div>
 
       {/* Display selected filters as tags */}
       <div className="flex flex-wrap gap-2 lg:mt-2 mb-2">
-        {selectedCategories.map((category) => (
+        {selectedFilters.categories.map((category) => (
           <Tag
             key={category}
             closable
-            onClose={() => handleTagClose("category", category)}
+            onClose={() => handleTagClose("categories", category)}
             style={TagStyle}
           >
             {category}
           </Tag>
         ))}
-        {selectedConditions.map((condition) => (
+        {selectedFilters.conditions.map((condition) => (
           <Tag
             key={condition}
             closable
-            onClose={() => handleTagClose("condition", condition)}
+            onClose={() => handleTagClose("conditions", condition)}
             style={TagStyle}
           >
             {condition}
           </Tag>
         ))}
-        {selectedSizes.map((size) => (
+        {selectedFilters.sizes.map((size) => (
           <Tag
             key={size}
             closable
-            onClose={() => handleTagClose("size", size)}
+            onClose={() => handleTagClose("sizes", size)}
             style={TagStyle}
           >
             {size}
           </Tag>
         ))}
-        {selectedLocations.map((location) => (
+        {selectedFilters.locations.map((location) => (
           <Tag
             key={location}
             closable
-            onClose={() => handleTagClose("location", location)}
+            onClose={() => handleTagClose("locations", location)}
             style={TagStyle}
           >
             {location}
