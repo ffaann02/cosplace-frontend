@@ -6,6 +6,7 @@ const apiClient = axios.create({
     headers: {
         "Content-Type": "application/json",
         "Cache-Control": "no-cache",
+        "ngrok-skip-browser-warning":"any"
     },
     timeout: 10000,
     withCredentials: true,
@@ -16,6 +17,7 @@ const apiClientWithAuth = axios.create({
     headers: {
         "Content-Type": "application/json",
         "Cache-Control": "no-cache",
+        "ngrok-skip-browser-warning":"any",
     },
     timeout: 10000,
     withCredentials: true,
