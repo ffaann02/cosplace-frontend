@@ -10,6 +10,7 @@ const nextConfig = {
       "scontent.fbkk28-1.fna.fbcdn.net",
       "scontent.fbkk28-1.fna.fbcdn.net",
       "i.ibb.co",
+      "cpe334-cosplace-bucket.s3.ap-southeast-1.amazonaws.com",
     ],
   },
   async headers() {
