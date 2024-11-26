@@ -71,7 +71,8 @@ const Register = () => {
       setFetching(false);
       console.log(data);
       message.success("Register successful");
-      window.location.reload();
+      // window.location.reload();
+      router.push("/login?first_login=true");
     } catch (error: unknown) {
       setFetching(false);
       if (error instanceof Error && (error as any).response) {
