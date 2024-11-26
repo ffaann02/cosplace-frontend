@@ -1,7 +1,14 @@
 import Image from "next/image";
 import React from "react";
 
-const Result = () => {
+const Result = ({ 
+  cosplayerList 
+} : {
+  cosplayerList: any[]
+}) => {
+
+  console.log(cosplayerList);
+
   return (
     <div className="flex flex-col justify-center">
       <Image
