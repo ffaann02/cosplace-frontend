@@ -4,7 +4,7 @@ import { roundedButton } from "@/config/theme";
 import { Button, Flex, message, Typography } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { signIn, useSession } from "next-auth/react";
 import { useAuth } from "@/context/auth-context";
@@ -20,14 +20,18 @@ export interface LoginFormValues {
 
 const Login = () => {
   const router = useRouter();
-  const {user, setIsAuthenticated, setUser} = useAuth();
+  const { user, setIsAuthenticated, setUser } = useAuth();
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [fetching, setFetching] = useState<boolean>(false);
-  // const { status } = useSession();
 
   useEffect(() => {
     if (user?.user_id) {
-      router.push("/");
+      const queryParams = new URLSearchParams(window.location.search);
+      if (queryParams.get("first_login") === "true") {
+        router.push("/?first_login=true");
+      } else {
+        router.push("/");
+      }
     }
   }, [user, router]);
 
@@ -37,14 +41,14 @@ const Login = () => {
       const { username, password } = values;
       const data = await login(username, password);
       setIsAuthenticated(true);
-      console.log(data)
+      // console.log(data)
       setUser({
         user_id: data.user_id,
         username: data.username,
         role: data.role,
         seller_id: data.seller_id,
       });
-      setFetching(false)
+      setFetching(false);
       // window.location.reload();
       // router.push("/");
     } catch (error: unknown) {
@@ -57,7 +61,6 @@ const Login = () => {
       }
     }
   };
-
 
   return (
     <div className="flex-grow px-6 flex flex-col -mt-16 pt-6">

@@ -6,7 +6,15 @@ import FeedProfile from "./profile";
 import FeedShop from "./shop";
 import FeedActivities from "./activities";
 
-const Feed = ({ profileData }: { profileData: Profile }) => {
+const Feed = ({
+  profileData,
+  sellerId,
+  interests,
+}: {
+  profileData: Profile;
+  sellerId?: string;
+  interests?: string[];
+}) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentTab = searchParams.get("tab") || "profile";
@@ -14,9 +22,9 @@ const Feed = ({ profileData }: { profileData: Profile }) => {
   const renderContent = () => {
     switch (currentTab) {
       case "profile":
-        return <FeedProfile profileData={profileData} />;
+        return <FeedProfile profileData={profileData} interests={interests} />;
       case "shop":
-        return <FeedShop />;
+        return <FeedShop sellerId={sellerId} />;
       case "activity":
         return <FeedActivities />;
       default:

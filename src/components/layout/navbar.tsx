@@ -80,7 +80,7 @@ const Navbar = () => {
               </span>
             </Link>
           </div>
-          {pathname !== "/marketplace" && (
+          {!pathname.includes("marketplace") && (
             <div className="w-full lg:w-3/5 my-auto ml-2 relative">
               <AutoComplete
                 options={options}

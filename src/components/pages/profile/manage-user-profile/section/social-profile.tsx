@@ -30,17 +30,18 @@ const SocialProfile = () => {
     useState<boolean>(false);
   const [editingDisplayName, setEditingDisplayName] = useState<boolean>(false);
   const [displayName, setDisplayName] = useState<string>("");
-
   const user_id = user?.user_id;
 
   useEffect(() => {
     const fetchUserProfile = async () => {
-      if (isFetched) return;
+      if (isFetched || !user) return;
       // const userId = session?.user?.id;
-      const userId = user_id;
+      // const user_id = user?.user_id;
+      console.log("user_id", user_id);
       try {
-        const response = await apiClient.get(`/profile/${userId}`);
+        const response = await apiClient.get(`/profile/${user_id}`);
         const profileData = response.data;
+        console.log("Profile data:", profileData);
         setDisplayName(profileData.display_name);
         setBio(profileData.bio);
         form.setFieldsValue(profileData);

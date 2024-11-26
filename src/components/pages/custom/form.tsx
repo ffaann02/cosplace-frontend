@@ -16,9 +16,15 @@ import {
   Upload,
   UploadFile,
   UploadProps,
+  message,
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { useState } from "react";
+import axios from "axios";
+import { apiClientWithAuth } from "@/api";
+import { useAuth } from "@/context/auth-context";
+import { useRouter } from "next/navigation";
+
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 
 const getBase64 = (file: FileType): Promise<string> =>
@@ -66,6 +72,8 @@ const uploadButton = (
 );
 
 const CreateCustomPostForm = () => {
+  const {user} = useAuth();
+  const router = useRouter();
   const [previewOpen, setPreviewOpen] = useState<boolean>(false);
   const [previewImage, setPreviewImage] = useState<string>("");
   const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -102,16 +110,47 @@ const CreateCustomPostForm = () => {
     setLinks(newLinks);
   };
 
-  const handleSubmit = () => {
-    console.log({
-      title,
-      description,
-      minPrice,
-      maxPrice,
-      tags,
-      links,
-      fileList,
-    });
+  const handleSubmit = async () => {
+    try {
+      // Post form data to /custom API
+      const response = await apiClientWithAuth.post("/custom", {
+        title,
+        description,
+        price_range_start: minPrice,
+        price_range_end: maxPrice,
+        anime_name:animeName,
+        tags,
+        created_by: user?.user_id,
+      });
+
+      const postId = response.data.post_id;
+
+      // Upload images to /upload/custom API
+      await Promise.all(
+        fileList.map(async (file) => {
+          try {
+            const image = await getBase64(file.originFileObj as FileType);
+            const imageData = {
+              post_id: postId,
+              image_url: image,
+            };
+            await apiClientWithAuth.post(
+              "/upload/custom-ref-image",
+              imageData
+            );
+          } catch (err) {
+            console.error("Error uploading image:", err);
+            message.error("เกิดข้อผิดพลาดในการอัปโหลดรูปภาพ");
+          }
+        })
+      );
+
+      message.success("โพสต์สำเร็จ!");
+      router.push(`/custom/${postId}`);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      message.error("เกิดข้อผิดพลาดในการโพสต์");
+    }
   };
 
   return (
@@ -153,7 +192,6 @@ const CreateCustomPostForm = () => {
           <Form.Item style={{ width: "100%", position: "relative" }}>
             <label>อัปโหลดรูปภาพประกอบ</label>
             <Upload
-              action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
               listType="picture-card"
               fileList={fileList.map((file, idx) => ({ ...file, key: idx }))}
               onPreview={handlePreview}
@@ -179,7 +217,7 @@ const CreateCustomPostForm = () => {
             <Form.Item
               style={{ width: "100%", position: "relative" }}
               name="minPrice"
-              rules={[{ required: true, message: "กรุณากรอกราคาต่ำสุด" }]}
+              // rules={[{ required: true, message: "กรุณากรอกราคาต่ำสุด" }]}
             >
               <label>ราคาต่ำสุด</label>
               <InputNumber
@@ -193,7 +231,7 @@ const CreateCustomPostForm = () => {
               />
             </Form.Item>
             <Form.Item
-              rules={[{ required: true, message: "กรุณากรอกราคาสูงสุด" }]}
+              // rules={[{ required: true, message: "กรุณากรอกราคาสูงสุด" }]}
               style={{ width: "100%", position: "relative" }}
               name="maxPrice"
             >
@@ -230,7 +268,7 @@ const CreateCustomPostForm = () => {
             />
           </Form.Item>
           <Form.Item
-            required
+            // required
             style={{ width: "100%", position: "relative" }}
             label="แท็ก"
             rules={[
@@ -315,4 +353,5 @@ const CreateCustomPostForm = () => {
     </div>
   );
 };
+
 export default CreateCustomPostForm;
