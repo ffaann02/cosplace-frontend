@@ -16,9 +16,15 @@ import {
   Upload,
   UploadFile,
   UploadProps,
+  message,
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { useState } from "react";
+import axios from "axios";
+import { apiClientWithAuth } from "@/api";
+import { useAuth } from "@/context/auth-context";
+import { useRouter } from "next/navigation";
+
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 
 const getBase64 = (file: FileType): Promise<string> =>
@@ -66,6 +72,8 @@ const uploadButton = (
 );
 
 const CreateCustomPostForm = () => {
+  const {user} = useAuth();
+  const router = useRouter();
   const [previewOpen, setPreviewOpen] = useState<boolean>(false);
   const [previewImage, setPreviewImage] = useState<string>("");
   const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -102,217 +110,248 @@ const CreateCustomPostForm = () => {
     setLinks(newLinks);
   };
 
-  const handleSubmit = () => {
-    console.log({
-      title,
-      description,
-      minPrice,
-      maxPrice,
-      tags,
-      links,
-      fileList,
-    });
-  };
+  const handleSubmit = async () => {
+    try {
+      // Post form data to /custom API
+      const response = await apiClientWithAuth.post("/custom", {
+        title,
+        description,
+        price_range_start: minPrice,
+        price_range_end: maxPrice,
+        anime_name:animeName,
+        tags,
+        created_by: user?.user_id,
+      });
 
-  //   const enableSubmit = () =>{
-  //     return title && description && minPrice && maxPrice && tags.length > 0;
-  //   };
+      const postId = response.data.post_id;
+
+      // Upload images to /upload/custom API
+      await Promise.all(
+        fileList.map(async (file) => {
+          try {
+            const image = await getBase64(file.originFileObj as FileType);
+            const imageData = {
+              post_id: postId,
+              image_url: image,
+            };
+            await apiClientWithAuth.post(
+              "/upload/custom-ref-image",
+              imageData
+            );
+          } catch (err) {
+            console.error("Error uploading image:", err);
+            message.error("เกิดข้อผิดพลาดในการอัปโหลดรูปภาพ");
+          }
+        })
+      );
+
+      message.success("โพสต์สำเร็จ!");
+      router.push(`/custom/${postId}`);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      message.error("เกิดข้อผิดพลาดในการโพสต์");
+    }
+  };
 
   return (
     <div className="px-4 pt-2 flex flex-col">
-      <Form layout="vertical" style={{ marginTop: 12 }} onFinish={handleSubmit}>
-        <Form.Item
-          style={{ width: "100%", position: "relative" }}
-          label="ชื่องาน"
-          name="title"
-          rules={[{ required: true, message: "กรุณากรอกชื่องาน" }]}
-        >
-          <Input
-            showCount
-            maxLength={50}
-            placeholder="ชื่อ"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            size="large"
-          />
-        </Form.Item>
-        <Form.Item
-          style={{ width: "100%", position: "relative" }}
-          label="รายละเอียดของงาน"
-          name="description"
-          rules={[{ required: true, message: "กรุณากรอกรายละเอียดของงาน" }]}
-        >
-          <TextArea
-            minLength={20}
-            showCount
-            maxLength={200}
-            placeholder="รายละเอียด"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            size="large"
-            autoSize={{ minRows: 2 }}
-          />
-        </Form.Item>
-        <Form.Item style={{ width: "100%", position: "relative" }}>
-          <label>อัปโหลดรูปภาพประกอบ</label>
-          <Upload
-            action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
-            listType="picture-card"
-            fileList={fileList.map((file, idx) => ({ ...file, key: idx }))}
-            onPreview={handlePreview}
-            onChange={handleChange}
-          >
-            {fileList.length >= 8 ? null : uploadButton}
-          </Upload>
-          {previewImage && (
-            <Image
-              wrapperStyle={{ display: "none" }}
-              preview={{
-                visible: previewOpen,
-                onVisibleChange: (visible) => setPreviewOpen(visible),
-                afterOpenChange: (visible) => !visible && setPreviewImage(""),
-              }}
-              src={previewImage}
-            />
-          )}
-        </Form.Item>
-        <Flex gap={8}>
+      <Form layout="vertical" style={{ marginTop: 2 }} onFinish={handleSubmit}>
+        <div className="bg-primary-50 px-4 pt-3 pb-2 rounded-xl drop-shadow-sm">
           <Form.Item
             style={{ width: "100%", position: "relative" }}
-            name="minPrice"
-            rules={[{ required: true, message: "กรุณากรอกราคาต่ำสุด" }]}
+            label="ชื่องาน"
+            name="title"
+            rules={[{ required: true, message: "กรุณากรอกชื่องาน" }]}
           >
-            <label>ราคาต่ำสุด</label>
-            <InputNumber
-              min={0}
-              max={100000}
-              placeholder="ราคาขั้นต่ำ"
-              style={{ width: "100%" }}
+            <Input
+              showCount
+              maxLength={50}
+              placeholder="ชื่อ"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               size="large"
-              value={minPrice}
-              onChange={(value) => setMinPrice(value)}
             />
           </Form.Item>
           <Form.Item
-            rules={[{ required: true, message: "กรุณากรอกราคาสูงสุด" }]}
             style={{ width: "100%", position: "relative" }}
-            name="maxPrice"
+            label="รายละเอียดของงาน"
+            name="description"
+            rules={[{ required: true, message: "กรุณากรอกรายละเอียดของงาน" }]}
           >
-            <label>ราคาสูงสุด</label>
-            <InputNumber
-              min={0}
-              max={100000}
-              placeholder="ราคาสูงสุด"
-              style={{ width: "100%" }}
+            <TextArea
+              minLength={20}
+              showCount
+              maxLength={200}
+              placeholder="รายละเอียด"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               size="large"
-              value={maxPrice}
-              onChange={(value) => setMaxPrice(value)}
+              autoSize={{ minRows: 2 }}
             />
           </Form.Item>
-        </Flex>
-        <Form.Item
-          style={{ width: "100%", position: "relative" }}
-          label="ชื่ออนิเมะ ภาพยนตร์ หรือซีรีย์"
-          name="animeName"
-          rules={[
-            {
-              required: true,
-              message:
-                "กรุณากรอกชื่ออนิเมะ ภาพยนตร์ หรือซีรีย์ ของตัวละครที่คอสเพลย์",
-            },
-          ]}
-        >
-          <Input
-            placeholder="ชื่ออนิเมะ ภาพยนตร์ หรือซีรีย์"
-            style={{ width: "100%" }}
-            size="large"
-            value={animeName}
-            onChange={(e) => setAnimeName(e.target.value)}
-          />
-        </Form.Item>
-        <Form.Item
-          required
-          style={{ width: "100%", position: "relative" }}
-          label="แท็ก"
-          rules={[
-            {
-              required: true,
-              message: "กรุณาเลือกอย่างน้อยหนึ่งแท็ก",
-            },
-            {
-              validator: (_, value) =>
-                value && value.length > 0
-                  ? Promise.resolve()
-                  : Promise.reject(new Error("กรุณาเลือกอย่างน้อยหนึ่งแท็ก")),
-            },
-          ]}
-        >
-          <Select
-            size="large"
-            mode="multiple"
-            tagRender={tagRender}
-            value={tags}
-            onChange={(value) => setTags(value)}
-            style={{ width: "100%" }}
-            options={options}
-            placeholder="เลือกแท็ก"
-          />
-        </Form.Item>
-        <Form.Item style={{ width: "100%", position: "relative" }}>
-          <label>แนบลิงก์ประกอบ</label>
-          <Space direction="vertical" style={{ width: "100%" }}>
-            <Space.Compact style={{ width: "100%" }}>
-              <Input
-                onPressEnter={addLink}
-                value={linkInput}
-                onChange={(e) => setLinkInput(e.target.value)}
-                placeholder="ลิงก์เพิ่มเติม"
+          <Form.Item style={{ width: "100%", position: "relative" }}>
+            <label>อัปโหลดรูปภาพประกอบ</label>
+            <Upload
+              listType="picture-card"
+              fileList={fileList.map((file, idx) => ({ ...file, key: idx }))}
+              onPreview={handlePreview}
+              onChange={handleChange}
+            >
+              {fileList.length >= 8 ? null : uploadButton}
+            </Upload>
+            {previewImage && (
+              <Image
+                wrapperStyle={{ display: "none" }}
+                preview={{
+                  visible: previewOpen,
+                  onVisibleChange: (visible) => setPreviewOpen(visible),
+                  afterOpenChange: (visible) => !visible && setPreviewImage(""),
+                }}
+                src={previewImage}
               />
-              <Button type="default" onClick={addLink}>
-                เพิ่มลิงก์
-              </Button>
-            </Space.Compact>
-          </Space>
-          <div className="mt-2 ml-2">
-            {links.map((link, index) => (
-              <div
-                key={link + index}
-                className="flex justify-between items-center"
-              >
-                <a
-                  className="hover:underline"
-                  onClick={() => openNewTabWithParams(link)}
-                >
-                  {link}
-                </a>
-                <Button type="link" danger onClick={() => removeLink(index)}>
-                  ลบ
-                </Button>
-              </div>
-            ))}
-          </div>
-        </Form.Item>
-        <Form.Item style={{ width: "100%", position: "relative" }}>
-          <Button
-            disabled={
-              !(
-                title &&
-                description &&
-                minPrice !== null &&
-                maxPrice !== null &&
-                tags.length > 0
-              )
-            }
-            size="large"
-            type="default"
-            htmlType="submit"
-            style={{ width: "100%", marginBottom: -12 }}
+            )}
+          </Form.Item>
+        </div>
+        <div className="bg-primary-50 px-4 pt-3 pb-2 rounded-xl drop-shadow-sm mt-4">
+          <Flex gap={8}>
+            <Form.Item
+              style={{ width: "100%", position: "relative" }}
+              name="minPrice"
+              // rules={[{ required: true, message: "กรุณากรอกราคาต่ำสุด" }]}
+            >
+              <label>ราคาต่ำสุด</label>
+              <InputNumber
+                min={0}
+                max={100000}
+                placeholder="ราคาขั้นต่ำ"
+                style={{ width: "100%" }}
+                size="large"
+                value={minPrice}
+                onChange={(value) => setMinPrice(value)}
+              />
+            </Form.Item>
+            <Form.Item
+              // rules={[{ required: true, message: "กรุณากรอกราคาสูงสุด" }]}
+              style={{ width: "100%", position: "relative" }}
+              name="maxPrice"
+            >
+              <label>ราคาสูงสุด</label>
+              <InputNumber
+                min={0}
+                max={100000}
+                placeholder="ราคาสูงสุด"
+                style={{ width: "100%" }}
+                size="large"
+                value={maxPrice}
+                onChange={(value) => setMaxPrice(value)}
+              />
+            </Form.Item>
+          </Flex>
+          <Form.Item
+            style={{ width: "100%", position: "relative" }}
+            label="ชื่ออนิเมะ ภาพยนตร์ หรือซีรีย์"
+            name="animeName"
+            rules={[
+              {
+                required: true,
+                message:
+                  "กรุณากรอกชื่ออนิเมะ ภาพยนตร์ หรือซีรีย์ ของตัวละครที่คอสเพลย์",
+              },
+            ]}
           >
-            โพสต์
-          </Button>
-        </Form.Item>
+            <Input
+              placeholder="ชื่ออนิเมะ ภาพยนตร์ หรือซีรีย์"
+              style={{ width: "100%" }}
+              size="large"
+              value={animeName}
+              onChange={(e) => setAnimeName(e.target.value)}
+            />
+          </Form.Item>
+          <Form.Item
+            // required
+            style={{ width: "100%", position: "relative" }}
+            label="แท็ก"
+            rules={[
+              {
+                required: true,
+                message: "กรุณาเลือกอย่างน้อยหนึ่งแท็ก",
+              },
+              {
+                validator: (_, value) =>
+                  value && value.length > 0
+                    ? Promise.resolve()
+                    : Promise.reject(new Error("กรุณาเลือกอย่างน้อยหนึ่งแท็ก")),
+              },
+            ]}
+          >
+            <Select
+              size="large"
+              mode="multiple"
+              tagRender={tagRender}
+              value={tags}
+              onChange={(value) => setTags(value)}
+              style={{ width: "100%" }}
+              options={options}
+              placeholder="เลือกแท็ก"
+            />
+          </Form.Item>
+          <Form.Item style={{ width: "100%", position: "relative" }}>
+            <label>แนบลิงก์ประกอบ</label>
+            <Space direction="vertical" style={{ width: "100%" }}>
+              <Space.Compact style={{ width: "100%" }}>
+                <Input
+                  onPressEnter={addLink}
+                  value={linkInput}
+                  onChange={(e) => setLinkInput(e.target.value)}
+                  placeholder="ลิงก์เพิ่มเติม"
+                />
+                <Button type="default" onClick={addLink}>
+                  เพิ่มลิงก์
+                </Button>
+              </Space.Compact>
+            </Space>
+            <div className="mt-2 ml-2">
+              {links.map((link, index) => (
+                <div
+                  key={link + index}
+                  className="flex justify-between items-center"
+                >
+                  <a
+                    className="hover:underline"
+                    onClick={() => openNewTabWithParams(link)}
+                  >
+                    {link}
+                  </a>
+                  <Button type="link" danger onClick={() => removeLink(index)}>
+                    ลบ
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </Form.Item>
+          <Form.Item style={{ width: "100%", position: "relative" }}>
+            <Button
+              disabled={
+                !(
+                  title &&
+                  description &&
+                  minPrice !== null &&
+                  maxPrice !== null &&
+                  tags.length > 0
+                )
+              }
+              size="large"
+              type="default"
+              htmlType="submit"
+              style={{ width: "100%", marginBottom: -12 }}
+            >
+              โพสต์
+            </Button>
+          </Form.Item>
+        </div>
       </Form>
     </div>
   );
 };
+
 export default CreateCustomPostForm;

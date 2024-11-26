@@ -15,6 +15,7 @@ const apiClientWithAuth = axios.create({
     baseURL: API_BASE_URL + "/api/protected",
     headers: {
         "Content-Type": "application/json",
+        "Cache-Control": "no-cache",
     },
     timeout: 10000,
     withCredentials: true,

@@ -1,11 +1,17 @@
+"use client"; 
+import { useRouter } from "next/navigation";
 import EventCard from "@/components/pages/events/event-card";
-import { divider } from "@/config/theme";
-import { Button, Divider } from "antd";
 import { MdDateRange } from "react-icons/md";
-import eventList from "@/data/mock/event-list.json";
 import { FaChevronRight } from "react-icons/fa";
+import eventList from "@/data/mock/event-list.json";
 
 const Events = () => {
+  const router = useRouter();
+
+  const handleEventClick = (eventName: string) => {
+    router.push(`/events/${encodeURIComponent(eventName)}`);
+  };
+
   return (
     <div className="mt-8 lg:mt-12 flex-grow min-h-screen">
       <div className="w-full lg:max-w-[80rem] 2xl:max-w-[86rem] section-container px-6 flex-grow relative">
@@ -17,7 +23,6 @@ const Events = () => {
               <FaChevronRight className="text-primary-500 text-xl my-auto" />
             </p>
           </div>
-          <Divider className="bg-secondary-100 col-span-full" style={divider} />
         </div>
         <div className="flex mb-4">
           <MdDateRange className="text-2xl text-primary-600 my-auto mr-2" />
@@ -28,18 +33,24 @@ const Events = () => {
         gap-x-4 gap-y-4 2xl:gap-x-6 2xl:gap-y-6 "
         >
           {eventList.map((event, index) => (
-            <EventCard
+            <div
               key={index}
-              name={event.name}
-              location={event.location}
-              start_date={event.start_date}
-              end_date={event.end_date}
-              image_cover={event.image_cover}
-            />
+              onClick={() => handleEventClick(event.name)}
+              className="cursor-pointer"
+            >
+              <EventCard
+                name={event.name}
+                location={event.location}
+                start_date={event.start_date}
+                end_date={event.end_date}
+                image_cover={event.image_cover}
+              />
+            </div>
           ))}
         </div>
       </div>
     </div>
   );
 };
+
 export default Events;

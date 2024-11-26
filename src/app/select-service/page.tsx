@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "antd";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { CiSearch } from "react-icons/ci";
@@ -15,75 +16,64 @@ const SelectService = () => {
   };
 
   return (
-    <div className="w-full lg:max-w-[80rem] 2xl:max-w-[86rem] mx-auto flex mt-8
-    flex-col flex-grow">
-      <h2 className="text-center  text-primary-800 mt-16">
-        โปรดเลือกบริการ
-      </h2>
-      <div className="hidden md:flex lg:flex-row justify-center gap-x-12 lg:gap-x-24 my-auto">
-        <div className="w-fit">
-          <div
-            onClick={() => handleSelectService("search")}
-            className={`relative flex w-[200px] h-[200px] lg:w-[240px] lg:h-[240px] border border-secondary-200 rounded-full 
-            drop-shadow-md bg-white text-primary-300 cursor-pointer transition-all duration-200 ease-in-out
-            ${selectedService === "search" ? "border-[4px]" : ""} hover:border-[3px]`}
-          >
-            <FaCheckCircle
-              className={`text-5xl absolute right-2 top-4 bg-white rounded-full transition-all duration-200 ease-in-out
-            text-secondary-200 border-secondary-200 opacity-0 ${
-              selectedService === "search" && "opacity-100"
-            }`}
-            />
-            <CiSearch
-              className="text-8xl m-auto pb-2"
-              style={selectedService === "search" ? { color: "#ffd95a" } : {}}
-            />
-          </div>
-          <h4 className="text-center mt-6 text-primary-400">
+    <div
+      className="w-full lg:max-w-[80rem] 2xl:max-w-[86rem] mx-auto flex mt-8
+    flex-col flex-grow"
+    >
+      <h2 className="text-center  text-primary-800 mt-16">โปรดเลือกบริการ</h2>
+      <div className="hidden md:flex lg:flex-row justify-center gap-x-12 lg:gap-x-24 my-auto px-8">
+        <div
+          className={`w-fit hover:scale-105 transition-all ease-linear duration-100 cursor-pointer
+            ${selectedService === "search" ? "opacity-100" : "opacity-70"}`}
+          onClick={() => handleSelectService("search")}
+        >
+          <Image
+            priority
+            unoptimized={true}
+            src={"/images/tanuki-search.png"}
+            alt="hero-mascot"
+            width={300}
+            height={300}
+            className="z-50 hover:animate-swing"
+          />
+          <h4 className="text-center mt-12 text-primary-400">
             ค้นหาจากที่วางขาย
           </h4>
         </div>
-        <div className="w-fit">
-          <div
-            onClick={() => handleSelectService("custom")}
-            className={`relative flex w-[200px] h-[200px] lg:w-[240px] lg:h-[240px] border border-secondary-200 rounded-full 
-            drop-shadow-md bg-white text-primary-300 cursor-pointer transition-all duration-200 ease-in-out
-            ${selectedService === "custom" ? "border-[4px]" : ""} hover:border-[3px]`}
-          >
-            <FaCheckCircle
-              className={`text-5xl absolute right-2 top-4 bg-white rounded-full transition-all duration-200 ease-in-out
-            text-secondary-200 border-secondary-200 opacity-0 ${
-              selectedService === "custom" && "opacity-100"
-            }`}
-            />
-            <RiScissorsCutLine
-              className="text-8xl m-auto pb-2"
-              style={selectedService === "custom" ? { color: "#ffd95a" } : {}}
-            />
-          </div>
-          <h4 className="text-center mt-6 text-primary-400">
+        <div
+          className={`w-fit hover:scale-105 transition-all ease-linear duration-100 cursor-pointer
+            ${selectedService === "custom" ? "opacity-100" : "opacity-70"}`}
+          onClick={() => handleSelectService("custom")}
+        >
+          <Image
+            priority
+            unoptimized={true}
+            src={"/images/tanuki-commission.png"}
+            alt="hero-mascot"
+            width={320}
+            height={320}
+            className="z-50 hover:animate-headShake"
+          />
+          <h4 className="text-center mt-7 text-primary-400">
             ประกาศหาร้าน Custom
           </h4>
         </div>
-        <div className="w-fit mb-auto mt-0">
-          <div
-            onClick={() => handleSelectService("service")}
-            className={`relative flex w-[200px] h-[200px] lg:w-[240px] lg:h-[240px] border border-secondary-200 rounded-full 
-            drop-shadow-md bg-white text-primary-300 cursor-pointer transition-all duration-200 ease-in-out
-            ${selectedService === "service" ? "border-[4px]" : ""} hover:border-[3px]`}
-          >
-            <FaCheckCircle
-              className={`text-5xl absolute right-2 top-4 bg-white rounded-full transition-all duration-200 ease-in-out
-            text-secondary-200 border-secondary-200 opacity-0 ${
-              selectedService === "service" && "opacity-100"
-            }`}
-            />
-            <IoCameraOutline
-              className="text-8xl m-auto pb-2"
-              style={selectedService === "service" ? { color: "#ffd95a" } : {}}
-            />
-          </div>
-          <h4 className="text-center mt-6 text-primary-400">
+        <div
+          className={`w-fit hover:scale-105 transition-all ease-linear duration-100 cursor-pointer ${
+            selectedService === "service" ? "opacity-100" : "opacity-70"
+          }`}
+          onClick={() => handleSelectService("service")}
+        >
+          <Image
+            priority
+            unoptimized={true}
+            src={"/images/tanuki-service.png"}
+            alt="hero-mascot"
+            width={300}
+            height={300}
+            className="z-50 hover:animate-heartBeat"
+          />
+          <h4 className="text-center mt-12 text-primary-400">
             ค้นหาบริการเสริม
           </h4>
         </div>
@@ -100,7 +90,15 @@ const SelectService = () => {
               : {}
           }
         >
-          <CiSearch className="text-5xl" />
+          <Image
+            priority
+            unoptimized={true}
+            src={"/images/tanuki-search.png"}
+            alt="hero-mascot"
+            width={70}
+            height={70}
+            className="z-50 hover:animate-swing"
+          />
           <h3 className="my-auto ml-4">ค้นหาจากที่วางขาย</h3>
         </div>
         <div
@@ -114,7 +112,15 @@ const SelectService = () => {
               : {}
           }
         >
-          <RiScissorsCutLine className="text-5xl" />
+          <Image
+            priority
+            unoptimized={true}
+            src={"/images/tanuki-commission.png"}
+            alt="hero-mascot"
+            width={70}
+            height={70}
+            className="z-50 hover:animate-headShake"
+          />
           <h3 className="my-auto ml-4">ประกาศหาร้าน Custom</h3>
         </div>
         <div
@@ -128,7 +134,15 @@ const SelectService = () => {
               : {}
           }
         >
-          <IoCameraOutline className="text-5xl" />
+          <Image
+            priority
+            unoptimized={true}
+            src={"/images/tanuki-service.png"}
+            alt="hero-mascot"
+            width={70}
+            height={70}
+            className="z-50 hover:animate-heartBeat"
+          />
           <h3 className="my-auto ml-4">ค้นหาบริการเสริม</h3>
         </div>
       </div>
@@ -137,7 +151,7 @@ const SelectService = () => {
           selectedService === "search"
             ? "/marketplace"
             : selectedService === "custom"
-            ? "/custom"
+            ? "/marketplace/custom"
             : selectedService === "service"
             ? "/service"
             : "/select-service"

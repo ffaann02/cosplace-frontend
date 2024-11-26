@@ -1,21 +1,30 @@
+"use client";
 import React, { useRef, useState } from "react";
 import { Form, Input, Space, Button, InputRef } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { CheckOutlined } from "@ant-design/icons";
 import Image from "next/image";
+import { apiClientWithAuth } from "@/api";
+import { useAuth } from "@/context/auth-context";
 
 const CreateShopStep3Form = ({
   formData1,
   formData2,
+  shopImageProfileUrl,
   setCurrentStep,
 }: {
   formData1: any;
   formData2: any;
+  shopImageProfileUrl: string | null;
   setCurrentStep: any;
 }) => {
+
+  const { user, setUser } = useAuth();
+
   const [form] = useForm();
   const inputRefs = useRef<(InputRef | null)[]>([]);
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const [isOTPValid, setIsOTPValid] = useState<boolean>(false);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -47,6 +56,38 @@ const CreateShopStep3Form = ({
     }
   };
 
+  const CreateNewShopToDatabase = async(formData1: any, formData2: any) => {
+    try{
+      const accept_credit_card = formData1.accept_credit_card ? true : false;
+      const accept_qr_promptpay = formData1.accept_qr_promptpay ? true : false;
+      const requestBody = {
+        user_id: user?.user_id,
+        username: user?.username,
+        shop_type: formData1.type[0],
+        shop_name: formData1.shop_name,
+        shop_desc: formData1.shop_description,
+        profile_image_url: shopImageProfileUrl || "",
+        verify: false,
+        accept_credit_card: accept_credit_card ,
+        accept_qr_promptpay: accept_qr_promptpay,
+        external_link: formData1.link || "",
+        bank_name: formData2.bank,
+        bank_account_number: formData2.bank_account_number,
+      }
+      console.log("Request body:", requestBody);
+      const response = await apiClientWithAuth.post("/shop/create-new", requestBody);
+      console.log("Create shop response:", response.data);
+      setUser({
+        user_id: response.data.user_id,
+        username: response.data.username,
+        role: response.data.role,
+        seller_id: response.data.seller_id,
+      })
+    } catch (error) {
+      console.error("Failed to create shop", error);
+    }
+  }
+
   const onRequestNewOTP = () => {
     console.log("Requesting new OTP...");
     form.resetFields();
@@ -63,6 +104,8 @@ const CreateShopStep3Form = ({
         console.log("Form data:")
         console.log("Step 1:", formData1);
         console.log("Step 2:", formData2);
+        console.log("Shop Image Profile URL:", shopImageProfileUrl);
+        setIsOTPValid(true);
       } else {
         console.log("OTP is invalid!");
         form.resetFields();
@@ -88,6 +131,20 @@ const CreateShopStep3Form = ({
   const handleBack = () => {
     setCurrentStep(1);
   };
+
+  const handleConfirmCreate = () => {
+    const finalOtp = Object.values(form.getFieldsValue()).join("");
+    validateOTP(finalOtp).then((isValid) => {
+      setSubmitting(false);
+      if (isValid) {
+        CreateNewShopToDatabase(formData1, formData2);
+      } else {
+        console.log("OTP is invalid!");
+        form.resetFields();
+        inputRefs.current[0]?.focus();
+      }
+    });
+  }
 
   return (
     <div className="w-full bg-primary-50 px-8 pt-6 rounded-2xl drop-shadow-sm justify-center flex flex-col text-center relative">
@@ -140,8 +197,9 @@ const CreateShopStep3Form = ({
             type="primary"
             size="large"
             icon={<CheckOutlined />}
-            onClick={() => onSubmit()}
+            onClick={() => handleConfirmCreate()}
             loading={submitting}
+            disabled={!isOTPValid}
           >
             ยืนยัน
           </Button>

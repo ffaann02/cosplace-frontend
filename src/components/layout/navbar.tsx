@@ -80,24 +80,26 @@ const Navbar = () => {
               </span>
             </Link>
           </div>
-          <div className="w-full lg:w-3/5 my-auto ml-2 relative">
-            <AutoComplete
-              options={options}
-              onSearch={handleSearch}
-              onSelect={handleSearchSelect}
-              style={{ width: "100%" }}
-            >
-              <Input
-                size="middle"
-                placeholder="ค้นหาชุด, ชื่อตัวละคร, ของตกแต่ง"
-                style={{ borderRadius: 16 }}
-                prefix={<FaSearch />}
-                onPressEnter={(e) =>
-                  handleSearchSelect((e.target as HTMLInputElement).value)
-                }
-              />
-            </AutoComplete>
-          </div>
+          {!pathname.includes("marketplace") && (
+            <div className="w-full lg:w-3/5 my-auto ml-2 relative">
+              <AutoComplete
+                options={options}
+                onSearch={handleSearch}
+                onSelect={handleSearchSelect}
+                style={{ width: "100%" }}
+              >
+                <Input
+                  size="middle"
+                  placeholder="ค้นหาชุด, ชื่อตัวละคร, ของตกแต่ง"
+                  style={{ borderRadius: 16 }}
+                  prefix={<FaSearch />}
+                  onPressEnter={(e) =>
+                    handleSearchSelect((e.target as HTMLInputElement).value)
+                  }
+                />
+              </AutoComplete>
+            </div>
+          )}
           <div
             className="lg:hidden flex z-[500] right-8 border-primary-400 bottom-6 bg-primary-200 w-8 h-8 rounded-full
     text-primary-500 my-auto ml-3 border cursor-pointer"
