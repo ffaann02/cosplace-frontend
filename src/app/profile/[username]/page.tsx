@@ -10,7 +10,9 @@ const UserProfile = async ({ params }: { params: { username: string } }) => {
   try {
     const response = await apiClient.get(`/profile/feed/${username}`);
     console.log(response.data);
-    const user = response.data;
+    const user = response.data.profile;
+    const seller_id = response.data.seller_id;
+    const interests = response.data.interests;
 
     return (
       <div className="w-full">
@@ -21,9 +23,9 @@ const UserProfile = async ({ params }: { params: { username: string } }) => {
           profileImageUrl={user.profile_image_url}
           coverImageUrl={user.cover_image_url}
           // sellerId={user.seller_id}
-          sellerId=""
+          sellerId={seller_id}
         />
-        <Feed profileData={user} />
+        <Feed profileData={user} sellerId={seller_id} interests={interests} />
       </div>
     );
   } catch (error) {

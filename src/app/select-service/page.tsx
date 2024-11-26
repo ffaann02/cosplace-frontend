@@ -151,7 +151,7 @@ const SelectService = () => {
           selectedService === "search"
             ? "/marketplace"
             : selectedService === "custom"
-            ? "/custom"
+            ? "/marketplace/custom"
             : selectedService === "service"
             ? "/service"
             : "/select-service"

@@ -58,7 +58,7 @@ const SearchResultHeader = () => {
     // Sync state with URL params on load
     setSelectedSort(searchParams.get("sort") || "ราคาสูง-ต่ำ");
     setSelectedFilters({
-      categories: searchParams.getAll("categoriy"),
+      categories: searchParams.getAll("category"),
       conditions: searchParams.getAll("condition"),
       sizes: searchParams.getAll("size"),
       locations: searchParams.getAll("location"),

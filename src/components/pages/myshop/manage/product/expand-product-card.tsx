@@ -8,7 +8,7 @@ import {
   Divider,
   Space,
 } from "antd";
-import { Product } from "./products";
+import { Product } from "@/types/product";
 // import { divider } from "@/config/theme";
 
 const { Title, Text } = Typography;

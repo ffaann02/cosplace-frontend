@@ -13,9 +13,10 @@ import { apiClientWithAuth } from "@/api";
 import { useAuth } from "@/context/auth-context";
 import { TableProps } from "antd/es/table";
 import ExpandProductCard from "./expand-product-card";
-import { Product, ProductImage } from "./products";
+// import { Product, ProductImage } from "./products";
 import { useForm } from "antd/es/form/Form";
 import { useRouter } from "next/navigation";
+import { Product, ProductImage } from "@/types/product";
 
 const { Title } = Typography;
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Rate, Tag, Tooltip } from "antd";
+import { Button, message, Rate, Tag, Tooltip } from "antd";
 import {
   ShoppingCartOutlined,
   HeartOutlined,
@@ -42,17 +42,48 @@ const ProductDetails = ({ productData }: { productData: Product }) => {
     router.push(`/marketplace/checkout?${params.toString()}`);
   };
 
+  const handleAddToCart = () => {
+    const sellerId = productData.seller_id;
+    const productId = productData.product_id;
+
+    // Get the existing cart from localStorage
+    const cart = JSON.parse(localStorage.getItem("cart") || "{}");
+
+    // Initialize the seller's cart if it doesn't exist
+    if (!cart[sellerId]) {
+      cart[sellerId] = {};
+    }
+
+    // Add or update the product in the seller's cart
+    if (cart[sellerId][productId]) {
+      cart[sellerId][productId].quantity += quantity;
+    } else {
+      cart[sellerId][productId] = {
+        product_id: productId,
+        quantity: quantity,
+      };
+    }
+
+    // Save the updated cart to localStorage
+    localStorage.setItem("cart", JSON.stringify(cart));
+    message.success("เพิ่มสินค้าลงในตะกร้าแล้ว");
+
+    console.log("Cart updated:", cart);
+  };
+
   return (
-    <div className="gap-x-6 grid grid-cols-2 text-primary-800">
-      <div className="">
+    <div className="gap-x-6 grid grid-cols-1 sm:grid-cols-2 text-primary-800">
+      <div className="justify-center flex flex-col">
         <Image
+          id="product-image"
           src={currentImage}
           alt="product-image"
           className="w-full object-cover rounded-lg"
-          width={500}
-          height={400}
+          // width={500}
+          // height={400}
+          style={{ width: "100%", height: "400px", objectFit: "cover" }}
         />
-        <div className="flex gap-2 mt-2">
+        <div className="flex gap-2 mt-2 mx-auto">
           {productData.product_images.map((image, index) => (
             <Image
               key={index}
@@ -70,7 +101,7 @@ const ProductDetails = ({ productData }: { productData: Product }) => {
           ))}
         </div>
       </div>
-      <div className="space-y-6 p-4 -mt-4">
+      <div className="space-y-6 p-4 mt-2 md:-mt-4">
         <div>
           <h1 className="text-3xl font-bold mb-2">{productData.name}</h1>
 
@@ -175,6 +206,7 @@ const ProductDetails = ({ productData }: { productData: Product }) => {
               block
               disabled={productData.quantity === 0}
               className="flex items-center justify-center"
+              onClick={handleAddToCart}
             >
               {productData.quantity > 0 ? "เพิ่มในตะกร้า" : "สินค้าหมด"}
             </Button>

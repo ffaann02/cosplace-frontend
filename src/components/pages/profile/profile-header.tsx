@@ -60,7 +60,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   }, []);
 
   // Filter items to exclude the "shop" tab if sellerId is not provided
-  const filteredItems = items.filter(item => item.key !== "shop" || sellerId);
+  const filteredItems = items.filter((item) => item.key !== "shop" || sellerId);
 
   return (
     <div className="w-full relative bg-primary-50 border border-b-primary-100">
@@ -89,14 +89,27 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
         <p className="text-md text-primary-400">@{username}</p>
         <p className="text-lg text-primary-600 mt-2">{bio}</p>
         <div className="gap-x-2 mt-4 md:hidden flex -mb-2">
-          <Button type="primary" size="large" className="">
-            <IoMdPersonAdd className="text-lg" />
-            <p className="ml-1">เพิ่มเพื่อน</p>
-          </Button>
-          <Button type="default" size="large" className="">
-            <IoChatbubbleOutline className="text-lg" />
-            <p className="ml-1">แชท</p>
-          </Button>
+          {user?.username === username ? (
+            <Link href="/profile?menu=account" className="">
+              <div className="w-full text-right flex justify-end">
+                <Button type="default" size="large" className="">
+                  <IoPersonOutline className="text-lg" />
+                  <p className="ml-1">จัดการโปรไฟล์</p>
+                </Button>
+              </div>
+            </Link>
+          ) : (
+            <>
+              <Button type="primary" size="large" className="">
+                <IoMdPersonAdd className="text-lg" />
+                <p className="ml-1">เพิ่มเพื่อน</p>
+              </Button>
+              <Button type="default" size="large" className="">
+                <IoChatbubbleOutline className="text-lg" />
+                <p className="ml-1">แชท</p>
+              </Button>
+            </>
+          )}
         </div>
       </div>
       <div
