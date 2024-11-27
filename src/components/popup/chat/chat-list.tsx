@@ -43,6 +43,7 @@ const ChatList = ({
   // Listen for response friend list
   useEffect(() => {
     function friendListEvent(friendList: ChatListInterface[]) {
+      console.log(friendList);
       setChatList(friendList);
     }
     socket.on("friendList", friendListEvent);
@@ -50,7 +51,7 @@ const ChatList = ({
     return () => {
       socket.off("friendList");
     };
-  }, []);
+  }, [isOpen]);
 
   // Select the first chat in the list by default
   // But not when chatlist is updated (Sort by new message)
@@ -137,15 +138,15 @@ const ChatList = ({
   }
 
   return (
-    <div className="col-span-2 border-r flex flex-col border-primary-200 h-full p-2 pr-0 max-h-[50vh]">
-      <div className="pr-2">
+    <div className="col-span-2 border-r flex flex-col border-primary-200 h-full pr-0 max-h-[50vh]">
+      <div className="p-2">
         <Search placeholder="ค้นหาเพื่อน" />
       </div>
-      <div className="flex flex-col gap-y-2 mt-4 overflow-y-auto flex-grow custom-scrollbar">
+      <div className="flex flex-col gap-y-2 overflow-y-auto flex-grow custom-scrollbar">
         {chatList?.map((chat) => (
           <div
             key={chat.userId}
-            className="flex items-center border-primary-200 cursor-pointer hover:bg-primary-100"
+            className="flex items-center border-primary-200 cursor-pointer hover:bg-primary-100 truncate"
             onClick={() => user?.user_id && selectChat(user.user_id, chat.userId)}
           >
             <Image
@@ -153,12 +154,12 @@ const ChatList = ({
               alt="profile"
               width={24}
               height={24}
-              className="rounded-full w-[24px] h-[24px] my-auto mr-3"
+              className="rounded-full w-[24px] h-[24px] my-auto m-2"
             />
             <div>
-              <h6 className="text-primary-700 text-sm">{chat.name}</h6>
+              <h6 className="text-primary-700 text-sm text-ellipsis" >{chat.name}</h6>
               <div className="flex">
-                <p className="text-primary-500 font-light text-xs">{chat.lastMessage}</p>
+                <p className="text-primary-500 font-light text-xs">{chat.senderId === user?.user_id && "คุณ: "} {chat.lastMessage}</p>
                 {notifications && notifications.length > 0 && checkUnreadMessage(chat.userId) && (
                   <div className="bg-primary-400 text-white text-xs rounded-full w-4 h-4 flex justify-center items-center ml-2">
                     {countUnreadMessage(chat.userId)}

@@ -4,10 +4,12 @@ import usePreviewImage from "@/hooks/use-preview-image";
 import { Button, Tabs, TabsProps } from "antd";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { IoMdPersonAdd } from "react-icons/io";
 import { IoChatbubbleOutline, IoPersonOutline } from "react-icons/io5";
 import { useRouter, useSearchParams } from "next/navigation";
+import { apiClientWithAuth } from "@/api";
+import FriendButton from "./friend-button";
 
 const items: TabsProps["items"] = [
   {
@@ -47,6 +49,12 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   const searchParams = useSearchParams();
   const currentTab = searchParams.get("tab") || "profile";
 
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const [isFriend, setIsFriend] = useState<boolean>(false);
+  const [isWaitingAccept, setIsWaitingAccept] = useState<boolean>(false);
+  const [isIncomingRequest, setIsIncomingRequest] = useState<boolean>(false);
+
   const handleChangeTab = (key: string) => {
     const newParams = new URLSearchParams(searchParams);
     newParams.set("tab", key);
@@ -58,6 +66,94 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
       handleChangeTab("profile");
     }
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      GetFriendStatus();
+    }
+  }, [user]);
+
+  const GetFriendStatus = async () => {
+    try {
+      const response = await apiClientWithAuth.get("/friend/check-status", {
+        params: {
+          user_id: user?.user_id,
+          friend_username: username,
+        }
+      });
+      console.log(response.data);
+      const { isFriend, isWaitingAccept, isIncomingRequest } = response.data;
+      setIsFriend(isFriend);
+      setIsWaitingAccept(isWaitingAccept);
+      setIsIncomingRequest(isIncomingRequest);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const onAddFriend = async () => {
+    console.log("Add friend");
+    try {
+      setLoading(true);
+      const response = await apiClientWithAuth.post("/friend/send-request", {
+        user_id: user?.user_id,
+        friend_username: username,
+      });
+      setLoading(false);
+      GetFriendStatus();
+    }
+    catch (e) {
+      console.log(e)
+      setLoading(false);
+    }
+  };
+
+  const onCancelAddFriend = async () => {
+    try {
+      setLoading(true);
+      const response = await apiClientWithAuth.post("/friend/cancel-request", {
+        user_id: user?.user_id,
+        friend_username: username,
+      });
+      setLoading(false);
+      GetFriendStatus();
+    } catch (e) {
+      console.log(e)
+      setLoading(false);
+    }
+  };
+
+  const onRejectRequest = async () => {
+    try {
+      setLoading(true);
+      const response = await apiClientWithAuth.post("/friend/reject-request", {
+        user_id: user?.user_id,
+        friend_username: username,
+      });
+      console.log(response.data);
+      setLoading(false);
+      GetFriendStatus();
+    } catch (e) {
+      console.log(e)
+      setLoading(false);
+    }
+  };
+
+  const onAcceptRequest = async () => {
+    try {
+      setLoading(true);
+      const response = await apiClientWithAuth.post("/friend/accept-request", {
+        user_id: user?.user_id,
+        friend_username: username,
+      });
+      console.log(response.data);
+      setLoading(false);
+      GetFriendStatus();
+    } catch (e) {
+      console.log(e)
+      setLoading(false);
+    }
+  };
 
   // Filter items to exclude the "shop" tab if sellerId is not provided
   const filteredItems = items.filter((item) => item.key !== "shop" || sellerId);
@@ -133,10 +229,37 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
           </Link>
         ) : (
           <div className="gap-x-2 mt-2 hidden md:flex">
-            <Button type="primary" size="large" className="">
-              <IoMdPersonAdd className="text-lg" />
-              <p className="ml-1">เพิ่มเพื่อน</p>
-            </Button>
+            <FriendButton
+              loading={loading}
+              isFriend={isFriend}
+              isWaitingAccept={isWaitingAccept}
+              isIncomingRequest={isIncomingRequest}
+              onAddFriend={onAddFriend}
+              onCancelRequest={onCancelAddFriend}
+              onAcceptRequest={onAcceptRequest}
+              onRejectRequest={onRejectRequest}
+            />
+            {/* {(alreadyAdded)
+              ? (
+                <Button size="large" className="bg-" onClick={onCancelAddFriend} loading={loading}>
+                  <IoMdPersonAdd className="text-lg" />
+                  <p className="ml-1">ยกเลิกคำขอเพิ่มเพื่อน</p>
+                </Button>
+              )
+              : (
+                <Button type="primary" size="large" className="" onClick={onAddFriend} loading={loading}>
+                  <IoMdPersonAdd className="text-lg" />
+                  <p className="ml-1">เพิ่มเพื่อน</p>
+                </Button>
+              )}
+
+            {(isIncomingRequest) &&
+            (
+              <Button type="default" size="large" className="">
+                <IoMdPersonAdd className="text-lg" />
+                <p className="ml-1">ตอบรับคำขอเพิ่มเพื่อน</p>
+              </Button>
+            )} */}
             <Button type="default" size="large" className="">
               <IoChatbubbleOutline className="text-lg" />
               <p className="ml-1">แชท</p>
