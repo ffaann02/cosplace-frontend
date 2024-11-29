@@ -10,6 +10,7 @@ import { IoChatbubbleOutline, IoPersonOutline } from "react-icons/io5";
 import { useRouter, useSearchParams } from "next/navigation";
 import { apiClientWithAuth } from "@/api";
 import FriendButton from "./friend-button";
+import { useChat } from "@/context/chat-context";
 
 const items: TabsProps["items"] = [
   {
@@ -44,6 +45,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   sellerId = "",
 }) => {
   const { user } = useAuth();
+  const { setPartnerUsername, setIsOpenWithUsername, setOpenChatbox } = useChat();
   const { openPreview, PreviewImageModal } = usePreviewImage();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -158,6 +160,12 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   // Filter items to exclude the "shop" tab if sellerId is not provided
   const filteredItems = items.filter((item) => item.key !== "shop" || sellerId);
 
+  const onClickChat = () => {
+    setPartnerUsername(username);
+    setIsOpenWithUsername(true);
+    setOpenChatbox(true);
+  }
+
   return (
     <div className="w-full relative bg-primary-50 border border-b-primary-100">
       <PreviewImageModal />
@@ -260,7 +268,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
                 <p className="ml-1">ตอบรับคำขอเพิ่มเพื่อน</p>
               </Button>
             )} */}
-            <Button type="default" size="large" className="">
+            <Button type="default" size="large" className="" onClick={onClickChat}>
               <IoChatbubbleOutline className="text-lg" />
               <p className="ml-1">แชท</p>
             </Button>

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { FaRegMessage } from "react-icons/fa6";
 import ChatBox from "./chat-box";
 import AOS from "aos";
+import { useChat } from "@/context/chat-context";
 
 const content = (
   <div>
@@ -12,7 +13,13 @@ const content = (
 );
 
 const ChatButton = () => {
-  const [openChatbox, setOpenChatbox] = useState<boolean>(false);
+
+  const {
+    openChatbox,
+    setOpenChatbox,
+  } = useChat();
+
+  // const [openChatbox, setOpenChatbox] = useState<boolean>(false);
   const [fade, setFade] = useState<boolean>(false);
 
   const handleOpenChatbox = () => {

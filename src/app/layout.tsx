@@ -15,6 +15,8 @@ import getServerSession from "next-auth";
 import SessionProvider from "@/context/session-provider";
 import { auth } from "@/libs/auth";
 import { AuthProvider } from "@/context/auth-context";
+import { ChatProvider } from "@/context/chat-context";
+import { NotificationProvider } from "@/context/notification-context";
 
 export const metadata: Metadata = {
   title: "CosBaanDeawGun",
@@ -33,12 +35,16 @@ export default async function RootLayout({
           <AntdRegistry>
             <Suspense fallback={<Loading />}>
               <AuthProvider>
-                <Navbar />
-                <div className="flex flex-col min-h-dvh z-0 pt-16">
-                  {children}
-                </div>
-                {/* <ChatButton /> */}
-                <BottomMenu />
+                <ChatProvider>
+                  <NotificationProvider>
+                    <Navbar />
+                    <div className="flex flex-col min-h-dvh z-0 pt-16">
+                      {children}
+                    </div>
+                    <ChatButton />
+                    <BottomMenu />
+                  </NotificationProvider>
+                </ChatProvider>
               </AuthProvider>
             </Suspense>
           </AntdRegistry>

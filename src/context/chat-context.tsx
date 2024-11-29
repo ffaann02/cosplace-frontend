@@ -30,6 +30,7 @@ export interface ChatMessage {
 
 export interface ChatListInterface {
     userId: string;
+    username: string;
     name: string;
     profileImageUrl?: string;
     lastMessage: string;
@@ -37,6 +38,12 @@ export interface ChatListInterface {
 }
 
 interface ChatContextType {
+    partnerUsername: string;
+    setPartnerUsername: React.Dispatch<React.SetStateAction<string>>;
+    isOpenWithUsername: boolean;
+    setIsOpenWithUsername: React.Dispatch<React.SetStateAction<boolean>>;
+    openChatbox: boolean;
+    setOpenChatbox: React.Dispatch<React.SetStateAction<boolean>>;
     chatList: ChatListInterface[];
     setChatList: (chatList: ChatListInterface[]) => void;
     currentChatId: string;
@@ -50,13 +57,18 @@ interface ChatContextType {
     recieverName: string;
     setRecieverName: (recieverName: string) => void;
     messages?: ChatMessage[];
-    setMessages?: (messages: ChatMessage[]) => void;
+    setMessages: (messages: ChatMessage[]) => void;
     autoScrollMessageRef: React.RefObject<HTMLDivElement>;
 }
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
 const ChatProvider = ({ children }: { children: ReactNode }) => {
+
+    // To control the chatbox outside component itself
+    const [partnerUsername, setPartnerUsername] = useState<string>("");
+    const [isOpenWithUsername, setIsOpenWithUsername] = useState<boolean>(false);
+    const [openChatbox, setOpenChatbox] = useState<boolean>(false);
 
     const [chatList, setChatList] = useState<ChatListInterface[]>([]);
     const [currentChatId, setCurrentChatId] = useState<string>("");
@@ -69,7 +81,14 @@ const ChatProvider = ({ children }: { children: ReactNode }) => {
 
     return (
         <ChatContext.Provider
-            value={{ chatList,
+            value={{ 
+                partnerUsername,
+                setPartnerUsername,
+                isOpenWithUsername,
+                setIsOpenWithUsername,
+                openChatbox,
+                setOpenChatbox,
+                chatList,
                 setChatList,
                 currentChatId,
                 setCurrentChatId,
