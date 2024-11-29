@@ -3,9 +3,6 @@ import ChatList from "./chat-list";
 import ChatArea from "./chat-area";
 import { Button } from "antd";
 import Link from "next/link";
-// import { useAuth } from "@/context/auth-context";
-import { ChatProvider } from "@/context/chat-context";
-import { NotificationProvider } from "@/context/notification-context";
 import { useAuth } from "@/context/auth-context";
 
 interface ChatBoxProps {
@@ -21,7 +18,9 @@ const ChatBox: React.FC<ChatBoxProps> = ({
   fade,
   handleOpenChatbox,
 }) => {
+
   const { isAuthenticated } = useAuth();
+
   return (
     <div
       className={`max-w-lg w-full bottom-0 bg-white rounded-t-lg fixed right-4 
@@ -39,12 +38,8 @@ const ChatBox: React.FC<ChatBoxProps> = ({
       <div className="w-full grid grid-cols-6">
         {isAuthenticated ? (
           <>
-            <ChatProvider>
-              <NotificationProvider>
-                <ChatList isOpen={open} />
-                <ChatArea isOpen={open}/>
-              </NotificationProvider>
-            </ChatProvider>
+            <ChatList isOpen={open} />
+            <ChatArea isOpen={open} />
           </>
         ) : (
           <div className="h-[40vh] col-span-full flex bg-gradient-to-br from-primary-100 to-primary-200 ">

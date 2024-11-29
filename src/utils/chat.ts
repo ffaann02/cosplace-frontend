@@ -6,6 +6,12 @@ export const getFriendListWithLastMessage = (userId: string | undefined) => {
     socket.emit('openChatBox', userId);
 }
 
+export const getFriendListWithLastMessageAndOther = (userId: string | undefined, chatPartnerUsername: string) => {
+    if (userId === undefined) return;
+    console.log('Open chat box with username:', chatPartnerUsername);
+    socket.emit('openChatBoxWithUsername', userId, chatPartnerUsername);
+}
+
 export const displayMessageTime = (allMessages: ChatMessage[], message: ChatMessage, index: number) => {
     if (index === 0) {
         return true;
@@ -58,5 +64,7 @@ export function convertToThaiMonth(month: number) {
 }
 
 export function formatMessageTime(hour: number, minute: number) {
+    // Adjust the hour if it is 24 or higher to get the correct 24-hour format
+    hour = hour % 24;
     return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
 }

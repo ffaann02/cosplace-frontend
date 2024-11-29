@@ -1,12 +1,12 @@
 "use client";
 import Search from "antd/es/input/Search";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { socket } from "@/api/socket";
 import { useAuth } from "@/context/auth-context";
-import { ChatListInterface, ChatMessage, useChat } from "@/context/chat-context";
+import { ChatListInterface, useChat } from "@/context/chat-context";
 import { NotificationInterface, useNotification } from "@/context/notification-context";
-import { getFriendListWithLastMessage } from "@/utils/chat";
+import { getFriendListWithLastMessage, getFriendListWithLastMessageAndOther } from "@/utils/chat";
 
 const ChatList = ({
   isOpen,
@@ -16,10 +16,15 @@ const ChatList = ({
 
   const { user } = useAuth();
   const {
+    partnerUsername,
+    setPartnerUsername,
+    isOpenWithUsername,
+    setIsOpenWithUsername,
     chatList,
     setChatList,
     currentChatId,
     setCurrentChatId,
+    setMessages,
     setReceiverId,
     setRecieverName,
   } = useChat();
@@ -28,17 +33,37 @@ const ChatList = ({
     setNotifications,
   } = useNotification();
 
-  // Call function to get friend list with last message using socket emit
   useEffect(() => {
+    // Reset chat list when chat box is closed
     if (!isOpen) {
       setCurrentChatId("");
+      setMessages([]);
+      setIsOpenWithUsername(false);
+      setChatList([]);
+      setPartnerUsername("");
     }
     socket.connect();
-    getFriendListWithLastMessage(user?.user_id);
+    // Use general chat list
+    if (!isOpenWithUsername) {
+      console.log('Get friend list with last message');
+      getFriendListWithLastMessage(user?.user_id);
+    }
+    // Use only when click chat on profile page
+    else if (isOpenWithUsername) {
+      getFriendListWithLastMessageAndOther(user?.user_id, partnerUsername);
+    }
     return () => {
       socket.disconnect();
     };
   }, [isOpen]);
+
+  useEffect(() => {
+    if(isOpenWithUsername && chatList.length > 0 && partnerUsername !== "") {
+      const receiverId = chatList.find((chat) => chat.username === partnerUsername)?.userId || "";
+      console.log(receiverId);
+      selectChat(user?.user_id || "", receiverId);
+    }
+  }, [chatList])
 
   // Listen for response friend list
   useEffect(() => {
@@ -46,8 +71,8 @@ const ChatList = ({
       console.log(friendList);
       setChatList(friendList);
     }
+    console.log('Listen for friend list');
     socket.on("friendList", friendListEvent);
-
     return () => {
       socket.off("friendList");
     };
@@ -55,11 +80,11 @@ const ChatList = ({
 
   // Select the first chat in the list by default
   // But not when chatlist is updated (Sort by new message)
-  useEffect(() => {
-    if (chatList.length > 0 && user?.user_id && currentChatId === "") {
-      selectChat(user.user_id, chatList[0].userId);
-    }
-  }, [chatList]);
+  // useEffect(() => {
+  //   if (chatList.length > 0 && user?.user_id && currentChatId === "") {
+  //     selectChat(user.user_id, chatList[0].userId);
+  //   }
+  // }, [chatList]);
 
   useEffect(() => {
     function notificationEvent(notiData: NotificationInterface) {
@@ -95,6 +120,7 @@ const ChatList = ({
   const selectChat = (senderId: string, receiverId: string) => {
     const sortedIds = [senderId, receiverId].sort();
     const roomId = `${sortedIds[0]}-${sortedIds[1]}`;
+    console.log('Select chat:', roomId);
     setCurrentChatId(roomId);
     setReceiverId(receiverId);
     setRecieverName(chatList.find((chat) => chat.userId === receiverId)?.name || "");

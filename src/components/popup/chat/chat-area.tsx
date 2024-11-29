@@ -82,48 +82,65 @@ const ChatArea = ({
 
   return (
     <div className="col-span-4 flex flex-col flex-grow">
-      <div className="border-b bg-primary-50 border-primary-200 px-1.5 py-1.5 drop-shadow-sm flex">
-        {currentChatId !== ""
-          ? (
-            <>
-              <Image
-                src={"/images/sad-cat.jpg"}
-                alt="profile"
-                width={32}
-                height={32}
-                className="rounded-full w-[32px] h-[32px] my-auto"
-              />
-              <p className="text-lg my-auto ml-2 text-primary-600">{recieverName}</p></>)
-          : (
-            <p className="text-lg my-auto ml-2 text-primary-600">ไม่พบประวัติการแชท</p>
-          )}
-      </div>
-      <div className="bg-white overflow-y-scroll h-[40vh] custom-scrollbar">
-        {messages?.map((message, index) => (
-          <div key={index}>
-            {displayMessageTime(messages, message, index) && message.dateTimeFormatted && (
-              <div className="text-center text-sm text-primary-400 my-2" key={index}>
-                {message.dateTimeFormatted.day} {convertToThaiMonth(message.dateTimeFormatted.month)} {formatMessageTime(message.dateTimeFormatted.hour, message.dateTimeFormatted.minute)}
+      {/* Show empty chat area */}
+      {currentChatId === "" && (
+        <div className="h-[50vh] bg-primary-50">
+          <div className="relative w-full h-full">
+            <div className="absolute w-full h-full flex justify-center items-center">
+              <div className=" animate-headShake">
+                <Image
+                  src={"https://cpe334-cosplace-bucket.s3.ap-southeast-1.amazonaws.com/mascot/tanuki_select_chat.png"}
+                  alt="mascot"
+                  width={128}
+                  height={128}
+                  className="m-auto"
+                />
+                <p className=" text-primary-800">เลือกผู้ใช้ที่คุณต้องการสนทนาด้วย</p>
               </div>
-            )}
-            <div ref={autoScrollMessageRef}>
-              <Message
-                key={message.messageId}
-                message={message.message.text}
-                side={message.senderId === user?.user_id ? "sender" : "receiver"}
-                type="text"
-                profileImageUrl="/images/sad-cat.jpg"
-                onClickFunction={() => handleMessagesClick(index)}
-                isDisplayTime={isMessageClicked && messageClickedIndex === index}
-                dateTime={message.dateTimeFormatted}
-              />
             </div>
           </div>
-        ))}
-        {currentChatId !== "" && messages?.length === 0 && (
-          <p className="text-center text-primary-400 my-2">ไม่มีข้อความ</p>
-        )}
-      </div>
+        </div>
+      )}
+      {currentChatId !== "" && (
+        <div className="border-b bg-primary-50 border-primary-200 px-1.5 py-1.5 drop-shadow-sm flex">
+          <Image
+            src={"/images/sad-cat.jpg"}
+            alt="profile"
+            width={32}
+            height={32}
+            className="rounded-full w-[32px] h-[32px] my-auto"
+          />
+          <p className="text-lg my-auto ml-2 text-primary-600">{recieverName}</p>
+        </div>
+      )}
+      {currentChatId !== "" && (
+        <div className="bg-white overflow-y-scroll h-[40vh] custom-scrollbar">
+          {messages?.map((message, index) => (
+            <div key={index}>
+              {displayMessageTime(messages, message, index) && message.dateTimeFormatted && (
+                <div className="text-center text-sm text-primary-400 my-2" key={index}>
+                  {message.dateTimeFormatted.day} {convertToThaiMonth(message.dateTimeFormatted.month)} {formatMessageTime(message.dateTimeFormatted.hour, message.dateTimeFormatted.minute)}
+                </div>
+              )}
+              <div ref={autoScrollMessageRef}>
+                <Message
+                  key={message.messageId}
+                  message={message.message.text}
+                  side={message.senderId === user?.user_id ? "sender" : "receiver"}
+                  type="text"
+                  profileImageUrl="/images/sad-cat.jpg"
+                  onClickFunction={() => handleMessagesClick(index)}
+                  isDisplayTime={isMessageClicked && messageClickedIndex === index}
+                  dateTime={message.dateTimeFormatted}
+                />
+              </div>
+            </div>
+          ))}
+          {messages?.length === 0 && (
+            <p className="text-center text-primary-400 my-2">ไม่มีข้อความ</p>
+          )}
+        </div>
+      )}
       {currentChatId !== "" && (
         <div className="border-primary-200 bg-primary-50 p-2 h-[10%]">
           <div className="flex gap-x-1">
@@ -142,8 +159,9 @@ const ChatArea = ({
             </button>
           </div>
         </div>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 };
 export default ChatArea;
