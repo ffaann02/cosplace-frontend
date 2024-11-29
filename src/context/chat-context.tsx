@@ -33,6 +33,7 @@ export interface ChatListInterface {
     name: string;
     profileImageUrl?: string;
     lastMessage: string;
+    senderId: string;
 }
 
 interface ChatContextType {
