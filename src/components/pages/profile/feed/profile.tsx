@@ -98,7 +98,7 @@ const FeedProfile = ({
   const [commissions, setCommissions] = useState<CommissionPost[]>([]);
   const currentPostType = searchParams.get("post_type") || "";
   const router = useRouter();
-  // console.log("Current tab:", currentPostType); 
+  // console.log("Current tab:", currentPostType);
 
   const fetchPortfolios = async () => {
     try {
@@ -136,7 +136,7 @@ const FeedProfile = ({
         setIsPortModalVisible(true);
       }
     }
-  },[portfolios]);
+  }, [portfolios]);
 
   const items: CollapseProps["items"] = [
     {
@@ -169,7 +169,7 @@ const FeedProfile = ({
         <div className="space-y-4 w-full">
           {commissions.length > 0 ? (
             commissions.map((commission: CommissionPost, index) => (
-              <CommissionCard commission={commission} />
+              <CommissionCard key={commission.title} commission={commission} />
             ))
           ) : (
             <NoFeedContent
@@ -373,13 +373,11 @@ const FeedProfile = ({
           items={items}
           onChange={(key) => {
             let post_type = "";
-            if(key[0] === "1"){
+            if (key[0] === "1") {
               post_type = "portfolio";
-            }
-            else if(key[0] === "2"){
+            } else if (key[0] === "2") {
               post_type = "commission";
-            }
-            else{
+            } else {
               post_type = "";
             }
             const newParams = new URLSearchParams(searchParams);
