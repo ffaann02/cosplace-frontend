@@ -1,9 +1,6 @@
 import { io } from 'socket.io-client';
 
-// "undefined" means the URL will be computed from the `window.location` object
-// const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:4000';
-
-const URL = "http://localhost:3600"
+const URL = process.env.NEXT_PUBLIC_APP_STATUS === "PRODUCTION" ? "https://cosplace-socket-server.onrender.com" : "http://localhost:3600";
 
 export const socket = io(URL, {
     path: "/socket.io", 
