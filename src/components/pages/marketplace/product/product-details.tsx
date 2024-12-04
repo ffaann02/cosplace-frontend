@@ -9,9 +9,11 @@ import { Product } from "@/types/product";
 import Image from "antd/lib/image";
 import { useRouter } from "next/navigation";
 import { MdPayment } from "react-icons/md";
+import useCart from "@/hooks/use-cart";
 
 const ProductDetails = ({ productData }: { productData: Product }) => {
   const router = useRouter();
+  const { itemCount, updateCart } = useCart();
   const [currentImage, setCurrentImage] = useState<string>(
     productData.product_images[0].image_url
   );
@@ -64,11 +66,10 @@ const ProductDetails = ({ productData }: { productData: Product }) => {
       };
     }
 
-    // Save the updated cart to localStorage
-    localStorage.setItem("cart", JSON.stringify(cart));
-    message.success("เพิ่มสินค้าลงในตะกร้าแล้ว");
+    // Update the cart and itemCount
+    updateCart(cart);
 
-    console.log("Cart updated:", cart);
+    message.success("เพิ่มสินค้าลงในตะกร้าแล้ว");
   };
 
   return (

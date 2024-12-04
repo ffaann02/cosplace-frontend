@@ -100,13 +100,14 @@ const AddProduct = () => {
         "/product/create",
         productData
       );
-      console.log(response);
+      // console.log(response);
       const productId = response.data.product_id;
 
       // Sequential image uploads
       await (async () => {
         for (const file of fileList) {
           try {
+            console.log(file);
             const image = await getBase64(file.originFileObj as FileType);
             console.log("Uploading image:", image);
             const imageData = {
@@ -114,7 +115,8 @@ const AddProduct = () => {
               image_url: image,
             };
             console.log(imageData);
-            const response = await apiClientWithAuth.post(
+            // console.log(imageData);
+            await apiClientWithAuth.post(
               "/upload/product-image",
               imageData
             );
