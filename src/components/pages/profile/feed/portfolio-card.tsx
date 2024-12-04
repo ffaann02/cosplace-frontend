@@ -17,6 +17,8 @@ import {
 } from "@ant-design/icons";
 import { Portfolio, PortfolioImage } from "@/types/portfolios";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -30,11 +32,18 @@ const PortfolioCard = ({
   setSelectedPortfolio: (value: Portfolio) => void;
 }) => {
   const [localPortfolio, setLocalPortfolio] = useState<Portfolio | null>(null);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
 
   const handleViewDetails = () => {
+    console.log("HELLO")
     setSelectedPortfolio(portfolioData); // Update parent state
     setLocalPortfolio(portfolioData); // Local state for immediate feedback
     setIsPortModalVisible(true);
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set("portfolio_id", portfolioData.portfolio_id);
+    router.push(`?${newParams.toString()}`);
   };
 
   return (
