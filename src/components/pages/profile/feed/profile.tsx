@@ -167,7 +167,7 @@ const FeedProfile = ({
       label: "ประกาศจ้างหาทำชุด และอุปกรณ์คอสเพลย์",
       children: (
         <div className="space-y-4 w-full">
-          {commissions.length > 0 ? (
+          {commissions && commissions.length > 0 ? (
             commissions.map((commission: CommissionPost, index) => (
               <CommissionCard key={commission.title} commission={commission} />
             ))

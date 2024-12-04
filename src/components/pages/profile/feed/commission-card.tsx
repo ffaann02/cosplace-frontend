@@ -1,14 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { Card, Tag, Typography, Space, Image, Button, Modal } from "antd";
+import {
+  Card,
+  Tag,
+  Typography,
+  Space,
+  Image,
+  Button,
+  Modal,
+  Input,
+} from "antd";
 import { CommissionPost } from "@/types/commissions";
-import { EyeOutlined } from "@ant-design/icons";
+import { EyeOutlined, PlusOutlined, MinusOutlined } from "@ant-design/icons";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const { Text, Paragraph } = Typography;
 const { PreviewGroup } = Image;
+const { TextArea } = Input;
 
 const CommissionCard = ({ commission }: { commission: CommissionPost }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [offerText, setOfferText] = useState("");
+  const [links, setLinks] = useState<string[]>([""]);
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -34,6 +46,24 @@ const CommissionCard = ({ commission }: { commission: CommissionPost }) => {
       }
     }
   }, []);
+
+  const handleAddLink = () => {
+    setLinks([...links, ""]);
+  };
+
+  const handleRemoveLink = (index: number) => {
+    setLinks(links.filter((_, i) => i !== index));
+  };
+
+  const handleLinkChange = (value: string, index: number) => {
+    const updatedLinks = [...links];
+    updatedLinks[index] = value;
+    setLinks(updatedLinks);
+  };
+
+  const handleOfferTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setOfferText(e.target.value);
+  };
 
   return (
     <>
@@ -125,17 +155,12 @@ const CommissionCard = ({ commission }: { commission: CommissionPost }) => {
           ดูรายละเอียด
         </Button>
       </Card>
-
       {/* Modal for details */}
       <Modal
-        title={""}
+        title={commission.title}
         visible={isModalVisible}
         onCancel={handleModalClose}
-        footer={
-          <Button type="primary" onClick={handleModalClose}>
-            ปิด
-          </Button>
-        }
+        footer={null}
         width={800}
       >
         <Typography>
@@ -204,6 +229,62 @@ const CommissionCard = ({ commission }: { commission: CommissionPost }) => {
               </div>
             </PreviewGroup>
           )}
+
+          {/* Offering Input Area */}
+          <div style={{ marginTop: "20px" }} className="bg-primary-50 rounded-lg p-4 drop-shadow-sm">
+            <Typography.Title level={4}>ข้อเสนอของคุณ</Typography.Title>
+            <TextArea
+              rows={2}
+              showCount
+              maxLength={200}
+              placeholder="เพิ่มข้อความข้อเสนอของคุณ..."
+              value={offerText}
+              onChange={handleOfferTextChange}
+            />
+
+            <Typography.Title level={4} style={{ marginTop: "20px" }}>
+              ลิงก์ที่เกี่ยวข้อง
+            </Typography.Title>
+            <div className="w-full">
+              {links.map((link, index) => (
+                <Space
+                  key={index}
+                  style={{
+                    display: "flex",
+                    marginBottom: "8px",
+                    width: "100%",
+                  }}
+                >
+                  <Input
+                    style={{ width: "100%" }}
+                    placeholder={`ลิงก์ #${index + 1}`}
+                    value={link}
+                    onChange={(e) => handleLinkChange(e.target.value, index)}
+                  />
+                  <Button
+                    icon={<MinusOutlined />}
+                    onClick={() => handleRemoveLink(index)}
+                  />
+                </Space>
+              ))}
+            </div>
+            <Button
+              type="dashed"
+              style={{ width: "100%", marginTop: "10px" }}
+              icon={<PlusOutlined />}
+              onClick={handleAddLink}
+            >
+              เพิ่มลิงก์
+            </Button>
+          </div>
+
+          <Button
+            type="primary"
+            style={{ marginTop: "20px", width: "100%" }}
+            onClick={handleModalClose}
+          >
+            ปิด
+          </Button>
         </Typography>
       </Modal>
     </>
