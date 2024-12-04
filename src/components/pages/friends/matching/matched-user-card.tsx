@@ -9,16 +9,30 @@ import {
   IoRemoveCircleOutline,
 } from "react-icons/io5";
 
-const MatchedUserCard = ({ cosplayer }: { cosplayer: Cosplayer }) => {
+const MatchedUserCard = ({
+  cosplayer,
+  onIgnore,
+  onInterest,
+}: {
+  cosplayer: Cosplayer;
+  onIgnore: (username:string) => void;
+  onInterest: (username:string) => void;
+}) => {
   return (
-    <div className="w-full grid grid-cols-5">
+    <div className="w-full grid grid-cols-5 relative">
       <div className="col-span-full md:col-span-2 h-full">
         <div className="w-full p-2 bg-secondary-50 border border-primary-100 rounded-md md:hidden mb-3 flex gap-x-4 justify-center">
-          <button className="bg-white px-4 py-1 border border-primary-100 rounded-md text-red-400">
+          <button
+            onClick={() => onIgnore(cosplayer.username)}
+            className="bg-white px-4 py-1 border border-primary-100 rounded-md text-red-400"
+          >
             <IoRemoveCircleOutline className="inline-block my-auto text-2xl" />
             <p className="text-sm">ไม่สนใจ</p>
           </button>
-          <button className="bg-white px-4 py-1 border border-primary-100 rounded-md text-green-600">
+          <button
+            onClick={() => onInterest(cosplayer.username)}
+            className="bg-white px-4 py-1 border border-primary-100 rounded-md text-green-600"
+          >
             <HeartOutlined className="inline-block my-auto text-2xl" />
             <p className="text-sm">สนใจ</p>
           </button>
@@ -112,11 +126,17 @@ const MatchedUserCard = ({ cosplayer }: { cosplayer: Cosplayer }) => {
           <p>-</p>
         )}
         <div className="w-full p-2 bg-secondary-50 border border-primary-100 rounded-md mt-2 hidden md:flex gap-x-4 justify-center">
-          <button className="bg-white px-4 py-1 border border-primary-100 rounded-md text-red-400">
+          <button
+            onClick={() => onIgnore(cosplayer.username)}
+            className="bg-white px-4 py-1 border border-primary-100 rounded-md text-red-400"
+          >
             <IoRemoveCircleOutline className="inline-block my-auto text-2xl" />
             <p className="text-sm">ไม่สนใจ</p>
           </button>
-          <button className="bg-white px-4 py-1 border border-primary-100 rounded-md text-green-600">
+          <button
+            onClick={() => onInterest(cosplayer.username)}
+            className="bg-white px-4 py-1 border border-primary-100 rounded-md text-green-600"
+          >
             <HeartOutlined className="inline-block my-auto text-2xl" />
             <p className="text-sm">สนใจ</p>
           </button>
