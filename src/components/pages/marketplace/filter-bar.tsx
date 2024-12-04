@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 // import FilterBarMobile from "./filter-bar-mobile";
 import { divider } from "@/config/theme";
+import FilterBarMobile from "./filter-bar-mobile";
 
 const FilterBar = () => {
   const router = useRouter();
@@ -130,7 +131,7 @@ const FilterBar = () => {
           </div>
         </div>
       </div>
-      {/* <FilterBarMobile /> */}
+      {/* <FilterBarMobile openFilterDrawerMobile={true} /> */}
     </div>
   );
 };
