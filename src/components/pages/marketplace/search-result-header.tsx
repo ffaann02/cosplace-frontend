@@ -114,7 +114,7 @@ const SearchResultHeader = () => {
 
   return (
     <>
-      <div className="lg:flex lg:justify-between">
+      <div className="lg:flex lg:justify-between mt-6 lg:mt-0">
         <div className="w-full my-auto relative mb-2 mr-2">
           {/* <AutoComplete
             options={searchValue ? [{ value: searchValue }] : []}

@@ -339,3 +339,7 @@ h4 {
 #card-body-portfolio .ant-card-body{
   padding: 0 !important;
 }
+
+.slick-slide{
+  /* width: 100%; */
+}

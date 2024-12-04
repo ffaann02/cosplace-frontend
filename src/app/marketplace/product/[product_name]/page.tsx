@@ -8,8 +8,13 @@ import ProductHeader from "@/components/pages/marketplace/product/product-header
 import { Seller } from "@/types/seller";
 import Link from "next/link";
 import { Breadcrumb, Button } from "antd";
-import { HomeOutlined, ShopOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import {
+  HomeOutlined,
+  ShopOutlined,
+  ShoppingCartOutlined,
+} from "@ant-design/icons";
 import { useRouter } from "next/navigation";
+import CartButton from "@/components/pages/marketplace/cart/cart-button";
 
 const ProductPage = ({ params }: { params: { product_name: string } }) => {
   const router = useRouter();
@@ -71,7 +76,7 @@ const ProductPage = ({ params }: { params: { product_name: string } }) => {
 
   return (
     <div className="flex-grow flex flex-col">
-      <div className="bg-gradient-to-t from-primary-100 to-primary-200 w-full px-4 pt-6 pb-3">
+      {/* <div className="bg-gradient-to-t from-primary-100 to-primary-200 w-full px-4 pt-6 pb-3">
         <div className="w-full lg:max-w-[80rem] 2xl:max-w-[86rem] mx-auto px-4 justify-between flex">
           <div className="text-primary-700 my-auto">
             <div className="flex">
@@ -101,7 +106,6 @@ const ProductPage = ({ params }: { params: { product_name: string } }) => {
                   },
                   {
                     href: "/marketplace",
-                    // onClick: () => router.push("/marketplace"),
                     title: (
                       <>
                         <ShoppingCartOutlined />
@@ -112,7 +116,6 @@ const ProductPage = ({ params }: { params: { product_name: string } }) => {
                   {
                     title: (
                       <>
-                        {/* <ShoppingCartOutlined /> */}
                         <span>ชื่อสินค้า: {decodeURIComponent(product_name)}</span>
                       </>
                     ),
@@ -128,6 +131,59 @@ const ProductPage = ({ params }: { params: { product_name: string } }) => {
                 จ้างร้าน
               </Button>
             </Link>
+          </div>
+        </div>
+      </div> */}
+      <div className="bg-gradient-to-t from-primary-100 to-primary-200 w-full px-4 pt-6 pb-3">
+        <div className="w-full lg:max-w-[80rem] 2xl:max-w-[86rem] mx-auto px-4 justify-between flex relative h-full flex-grow">
+          <div className="text-primary-700 my-auto">
+            <div className="flex">
+              <ShoppingCartOutlined className="text-3xl mr-3" />
+              <h3 className="text-3xl text-primary-800">สินค้าคอสเพลย์</h3>
+            </div>
+            <div className="mt-2">
+              <Breadcrumb
+                items={[
+                  {
+                    href: "/",
+                    title: (
+                      <>
+                        <HomeOutlined />
+                        <span>หน้าหลัก</span>
+                      </>
+                    ),
+                  },
+                  {
+                    href: "/select-service",
+                    title: (
+                      <>
+                        <ShopOutlined />
+                        <span>บริการ</span>
+                      </>
+                    ),
+                  },
+                  {
+                    title: (
+                      <>
+                        <ShoppingCartOutlined />
+                        <span>ซื้อสินค้าคอสเพลย์</span>
+                      </>
+                    ),
+                  },
+                ]}
+              />
+            </div>
+          </div>
+          <div className="absolute right-0 -top-4 justify-end text-right">
+            <span className="text-primary-700 text-sm">สินค้าไม่ตรงใจ ?</span>
+            <Link href="/marketplace/custom">
+              <Button className="ml-2" size="small" type="default">
+                จ้างร้าน
+              </Button>
+            </Link>
+          </div>
+          <div className="flex flex-col justify-end text-right  pb-0.5">
+            <CartButton />
           </div>
         </div>
       </div>

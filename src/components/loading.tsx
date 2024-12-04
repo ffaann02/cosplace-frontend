@@ -7,7 +7,7 @@ const Loading = () => {
       <div className="w-full h-4/5 flex">
         <div className="m-auto text-center">
           <Image
-            src="https://media.tenor.com/lCKwsD2OW1kAAAAi/happy-cat-happy-happy-cat.gif"
+            src={"/images/tanukiLoading.gif"}
             alt="Loading"
             width={400}
             height={400}

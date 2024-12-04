@@ -14,25 +14,21 @@ import { CreditCardOutlined, QrcodeOutlined } from "@ant-design/icons";
 import axios from "axios"; // Make sure axios is installed
 import { apiClientWithAuth } from "@/api";
 import { set } from "date-fns";
+import { Product } from "@/types/product";
+import useCart from "@/hooks/use-cart";
 
 const { Panel } = Collapse;
 
 const Checkout = () => {
+  const { itemCount, updateCart,removeSellerFromCart } = useCart(); // Use the useCart hook
   const [paymentMethod, setPaymentMethod] = useState<string>("");
   const [shippingAddress, setShippingAddress] = useState<string>("");
-  interface Product {
-    id: number;
-    name: string;
-    price: number;
-    quantity: number;
-    image: string;
-  }
-  
+
   const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [loading, setLoading] = useState(false);
+  const [sellerId, setSellerId] = useState<string>("");
 
-  // Function to fetch product details based on the URL params
   const fetchProducts = async () => {
     const queryParams = new URLSearchParams(window.location.search);
     const list = queryParams.get("list");
@@ -52,7 +48,9 @@ const Checkout = () => {
         // Assuming the response contains a product list in the form:
         // [{ id: 1, name: "สินค้า 1", price: 100, quantity: 1 }, ...]
         setSelectedProducts(response.data.products);
+        console.log(response.data.products);
         setTotalAmount(response.data.totalAmount);
+        setSellerId(response.data.products[0].seller_id);
       } catch (error) {
         console.error("Error fetching products:", error);
         message.error("เกิดข้อผิดพลาดในการดึงข้อมูลสินค้า");
@@ -71,12 +69,18 @@ const Checkout = () => {
       setTimeout(() => {
         setLoading(false);
         message.success("การชำระเงินด้วยบัตรเครดิตสำเร็จ!");
+        // Remove the seller's products from the cart after successful payment
+        console.log(sellerId);
+        removeSellerFromCart(sellerId);  // Pass the seller ID
       }, 3000);
     } else if (paymentMethod === "promptpay") {
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
-        message.success("การชำระเงินด้วยบัตรเครดิตสำเร็จ!");
+        message.success("การชำระเงินด้วยพร้อมเพย์สำเร็จ!");
+        console.log(sellerId);
+        // Remove the seller's products from the cart after successful payment
+        removeSellerFromCart(sellerId);  // Pass the seller ID
       }, 3000);
     }
 
@@ -114,14 +118,16 @@ const Checkout = () => {
         <Card style={{ width: "100%" }} title="การชำระเงิน" className="mb-4">
           <h3>สินค้าที่เลือก</h3>
           {selectedProducts.map((product) => (
-            <div key={product.id} className="flex justify-between mb-2">
+            <div key={product.product_id} className="flex justify-between mb-2">
               <div className="flex">
-                <Image src={product.image} width={40} height={40} />
+                <Image src={product?.product_images?.[0]?.image_url || ''} width={40} height={40} />
                 <span className="my-auto ml-2">
                   {product.name} (x{product.quantity})
                 </span>
               </div>
-              <span className="my-auto">฿{(product.price * product.quantity).toFixed(2)}</span>
+              <span className="my-auto">
+                ฿{(Number(product.price) * Number(product.quantity)).toFixed(2)}
+              </span>
             </div>
           ))}
           <div className="font-bold flex justify-between text-lg">

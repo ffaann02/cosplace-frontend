@@ -100,24 +100,26 @@ const AddProduct = () => {
         "/product/create",
         productData
       );
-      console.log(response);
+      // console.log(response);
       const productId = response.data.product_id;
 
       // Upload images
       await Promise.all(
         fileList.map(async (file) => {
           try {
+            console.log(file);
             const image = await getBase64(file.originFileObj as FileType);
             const imageData = {
               product_id: productId,
               image_url: image,
             };
             console.log(imageData);
-            const response = await apiClientWithAuth.post(
+            // console.log(imageData);
+            await apiClientWithAuth.post(
               "/upload/product-image",
               imageData
             );
-            console.log(response);
+            // console.log(imageUploadResponse.data);
           } catch (err) {
             console.error("Error uploading image:", err);
             message.error("เกิดข้อผิดพลาดในการอัปโหลดรูปภาพ");
