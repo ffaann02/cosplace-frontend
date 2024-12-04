@@ -56,7 +56,7 @@ const getBase64 = (file: FileType): Promise<string> =>
   });
 
 const AddProduct = () => {
-  const {user} = useAuth();
+  const { user } = useAuth();
   const [form] = useForm();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -103,12 +103,13 @@ const AddProduct = () => {
       // console.log(response);
       const productId = response.data.product_id;
 
-      // Upload images
-      await Promise.all(
-        fileList.map(async (file) => {
+      // Sequential image uploads
+      await (async () => {
+        for (const file of fileList) {
           try {
             console.log(file);
             const image = await getBase64(file.originFileObj as FileType);
+            console.log("Uploading image:", image);
             const imageData = {
               product_id: productId,
               image_url: image,
@@ -119,13 +120,14 @@ const AddProduct = () => {
               "/upload/product-image",
               imageData
             );
-            // console.log(imageUploadResponse.data);
+            console.log("Response from API:", response);
           } catch (err) {
             console.error("Error uploading image:", err);
             message.error("เกิดข้อผิดพลาดในการอัปโหลดรูปภาพ");
           }
-        })
-      );
+        }
+      })();
+
 
       setCreating(false);
       message.success("เพิ่มสินค้าเรียบร้อยแล้ว");
