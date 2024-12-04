@@ -258,7 +258,7 @@ const Friends = ({ searchParams }: { searchParams: SearchParams }) => {
             GetCosplayerList={GetCosplayerList}
           />
           {!loading && cosplayerList.length > 0 && (
-            <Result cosplayerList={cosplayerList} />
+            <Result cosplayerList={cosplayerList} setCosplayerList={setCosplayerList} />
           )}
         </>
       )}
