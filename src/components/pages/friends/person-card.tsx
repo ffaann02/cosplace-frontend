@@ -124,7 +124,7 @@ const PersonCard = ({
 
   const onIgnoreSuggestion = async () => {
     console.log("Ignore suggestion");
-    if(ignoreSuggestion){
+    if (ignoreSuggestion) {
       ignoreSuggestion();
     }
   };
@@ -168,7 +168,7 @@ const PersonCard = ({
                 type="primary"
                 onClick={onAcceptRequest}
               >
-                ยอมรับคำขอเพิ่มเพื่อน
+                ยกเลิกคำขอ
               </Button>
               <Button
                 style={{ width: "100%", marginTop: 8 }}

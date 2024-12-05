@@ -48,6 +48,7 @@ const ChatArea = ({ isOpen }: { isOpen: boolean }) => {
 
   useEffect(() => {
     socket.on("history", (message: ChatMessage[]) => {
+      console.log("Received history:", message);
       setMessages?.(message);
     });
     return () => {
@@ -64,7 +65,6 @@ const ChatArea = ({ isOpen }: { isOpen: boolean }) => {
       type: "text",
       message: {
         text: inputMessage,
-        image_url: "",
       },
     };
     socket.emit("message", chatMessageFormat);
@@ -140,11 +140,10 @@ const ChatArea = ({ isOpen }: { isOpen: boolean }) => {
               <div ref={autoScrollMessageRef}>
                 <Message
                   key={message.messageId}
-                  message={message.message.text}
-                  side={
-                    message.senderId === user?.user_id ? "sender" : "receiver"
-                  }
-                  type="text"
+                  message={message.message}
+                  side={message.senderId === user?.user_id ? "sender" : "receiver"}
+                  type={message.type}
+                  image={message.message.image_url}
                   profileImageUrl="/images/sad-cat.jpg"
                   onClickFunction={() => handleMessagesClick(index)}
                   isDisplayTime={
