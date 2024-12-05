@@ -36,7 +36,7 @@ const ChatButton = () => {
       <Popover placement="topRight" content={content}>
         <div
           onClick={handleOpenChatbox}
-          className={`hidden lg:flex fixed z-[500] right-8 border-primary-400 bottom-6 bg-primary-200 w-16 h-16 rounded-full 
+          className={`flex fixed z-[500] right-2 lg:right-8 border-primary-400 bottom-20 lg:bottom-6 bg-primary-200 w-16 h-16 rounded-full 
     drop-shadow-md hover:scale-105 hover:border-2 transition-all ease-linear duration-200 cursor-pointer
     text-primary-300 hover:text-primary-500 ${
       openChatbox ? "lg:hidden" : "block"

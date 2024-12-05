@@ -3,7 +3,7 @@ import { Button, Flex, Input, AutoComplete, Skeleton } from "antd";
 import Link from "next/link";
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
-import { IoMenu } from "react-icons/io5";
+import { IoCartOutline, IoMenu } from "react-icons/io5";
 import DrawerSidebar from "./drawer-sidebar";
 import { roundedButton } from "@/config/theme";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -11,6 +11,13 @@ import UserBadgeNavbar from "./user-badge-navbar";
 import { TbMessageFilled } from "react-icons/tb";
 import { signIn, useSession } from "next-auth/react";
 import { useAuth } from "@/context/auth-context";
+import {
+  CalendarOutlined,
+  HomeOutlined,
+  ShoppingCartOutlined,
+  ShoppingOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 
 const Navbar = () => {
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
@@ -58,30 +65,42 @@ const Navbar = () => {
           </h1>
         </Link>
         <div className="w-full flex px-2 ml-8 xl:ml-12">
-          <div className="gap-x-4 xl:gap-x-5 2xl:gap-x-6 lg:flex hidden text-md xl:text-lg w-2/5 min-w-[448px]">
-            <Link href="/" passHref className="my-auto">
-              <span className="text-primary-600 hover:text-primary-800">
-                หน้าหลัก
-              </span>
+          <div className="hidden lg:flex justify-between w-2/5 min-w-[448px] px-6">
+            <Link
+              href="/"
+              passHref
+              className="my-auto flex flex-col text-primary-600 hover:text-primary-800"
+            >
+              <HomeOutlined className="text-lg mx-auto mb-2" />
+              <span className="text-sm">หน้าหลัก</span>
             </Link>
-            <Link href="/select-service" passHref className="my-auto">
-              <span className="text-primary-600 hover:text-primary-800">
-                Marketplace
-              </span>
+            <Link
+              href="/select-service"
+              passHref
+              className="my-auto flex flex-col text-primary-600 hover:text-primary-800"
+            >
+              <ShoppingCartOutlined className="text-lg mx-auto mb-2" />
+              <span className="text-sm">Marketplace</span>
             </Link>
-            <Link href="/friends" passHref className="my-auto">
-              <span className="text-primary-600 hover:text-primary-800">
-                เพื่อนและสังคม
-              </span>
+            <Link
+              href="/friends"
+              passHref
+              className="my-auto flex flex-col text-primary-600 hover:text-primary-800"
+            >
+              <UserOutlined className="text-lg mx-auto mb-2" />
+              <span className="text-sm text-center">เพื่อนและสังคม</span>
             </Link>
-            <Link href="/events" passHref className="my-auto">
-              <span className="text-primary-600 hover:text-primary-800">
-                กิจกรรมและงาน
-              </span>
+            <Link
+              href="/events"
+              passHref
+              className="my-auto flex flex-col text-primary-600 hover:text-primary-800"
+            >
+              <CalendarOutlined className="text-lg mx-auto mb-2" />
+              <span className="text-sm text-center">กิจกรรมและงาน</span>
             </Link>
           </div>
           {!pathname.includes("marketplace") && (
-            <div className="w-full lg:w-3/5 my-auto ml-2 relative">
+            <div className="hidden sm:block w-full lg:w-3/5 my-auto ml-2 relative">
               <AutoComplete
                 options={options}
                 onSearch={handleSearch}
@@ -100,31 +119,10 @@ const Navbar = () => {
               </AutoComplete>
             </div>
           )}
-          <div
-            className="lg:hidden flex z-[500] right-8 border-primary-400 bottom-6 bg-primary-200 w-8 h-8 rounded-full
-    text-primary-500 my-auto ml-3 border cursor-pointer"
-          >
-            <TbMessageFilled className="text-lg m-auto" />
-          </div>
-        </div>
-        <div className="my-auto mt-2">
-          <Button
-            type="text"
-            style={{
-              fontSize: 28,
-              paddingTop: 0,
-              paddingBottom: 0,
-              paddingLeft: 2,
-              paddingRight: 2,
-            }}
-            onClick={showDrawer}
-          >
-            <IoMenu className="block lg:hidden my-auto text-primary-800 py-0.5" />
-          </Button>
         </div>
       </Flex>
       {loading ? (
-        <div className="mx-2 scale-x-125 hidden lg:block">
+        <div className="mx-2 scale-x-125 block">
           <Skeleton.Button active shape="default" size="default" />
         </div>
       ) : (
@@ -132,7 +130,7 @@ const Navbar = () => {
           {isAuthenticated ? (
             <UserBadgeNavbar username={user?.username} />
           ) : (
-            <Link href="/login" passHref className="hidden lg:block">
+            <Link href="/login" passHref className="">
               <div className="my-auto">
                 <Button
                   style={{ ...roundedButton }}
@@ -145,6 +143,26 @@ const Navbar = () => {
             </Link>
           )}
         </>
+      )}
+      {!pathname.includes("marketplace") && (
+        <div className="w-full block sm:hidden">
+          <AutoComplete
+            options={options}
+            onSearch={handleSearch}
+            onSelect={handleSearchSelect}
+            style={{ width: "100%" }}
+          >
+            <Input
+              size="middle"
+              placeholder="ค้นหาชุด, ชื่อตัวละคร, ของตกแต่ง"
+              style={{ borderRadius: 16 }}
+              prefix={<FaSearch />}
+              onPressEnter={(e) =>
+                handleSearchSelect((e.target as HTMLInputElement).value)
+              }
+            />
+          </AutoComplete>
+        </div>
       )}
     </nav>
   );

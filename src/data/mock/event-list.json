@@ -1,93 +1,119 @@
 [
-    {
-      "start_date": "2023-11-01",
-      "end_date": "2023-11-02",
-      "name": "TOYOTA GAZOO Racing Motorsport ChiangMai Cosplay Contest 2024",
-      "location": "สนามกีฬาสมโภชเชียงใหม่ 700 ปี จ.เชียงใหม่",
-      "image_cover": "https://propsops.net/event/logo/2024/toyotagazoo-cosplaycontest2024.png"
-    },
-    {
-      "start_date": "2023-11-05",
-      "end_date": "2023-11-06",
-      "name": "Central Chonburi Cosplay Contest 3",
-      "location": "Central Chonburi",
-      "image_cover": "https://propsops.net/event/logo/2024/centralchonburi-cosplaycontest3.png"
-    },
-    {
-      "start_date": "2023-11-10",
-      "end_date": "2023-11-11",
-      "name": "AEON Digital Loy Krathong Cosplay Contest",
-      "location": "ลานคนเมือง ศาลาว่าการ กทม.",
-      "image_cover": "https://propsops.net/event/logo/2024/AEONDigitalLoyKrathong.png"
-    },
-    {
-      "start_date": "2023-11-15",
-      "end_date": "2023-11-16",
-      "name": "Miraicos SS3 : Superstar",
-      "location": "Mชั้น 4 T21 Dance Studio Terminal 21 Korat จ.นครราชสีมา",
-      "image_cover": "https://propsops.net/event/logo/2024/miraicos-superstar.png"
-    },
-    {
-      "start_date": "2023-11-20",
-      "end_date": "2023-11-21",
-      "name": "Dream World x Anime Event Thailand :. มหัศจรรย์วันคอสเพลย์ ปี 3",
-      "location": "สวนสนุก Dream World ปทุมธานี",
-      "image_cover": "https://propsops.net/event/logo/2024/dreamworld-ait2024.png"
-    },
-    {
-      "start_date": "2023-11-25",
-      "end_date": "2023-11-26",
-      "name": "THE MALL JAPAN DISCOVERY 2024 “FLOWER SYMPHONY” Cosplay Contest",
-      "location": "GRAND HALL ชั้น 1 The Mall Korat จ.นครราชสีมา",
-      "image_cover": "https://propsops.net/event/logo/2024/themalljapan-flower.png"
-    },
-    {
-      "start_date": "2023-11-30",
-      "end_date": "2023-12-01",
-      "name": "oon Manga Cos Festival : Autumn Wind",
-      "location": "หอประชุมกานรัตน์ สโมสรทหารอากาศ พิพิธภัณฑ์กองทัพอากาศ",
-      "image_cover": "https://propsops.net/event/logo/2024/moonmangacosfestival-autumnwind.png"
-    },
-    {
-      "start_date": "2023-12-05",
-      "end_date": "2023-12-06",
-      "name": "Take A Break! :Delicious in Dungeon Only Event Thailand",
-      "location": "ห้องสุโขทัย ชั้น 7 ศูนย์การค้า JJ Mall กำแพงเพชร",
-      "image_cover": "https://propsops.net/event/logo/2024/takeabreak.png"
-    },
-    {
-      "start_date": "2023-12-10",
-      "end_date": "2023-12-11",
-      "name": "KOKORO cos #5 : Maid & Butler",
-      "location": "MCC Hall The Mall บางแค หลักสอง",
-      "image_cover": "https://propsops.net/event/logo/2024/kokorocos5.png"
-    },
-    {
-      "start_date": "2023-12-15",
-      "end_date": "2023-12-16",
-      "name": "CosNatsu Winter",
-      "location": "สถานีกลางกรุงเทพอภิวัฒน์ บางซื่อ",
-      "image_cover": "https://propsops.net/event/logo/2024/cosnatsu-winter.png"
-    },
-    {
-      "start_date": "2023-12-20",
-      "end_date": "2023-12-21",
-      "name": "ประกวดคอสเพลย์ธีมสามก๊ก ในงาน จีนาภิวัฒน์ ครั้งที่ 9",
-      "location": "เดอะมิตร-ติ้ง รูม ชั้น 5 สามย่านมิตรทาวน์ สามย่าน",
-      "image_cover": "https://propsops.net/event/logo/2024/chinapiwat9.png"
-    },
-    {
-      "start_date": "2023-12-25",
-      "end_date": "2023-12-26",
-      "name": "Nakama Christmas Party",
-      "location": "ชั้น B, Hall Event Diana Complex Hatyai จ.สงขลา",
-      "image_cover": "https://propsops.net/event/logo/2024/nakama-christmasparty.png"
-    },
-    {
-      "start_date": "2023-12-30",
-      "end_date": "2023-12-31",
-      "name": "Maruya #41 :Raid Boss Party",
-      "location": "Royal Paragon Hall Siam Paragon สยาม",
-      "image_cover": "https://propsops.net/event/logo/2024/maruya41-2.png"
-    }
-  ]
+  {
+    "start_date": "2023-11-01",
+    "end_date": "2023-11-02",
+    "name": "TOYOTA GAZOO Racing Motorsport ChiangMai Cosplay Contest 2024",
+    "location": "สนามกีฬาสมโภชเชียงใหม่ 700 ปี จ.เชียงใหม่",
+    "image_cover": "https://propsops.net/event/logo/2024/toyotagazoo-cosplaycontest2024.png",
+    "details": "ร่วมสนุกกับการประกวดคอสเพลย์ในงาน TOYOTA GAZOO Racing Motorsport! พบกับชุดคอสเพลย์สุดอลังการ การแสดงสุดตื่นเต้น และกิจกรรมมากมาย พร้อมชมงานนิทรรศการรถยนต์สุดเร้าใจ และกิจกรรมที่เหมาะสำหรับครอบครัวและผู้ชื่นชอบมอเตอร์สปอร์ต การประกวดครั้งนี้เปิดรับผู้เข้าแข่งขันจากทุกเพศทุกวัยพร้อมลุ้นรางวัลใหญ่และเกียรติบัตรสำหรับผู้ชนะ อย่าพลาดโอกาสสำคัญในการพบปะกับเหล่าคอสเพลย์เยอร์และคนรักมอเตอร์สปอร์ตในบรรยากาศที่เต็มไปด้วยความสนุกสนาน",
+    "remark": "ลงทะเบียนล่วงหน้าเพื่อรับสิทธิ์เข้าชมฟรี"
+  },
+  {
+    "start_date": "2023-11-05",
+    "end_date": "2023-11-06",
+    "name": "Central Chonburi Cosplay Contest 3",
+    "location": "Central Chonburi",
+    "image_cover": "https://propsops.net/event/logo/2024/centralchonburi-cosplaycontest3.png",
+    "details": "สัมผัสความตื่นเต้นกับการประกวดคอสเพลย์ครั้งที่ 3 ที่ Central ชลบุรี! เตรียมพบกับเหล่าคอสเพลย์เยอร์มืออาชีพและสมัครเล่นในชุดสุดสร้างสรรค์ การแสดงที่เต็มไปด้วยพลังสร้างสรรค์และความบันเทิง อีกทั้งยังมีกิจกรรมสำหรับแฟนอนิเมะและเกม เช่น การเปิดบูธขายของที่ระลึก การถ่ายภาพกับคอสเพลย์เยอร์ และเวิร์กชอปสำหรับผู้เริ่มต้นคอสเพลย์ พร้อมทั้งลุ้นรับของรางวัลสุดพิเศษสำหรับผู้เข้าร่วมและผู้ชนะการแข่งขัน",
+    "remark": "เข้าชมฟรี พร้อมกิจกรรมแจกของรางวัลสำหรับผู้เข้าร่วม"
+  },
+  {
+    "start_date": "2023-11-10",
+    "end_date": "2023-11-11",
+    "name": "AEON Digital Loy Krathong Cosplay Contest",
+    "location": "ลานคนเมือง ศาลาว่าการ กทม.",
+    "image_cover": "https://propsops.net/event/logo/2024/AEONDigitalLoyKrathong.png",
+    "details": "ดื่มด่ำกับบรรยากาศงานลอยกระทงพร้อมการประกวดคอสเพลย์ที่ AEON Digital Loy Krathong! เตรียมพบกับธีมงานที่เต็มไปด้วยความงดงามของวัฒนธรรมไทยและแฟชั่นคอสเพลย์ร่วมสมัย สนุกสนานกับการแสดงบนเวทีของเหล่าคอสเพลย์เยอร์ และสัมผัสกับตลาดงานฝีมือไทยที่จัดขึ้นในพื้นที่เดียวกัน งานนี้เปิดโอกาสให้ผู้เข้าร่วมได้สร้างกระทงดิจิทัล และเข้าชิงรางวัลจากการประกวดในรูปแบบที่ไม่เหมือนใคร",
+    "remark": "กิจกรรมเหมาะสำหรับทุกวัย และมีมุมถ่ายภาพพิเศษสำหรับผู้เข้าร่วม"
+  },
+  {
+    "start_date": "2023-11-15",
+    "end_date": "2023-11-16",
+    "name": "Miraicos SS3 : Superstar",
+    "location": "Mชั้น 4 T21 Dance Studio Terminal 21 Korat จ.นครราชสีมา",
+    "image_cover": "https://propsops.net/event/logo/2024/miraicos-superstar.png",
+    "details": "เตรียมพบกับ Miraicos SS3 ในธีม Superstar! การแข่งขันคอสเพลย์ที่มาพร้อมกับการแสดงสุดอลังการในสไตล์ไอดอล พร้อมสัมผัสกับกิจกรรมมากมาย เช่น เวิร์กชอปเต้นที่จัดโดยผู้เชี่ยวชาญ โชว์พิเศษจากเหล่าคอสเพลย์เยอร์มืออาชีพ และบูธขายสินค้าพิเศษสำหรับแฟนๆ ทุกท่านที่เข้าร่วมสามารถร่วมสนุกกับมินิเกมต่างๆ เพื่อรับของรางวัลพิเศษ และยังมีโอกาสถ่ายภาพกับไอดอลในงานเพื่อเก็บเป็นที่ระลึก",
+    "remark": "กิจกรรมเหมาะสำหรับผู้ที่สนใจวัฒนธรรมไอดอลและคอสเพลย์"
+  },
+  {
+    "start_date": "2023-11-20",
+    "end_date": "2023-11-21",
+    "name": "Dream World x Anime Event Thailand :. มหัศจรรย์วันคอสเพลย์ ปี 3",
+    "location": "สวนสนุก Dream World ปทุมธานี",
+    "image_cover": "https://propsops.net/event/logo/2024/dreamworld-ait2024.png",
+    "details": "พบกับกิจกรรมสุดมหัศจรรย์ในงาน Dream World x Anime Event Thailand: มหัศจรรย์วันคอสเพลย์ ปี 3! สนุกไปกับการประกวดคอสเพลย์ที่มาพร้อมกับรางวัลสุดยิ่งใหญ่ กิจกรรมภายในงานรวมถึงการแสดงบนเวทีสุดพิเศษ เวิร์กชอปวาดภาพ และมุมถ่ายภาพในธีมสวนสนุก พร้อมสัมผัสกับการแสดงจากคอสเพลย์เยอร์มืออาชีพและการแจกของรางวัลตลอดงาน ไม่ว่าจะเป็นแฟนอนิเมะหรือผู้ชื่นชอบการแต่งคอสเพลย์ก็ห้ามพลาด!",
+    "remark": "ซื้อตั๋วเข้างานล่วงหน้าเพื่อรับสิทธิพิเศษในการถ่ายภาพกับคอสเพลย์เยอร์"
+  },
+  {
+    "start_date": "2023-11-25",
+    "end_date": "2023-11-26",
+    "name": "THE MALL JAPAN DISCOVERY 2024 “FLOWER SYMPHONY” Cosplay Contest",
+    "location": "GRAND HALL ชั้น 1 The Mall Korat จ.นครราชสีมา",
+    "image_cover": "https://propsops.net/event/logo/2024/themalljapan-flower.png",
+    "details": "ดื่มด่ำกับความงามของวัฒนธรรมญี่ปุ่นในงาน THE MALL JAPAN DISCOVERY 2024: “FLOWER SYMPHONY” Cosplay Contest! การประกวดคอสเพลย์ที่เน้นธีมความงามของดอกไม้และธรรมชาติ กิจกรรมในงานประกอบด้วยการแสดงบนเวทีจากเหล่าคอสเพลย์เยอร์ การจัดแสดงงานศิลปะญี่ปุ่น การเปิดบูธอาหารญี่ปุ่นแท้ๆ และการแสดงดนตรีในธีม Flower Symphony พร้อมทั้งลุ้นรางวัลใหญ่สำหรับผู้เข้าร่วมการประกวด",
+    "remark": "แนะนำให้สวมชุดธีมดอกไม้เพื่อเข้ากับบรรยากาศงาน"
+  },
+  {
+    "start_date": "2023-11-30",
+    "end_date": "2023-12-01",
+    "name": "oon Manga Cos Festival : Autumn Wind",
+    "location": "หอประชุมกานรัตน์ สโมสรทหารอากาศ พิพิธภัณฑ์กองทัพอากาศ",
+    "image_cover": "https://propsops.net/event/logo/2024/moonmangacosfestival-autumnwind.png",
+    "details": "ร่วมสัมผัสกับเทศกาลคอสเพลย์ที่มาพร้อมกับบรรยากาศของฤดูใบไม้ร่วงในงาน oon Manga Cos Festival : Autumn Wind! งานนี้จะมีการประกวดคอสเพลย์ในธีมฤดูใบไม้ร่วงพร้อมรางวัลสุดพิเศษจากคณะกรรมการที่มีชื่อเสียง และการแสดงพิเศษจากคอสเพลย์เยอร์มืออาชีพ กิจกรรมอื่นๆ ที่น่าสนใจรวมถึงการจัดแสดงมังงะและอนิเมะสุดฮิต การทำเวิร์กชอปเกี่ยวกับการแต่งคอสเพลย์ และการจัดบูธอาหารและสินค้าจากญี่ปุ่นอย่างเต็มรูปแบบ",
+    "remark": "แนะนำให้ผู้เข้าร่วมแต่งคอสเพลย์ธีมฤดูใบไม้ร่วงเพื่อเข้ากับบรรยากาศของงาน"
+  },
+  {
+    "start_date": "2023-12-05",
+    "end_date": "2023-12-06",
+    "name": "Take A Break! :Delicious in Dungeon Only Event Thailand",
+    "location": "ห้องสุโขทัย ชั้น 7 ศูนย์การค้า JJ Mall กำแพงเพชร",
+    "image_cover": "https://propsops.net/event/logo/2024/takeabreak.png",
+    "details": "เปิดประสบการณ์ใหม่ในงาน Take A Break! : Delicious in Dungeon Only Event Thailand! งานนี้จัดขึ้นเฉพาะสำหรับแฟนๆ ของอนิเมะ Delicious in Dungeon กับกิจกรรมคอสเพลย์จากตัวละครในซีรีส์สุดฮิต การแข่งขันคอสเพลย์ที่เน้นธีมอาหารและการผจญภัยในดันเจี้ยน รวมถึงการสัมผัสกับสินค้าพิเศษจากอนิเมะและการแสดงโชว์สุดสนุก ภายในงานยังมีการจัดทำเวิร์กชอปเกี่ยวกับการทำอาหารตามธีมอนิเมะนี้ โดยผู้เข้าร่วมสามารถสร้างสรรค์เมนูและถ่ายรูปเก็บเป็นที่ระลึกได้",
+    "remark": "เหมาะสำหรับผู้ที่ชื่นชอบอนิเมะ Delicious in Dungeon และการทำอาหาร"
+  },
+  {
+    "start_date": "2023-12-10",
+    "end_date": "2023-12-11",
+    "name": "KOKORO cos #5 : Maid & Butler",
+    "location": "MCC Hall The Mall บางแค หลักสอง",
+    "image_cover": "https://propsops.net/event/logo/2024/kokorocos5.png",
+    "details": "KOKORO cos #5 กลับมาอีกครั้งกับธีม Maid & Butler ที่จะพาทุกคนเข้าสู่โลกของสาวใช้และหนุ่มรับใช้ในสไตล์คอสเพลย์สุดน่ารักและหรูหรา! งานนี้จะมีการประกวดคอสเพลย์ที่ท้าทายเหล่าคอสเพลย์เยอร์ให้สร้างสรรค์คาแรคเตอร์ในธีมนี้อย่างเต็มที่ พร้อมกิจกรรมพิเศษมากมาย เช่น เวิร์กชอปทำผมและแต่งหน้าตามสไตล์ Maid & Butler การจัดแสดงแฟชั่นโชว์จากคอสเพลย์เยอร์ และบูธสินค้าหรือของที่ระลึกจากงาน",
+    "remark": "งานนี้เหมาะสำหรับผู้ที่ชื่นชอบคอสเพลย์ธีม Maid & Butler และแฟชั่นญี่ปุ่น"
+  },
+  {
+    "start_date": "2023-12-15",
+    "end_date": "2023-12-16",
+    "name": "CosNatsu Winter",
+    "location": "สถานีกลางกรุงเทพอภิวัฒน์ บางซื่อ",
+    "image_cover": "https://propsops.net/event/logo/2024/cosnatsu-winter.png",
+    "details": "เตรียมตัวให้พร้อมสำหรับงาน CosNatsu Winter ที่จะพาคุณเข้าสู่ฤดูหนาวสุดอบอุ่นกับการคอสเพลย์ที่ไม่เหมือนใคร! งานนี้จัดขึ้นที่สถานีกลางกรุงเทพอภิวัฒน์ บางซื่อ ที่จะเต็มไปด้วยการประกวดคอสเพลย์ในธีม Winter Wonderland พร้อมกิจกรรมสนุกๆ เช่น การจับคู่แต่งคอสเพลย์เพื่อร่วมสนุกในกิจกรรมพิเศษ และเวิร์กชอปการสร้างสรรค์คอสเพลย์ในฤดูหนาว บรรยากาศภายในงานจะเต็มไปด้วยความสนุกสนานและความอบอุ่นจากผู้เข้าร่วมงานทุกคน",
+    "remark": "แนะนำให้เตรียมตัวให้พร้อมกับธีมฤดูหนาวและการคอสเพลย์ที่เน้นสไตล์การแต่งตัวในช่วงฤดูหนาว"
+  },
+  {
+    "start_date": "2023-12-20",
+    "end_date": "2023-12-21",
+    "name": "ประกวดคอสเพลย์ธีมสามก๊ก ในงาน จีนาภิวัฒน์ ครั้งที่ 9",
+    "location": "เดอะมิตร-ติ้ง รูม ชั้น 5 สามย่านมิตรทาวน์ สามย่าน",
+    "image_cover": "https://propsops.net/event/logo/2024/chinapiwat9.png",
+    "details": "พบกับการประกวดคอสเพลย์ธีมสามก๊กที่งาน จีนาภิวัฒน์ ครั้งที่ 9 ในบรรยากาศของวัฒนธรรมจีนที่เต็มไปด้วยความเข้มข้นและศิลปะการแต่งตัวแบบจีนดั้งเดิม! ภายในงานจะมีการแสดงและกิจกรรมต่างๆ ที่เน้นเรื่องราวจากสามก๊ก เช่น การแสดงละครหรือการประลองคอสเพลย์จากตัวละครชื่อดัง เช่น โจโฉ, ขงเบ้ง, เล่าปี่ และตัวละครอื่นๆ นอกจากนี้ยังมีบูธสินค้าและกิจกรรมที่เกี่ยวข้องกับวัฒนธรรมจีนให้เลือกช้อปปิ้งและสนุกสนาน",
+    "remark": "ผู้เข้าร่วมควรเตรียมคอสเพลย์ในธีมสามก๊กตามตัวละครที่ชื่นชอบ"
+  },
+  {
+    "start_date": "2023-12-25",
+    "end_date": "2023-12-26",
+    "name": "Nakama Christmas Party",
+    "location": "ชั้น B, Hall Event Diana Complex Hatyai จ.สงขลา",
+    "image_cover": "https://propsops.net/event/logo/2024/nakama-christmasparty.png",
+    "details": "ร่วมเฉลิมฉลองเทศกาลคริสต์มาสในงาน Nakama Christmas Party กับกิจกรรมคอสเพลย์และงานปาร์ตี้สุดพิเศษที่จัดขึ้นในบรรยากาศคริสต์มาสแบบญี่ปุ่น ภายในงานจะมีกิจกรรมสนุกๆ เช่น การประกวดคอสเพลย์ที่เน้นธีมคริสต์มาส และการแสดงดนตรีที่จะสร้างบรรยากาศการเฉลิมฉลองอย่างมีชีวิตชีวา พร้อมด้วยของขวัญและกิจกรรมแจกของรางวัลมากมายเพื่อสร้างความสุขให้กับทุกคน",
+    "remark": "แนะนำให้แต่งคอสเพลย์ธีมคริสต์มาสหรือธีมที่เกี่ยวข้องกับเทศกาล"
+  },
+  {
+    "start_date": "2023-12-30",
+    "end_date": "2023-12-31",
+    "name": "Maruya #41 :Raid Boss Party",
+    "location": "Royal Paragon Hall Siam Paragon สยาม",
+    "image_cover": "https://propsops.net/event/logo/2024/maruya41-2.png",
+    "details": "Maruya #41 กลับมาแล้วกับกิจกรรม Raid Boss Party ที่จะพาทุกคนไปผจญภัยในโลกของเกมสุดมันส์! งานนี้จะมีการประกวดคอสเพลย์ในธีมเกมและแฟนตาซี โดยเฉพาะธีม Raid Boss ที่ทุกคนจะได้สวมบทบาทเป็นตัวละครจากเกมออนไลน์และเกม RPG ที่มีชื่อเสียง ภายในงานยังมีกิจกรรมพิเศษ เช่น การจับคู่เล่นเกม การแสดงสดจากเหล่าเกมเมอร์ และการแจกของรางวัลสุดพิเศษสำหรับผู้เข้าร่วม",
+    "remark": "เตรียมตัวให้พร้อมกับการคอสเพลย์และร่วมสนุกกับธีม Raid Boss ที่เต็มไปด้วยความท้าทาย"
+  }
+]

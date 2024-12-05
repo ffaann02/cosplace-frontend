@@ -19,7 +19,7 @@ import {
   message,
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
-import { useState } from "react";
+import { use, useState } from "react";
 import axios from "axios";
 import { apiClientWithAuth } from "@/api";
 import { useAuth } from "@/context/auth-context";
@@ -71,7 +71,11 @@ const uploadButton = (
   </button>
 );
 
-const CreateCustomPostForm = () => {
+const CreateCustomPostForm = ({
+  isRedirect,
+}:{
+  isRedirect?: boolean;
+}) => {
   const {user} = useAuth();
   const router = useRouter();
   const [previewOpen, setPreviewOpen] = useState<boolean>(false);
@@ -85,6 +89,7 @@ const CreateCustomPostForm = () => {
   const [maxPrice, setMaxPrice] = useState<number | null>(null);
   const [animeName, setAnimeName] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handlePreview = async (file: UploadFile) => {
     if (!file.url && !file.preview) {
@@ -111,6 +116,7 @@ const CreateCustomPostForm = () => {
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
     try {
       // Post form data to /custom API
       const response = await apiClientWithAuth.post("/custom", {
@@ -118,21 +124,21 @@ const CreateCustomPostForm = () => {
         description,
         price_range_start: minPrice,
         price_range_end: maxPrice,
-        anime_name:animeName,
+        anime_name: animeName,
         tags,
         created_by: user?.user_id,
       });
-
+  
       const postId = response.data.post_id;
-
+  
       // Upload images to /upload/custom API
       await (async () => {
         for (const file of fileList) {
           try {
             const image = await getBase64(file.originFileObj as FileType);
             const imageData = {
-          post_id: postId,
-          image_url: image,
+              post_id: postId,
+              image_url: image,
             };
             await apiClientWithAuth.post("/upload/custom-ref-image", imageData);
           } catch (err) {
@@ -141,10 +147,26 @@ const CreateCustomPostForm = () => {
           }
         }
       })();
-
+  
       message.success("โพสต์สำเร็จ!");
-      // router.push(`/custom/${postId}`);
+      setLoading(false);
+  
+      // Redirect logic
+      if (isRedirect) {
+        // Get the current query params and modify them
+        const currentUrl = new URL(window.location.href);
+        const searchParams = new URLSearchParams(currentUrl.search);
+  
+        // Change the tab to 'find' and add commission_id
+        searchParams.set("tab", "find");
+        searchParams.set("commission_id", postId.toString());
+  
+        // Redirect to the new URL
+        console.log("Redirect to /marketplace/custom?" + searchParams.toString());
+        router.push(`/marketplace/custom?${searchParams.toString()}`);
+      }
     } catch (error) {
+      setLoading(false);
       console.error("Error submitting form:", error);
       message.error("เกิดข้อผิดพลาดในการโพสต์");
     }
@@ -329,6 +351,7 @@ const CreateCustomPostForm = () => {
           </Form.Item>
           <Form.Item style={{ width: "100%", position: "relative" }}>
             <Button
+              loading={loading}
               disabled={
                 !(
                   title &&
