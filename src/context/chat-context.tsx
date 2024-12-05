@@ -16,6 +16,8 @@ export interface ChatMessage {
     message: {
         text: string;
         image_url: string;
+        header: string;
+        external_url: string;
     };
     dateTime: Date;
     dateTimeFormatted: {
