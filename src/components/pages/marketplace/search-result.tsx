@@ -12,8 +12,8 @@ const SearchResult = ({
   products: Product[];
   showMenu?: boolean;
   loading: boolean;
-  openFilterDrawerMobile: boolean;
-  setOpenFilterDrawerMobile: (open: boolean) => void;
+  openFilterDrawerMobile?: boolean;
+  setOpenFilterDrawerMobile?: (open: boolean) => void;
 }) => {
   return (
     <div className="col-span-full lg:col-span-8 px-5 pb-3">
