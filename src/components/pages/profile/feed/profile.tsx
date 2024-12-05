@@ -230,27 +230,29 @@ const FeedProfile = ({
       console.log("Portfolio created:", response);
 
       // Upload images
-      await Promise.all(
-        fileList.map(async (file) => {
+      await (async () => {
+        for (const file of fileList) {
           try {
-            const image = await getBase64(file.originFileObj as FileType);
+            console.log(file); // Debugging: Log file information
+            const image = await getBase64(file.originFileObj as FileType); // Convert file to Base64
+            console.log("Uploading image:", image); // Debugging: Log image data
             const imageData = {
-              portfolio_id: response.data.portfolio_id,
+              portfolio_id: response.data.portfolio_id, // Replace product_id with portfolio_id
               image_url: image,
             };
-            console.log(imageData);
+            console.log(imageData); // Debugging: Log image data payload
 
             const imageUploadResponse = await apiClientWithAuth.post(
-              "/upload/portfolio-image",
+              "/upload/portfolio-image", // Endpoint for portfolio images
               imageData
             );
-            console.log("Image upload response:", imageUploadResponse);
+            console.log("Image upload response:", imageUploadResponse); // Debugging: Log API response
           } catch (err) {
-            console.error("Error uploading image:", err);
-            message.error("เกิดข้อผิดพลาดในการอัปโหลดรูปภาพ");
+            console.error("Error uploading image:", err); // Log errors
+            message.error("เกิดข้อผิดพลาดในการอัปโหลดรูปภาพ"); // User-friendly error message
           }
-        })
-      );
+        }
+      })();
 
       message.success("เพิ่มผลงานเรียบร้อยแล้ว");
       // router.push("/portfolio"); // Redirect to portfolio page
