@@ -75,6 +75,7 @@ const FlexMessage = ({
                         alt="Message with image"
                         width={200}
                         height={200}
+                        unoptimized={true}
                     />
                     <div className='mx-2 mt-2'>
                         {/* Header */}
