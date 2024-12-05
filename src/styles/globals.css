@@ -350,3 +350,6 @@ h4 {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+.slick-slide{
+  /* width: 100%; */
+}

@@ -12,46 +12,47 @@ import {
 import {
   ShopOutlined,
   DeleteOutlined,
-  HeartOutlined,
-  ShareAltOutlined,
   CheckCircleOutlined,
 } from "@ant-design/icons";
 import { apiClient } from "@/api";
-import Link from "next/link";
 import { Product } from "@/types/product";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import useCart from "@/hooks/use-cart";
+import Link from "next/link";
 
-const { Text, Title } = Typography;
+const { Text } = Typography;
 
-const Cart = () => {
-  const router = useRouter();
-  interface CartItem {
-    product_id: string;
-    quantity: number;
-  }
+interface CartItem {
+  product_id: string;
+  quantity: number;
+}
 
-  interface CartData {
-    [sellerId: string]: {
-      [productId: string]: CartItem;
-    };
-  }
+interface CartData {
+  [sellerId: string]: {
+    [productId: string]: CartItem;
+  };
+}
 
+interface Seller {
+  seller_id: string;
+  shop_name: string;
+  shop_desc: string;
+  verify?: boolean;
+}
+
+interface CartComponentProps {
+  onClose: () => void;
+}
+
+const CartList: React.FC<CartComponentProps> = ({ onClose }) => {
   const [cartData, setCartData] = useState<CartData>({});
   const [productData, setProductData] = useState<{ [key: string]: Product }>(
     {}
   );
-  interface Seller {
-    seller_id: string;
-    shop_name: string;
-    shop_desc: string;
-    verify?: boolean;
-  }
-
   const [sellerData, setSellerData] = useState<{ [key: string]: Seller }>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { itemCount } = useCart();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -86,9 +87,8 @@ const Cart = () => {
           products[res.data.product_id] = res.data;
         });
 
-        const sellers: { [key: string]: any } = {};
+        const sellers: { [key: string]: Seller } = {};
         sellerResponses.forEach((res) => {
-          console.log(res.data.seller);
           sellers[res.data.seller.seller_id] = res.data.seller;
         });
 
@@ -142,7 +142,7 @@ const Cart = () => {
   };
 
   const handleCheckout = (sellerId: string) => {
-    console.log(sellerId)
+    console.log(sellerId);
     // Construct query params dynamically for the specific seller's products and quantity
     const productList = [];
     const quantityList = [];
@@ -164,45 +164,21 @@ const Cart = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="max-w-4xl mx-auto p-4 space-y-6 w-full mt-12">
-      <div className="flex w-full justify-between">
-        <Title level={2} style={{ marginTop: "auto", marginBottom: "auto" }}>
-          <ShopOutlined /> ตะกร้าสินค้า
-        </Title>
-        <Title level={4} style={{ marginTop: "auto", marginBottom: "auto" }}>
-          จำนวน: {itemCount} รายการ
-        </Title>
-      </div>
-
-      {!Object.keys(cartData).length && (
-        <div className="w-full p-4 bg-primary-50 rounded-xl border border-primary-100 text-center">
-          <h4 className="text-primary-600 text-xl mb-4">ไม่พบสินค้าในตะกร้า</h4>
-          <Button type="primary" href="/marketplace">
-            เลือกซื้อสินค้า
-          </Button>
-        </div>
-      )}
-
+    <div className="space-y-6">
       {Object.keys(cartData).map((sellerId) => {
         const seller = sellerData[sellerId];
         return (
           <Card
             key={sellerId}
             title={
-              <div className="flex justify-between items-center">
-                <Space>
-                  <ShopOutlined />
-                  <Text strong>{seller?.shop_name}</Text>
-                  {seller?.verify && (
-                    <Tooltip title="Verified Shop">
-                      <CheckCircleOutlined className="text-blue-500" />
-                    </Tooltip>
-                  )}
-                </Space>
-                <Text type="secondary">{seller?.shop_desc}</Text>
-              </div>
+              <Space>
+                <ShopOutlined />
+                <Text strong>{seller?.shop_name}</Text>
+                {seller?.verify && (
+                  <CheckCircleOutlined className="text-blue-500" />
+                )}
+              </Space>
             }
-            className="shadow-lg"
           >
             {Object.keys(cartData[sellerId]).map((productId) => {
               const item = cartData[sellerId][productId];
@@ -210,26 +186,20 @@ const Cart = () => {
               return (
                 <div
                   key={productId}
-                  className="flex items-center justify-between py-3 border-b last:border-b-0"
+                  className="flex items-center justify-between py-3"
                 >
-                  <div className="flex items-center space-x-4">
-                    <img
-                      src={
-                        product?.product_images[0]?.image_url ||
-                        "/placeholder.png"
-                      }
+                  <div className="flex  gap-x-2">
+                    <Image
+                      src={product?.product_images[0]?.image_url}
                       alt={product?.name}
-                      className="w-16 h-16 object-cover rounded"
+                      width={50}
+                      height={50}
+                      unoptimized
+                      className="object-cover h-[50px] w-[50px] rounded-md my-auto"
                     />
-                    <div>
+                    <div className="my-auto">
                       <Text strong>{product?.name}</Text>
-                      <div className="text-gray-500">
-                        ฿{product?.price.toFixed(2)}{" "}
-                        <Tag color={product?.rent ? "blue" : "green"}>
-                          {product?.rent ? "Rent" : "Sale"}
-                        </Tag>
-                      </div>
-                      <Text type="secondary">{product?.condition}</Text>
+                      <div>฿{product?.price.toFixed(2)}</div>
                     </div>
                   </div>
                   <Space>
@@ -256,9 +226,9 @@ const Cart = () => {
               );
             })}
 
-            <div className="mt-4 flex justify-between">
-              <Text strong>ยอดรวมร้านค้า</Text>
-              <Text strong>฿{calculateSellerTotal(sellerId).toFixed(2)}</Text>
+            <div className="mt-4 text-right">
+              <strong>รวม: </strong> ฿
+              {calculateSellerTotal(sellerId).toFixed(2)}
             </div>
             <div className="text-right w-full">
               <Button
@@ -272,8 +242,26 @@ const Cart = () => {
           </Card>
         );
       })}
+      <Button
+        type="default"
+        size="large"
+        style={{ width: "100%" }}
+        onClick={onClose}
+      >
+        ปิดแถบตะกร้า
+      </Button>
+      <Link href="/marketplace/cart">
+        <Button
+          type="primary"
+          size="large"
+          style={{ width: "100%",marginTop:12 }}
+          //   onClick={onClose}
+        >
+          ไปยังหน้าตะกร้าสินค้า
+        </Button>
+      </Link>
     </div>
   );
 };
 
-export default Cart;
+export default CartList;

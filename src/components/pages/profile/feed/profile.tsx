@@ -24,6 +24,9 @@ import { useAuth } from "@/context/auth-context";
 import { apiClient, apiClientWithAuth } from "@/api";
 import { Portfolio } from "@/types/portfolios";
 import PortfolioCard from "./portfolio-card";
+import { CommissionPost } from "@/types/commissions";
+import CommissionCard from "./commission-card";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const NoFeedContent = ({
   display_name = "ผู้ใช้",
@@ -81,6 +84,7 @@ const FeedProfile = ({
   interests?: string[];
 }) => {
   const { user } = useAuth();
+  const searchParams = useSearchParams();
   const [portfolios, setPortfolios] = useState<Portfolio[]>([]);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isPortModalVisible, setIsPortModalVisible] = useState<boolean>(false);
@@ -91,21 +95,48 @@ const FeedProfile = ({
   const [selectedPortfolio, setSelectedPortfolio] = useState<Portfolio>(
     {} as Portfolio
   );
+  const [commissions, setCommissions] = useState<CommissionPost[]>([]);
+  const currentPostType = searchParams.get("post_type") || "";
+  const router = useRouter();
+  // console.log("Current tab:", currentPostType);
+
+  const fetchPortfolios = async () => {
+    try {
+      const response = await apiClient.get("/portfolio/" + profileData.user_id);
+      console.log("Portfolios:", response.data);
+      setPortfolios(response.data);
+    } catch (err) {
+      console.error("Error fetching portfolios:", err);
+    }
+  };
+
+  const fetchCommissions = async () => {
+    try {
+      const response = await apiClient.get("/custom/" + profileData.user_id);
+      console.log("Commissions:", response.data.commissions);
+      setCommissions(response.data.commissions);
+    } catch (err) {
+      console.error("Error fetching commissions:", err);
+    }
+  };
 
   useEffect(() => {
-    const fetchPortfolios = async () => {
-      try {
-        const response = await apiClient.get(
-          "/portfolio/" + profileData.user_id
-        );
-        console.log("Portfolios:", response.data);
-        setPortfolios(response.data);
-      } catch (err) {
-        console.error("Error fetching portfolios:", err);
-      }
-    };
     fetchPortfolios();
+    fetchCommissions();
   }, []);
+
+  useEffect(() => {
+    if (searchParams.get("portfolio_id")) {
+      const portfolio_id = searchParams.get("portfolio_id");
+      const selected = portfolios.find(
+        (portfolio) => portfolio.portfolio_id === portfolio_id
+      );
+      if (selected) {
+        setSelectedPortfolio(selected);
+        setIsPortModalVisible(true);
+      }
+    }
+  }, [portfolios]);
 
   const items: CollapseProps["items"] = [
     {
@@ -133,8 +164,21 @@ const FeedProfile = ({
     },
     {
       key: "2",
-      label: "ประกาศจ้างหาอุปกรณ์คอสเพลย์",
-      children: <p>{"TEST"}</p>,
+      label: "ประกาศจ้างหาทำชุด และอุปกรณ์คอสเพลย์",
+      children: (
+        <div className="space-y-4 w-full">
+          {commissions && commissions.length > 0 ? (
+            commissions.map((commission: CommissionPost, index) => (
+              <CommissionCard key={commission.title} commission={commission} />
+            ))
+          ) : (
+            <NoFeedContent
+              display_name={profileData.display_name}
+              text="ประกาศจ้าง"
+            />
+          )}
+        </div>
+      ),
     },
   ];
 
@@ -222,7 +266,7 @@ const FeedProfile = ({
         <div className="bg-primary-50 pt-2 p-4 drop-shadow-sm border-primary-100 border rounded-lg space-y-3 h-fit">
           <h4 className="font-medium">ข้อมูลผู้ใช้</h4>
           <div className="bg-white/80 text-center px-2 py-1 border border-primary-100 rounded-lg">
-            <p>{profileData.bio ? profileData.bio: "ไม่มีคำอธิบาย"}</p>
+            <p>{profileData.bio ? profileData.bio : "ไม่มีคำอธิบาย"}</p>
           </div>
           <div className="flex flex-wrap justify-center gap-x-8">
             <div className="flex text-xl">
@@ -286,6 +330,9 @@ const FeedProfile = ({
                       onClick={() => {
                         setSelectedPortfolio(portfolio);
                         setIsPortModalVisible(true);
+                        const newParams = new URLSearchParams(searchParams);
+                        newParams.set("portfolio_id", portfolio.portfolio_id);
+                        router.push(`?${newParams.toString()}`);
                       }}
                     >
                       ดูรายละเอียด
@@ -315,12 +362,31 @@ const FeedProfile = ({
             ))}
           </div>
         </div>
-        {/* <NoFeedContent display_name={profileData.display_name} /> */}
         <Collapse
+          defaultActiveKey={
+            currentPostType === "portfolio"
+              ? ["1"]
+              : currentPostType === "commission"
+              ? ["2"]
+              : undefined
+          }
           items={items}
-          // defaultActiveKey={["1"]}
-          onChange={() => {
-            console.log("Changed");
+          onChange={(key) => {
+            let post_type = "";
+            if (key[0] === "1") {
+              post_type = "portfolio";
+            } else if (key[0] === "2") {
+              post_type = "commission";
+            } else {
+              post_type = "";
+            }
+            const newParams = new URLSearchParams(searchParams);
+            if (post_type === "") {
+              newParams.delete("post_type");
+            } else {
+              newParams.set("post_type", post_type);
+            }
+            router.push(`?${newParams.toString()}`);
           }}
         />
       </div>
@@ -390,6 +456,9 @@ const FeedProfile = ({
         visible={isPortModalVisible}
         onCancel={() => {
           setIsPortModalVisible(false);
+          const newParams = new URLSearchParams(searchParams);
+          newParams.delete("portfolio_id");
+          router.push(`?${newParams.toString()}`);
         }}
         footer={null}
         style={{ paddingBottom: 0 }}

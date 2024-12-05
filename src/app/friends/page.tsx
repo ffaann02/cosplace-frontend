@@ -15,6 +15,7 @@ import NoFriendList from "@/components/pages/friends/no-friend-list";
 import FriendCard from "@/components/pages/friends/friend-card";
 import { FaChevronDown, FaSearch } from "react-icons/fa";
 import FriendSearchHeader from "@/components/pages/friends/friend-search-header";
+import { Cosplayer } from "@/types/profile";
 
 interface SearchParams {
   [key: string]: string | undefined;
@@ -35,11 +36,22 @@ const Friends = ({ searchParams }: { searchParams: SearchParams }) => {
   // const session = await auth();
 
   const [friendList, setFriendList] = useState<FriendStructure[]>([]);
-  const [suggestFriendList, setSuggestFriendList] = useState<FriendStructure[]>([]);
-  const [incomingRequestFriendList, setIncomingRequestFriendList] = useState<FriendStructure[]>([]);
-  const [waitingAcceptFriendList, setWaitingAcceptFriendList] = useState<FriendStructure[]>([]);
+  const [suggestFriendList, setSuggestFriendList] = useState<FriendStructure[]>(
+    []
+  );
+  const [incomingRequestFriendList, setIncomingRequestFriendList] = useState<
+    FriendStructure[]
+  >([]);
+  const [waitingAcceptFriendList, setWaitingAcceptFriendList] = useState<
+    FriendStructure[]
+  >([]);
+  const [matchedCosplayerList, setMatchedCosplayerList] = useState<
+    FriendStructure[]
+  >([]);
+  const [openSearchBox, setOpenSearchBox] = useState<boolean>(true);
 
-  const [cosplayerList, setCosplayerList] = useState<FriendStructure[]>([]);
+  const [cosplayerList, setCosplayerList] = useState<Cosplayer[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const { user } = useAuth();
 
@@ -69,66 +81,77 @@ const Friends = ({ searchParams }: { searchParams: SearchParams }) => {
     try {
       const response = await apiClientWithAuth.get("/friend/list", {
         params: {
-          user_id: user?.user_id
-        }
+          user_id: user?.user_id,
+        },
       });
       setFriendList(response.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const GetSuggestFriend = async () => {
     try {
       const response = await apiClientWithAuth.get("/friend/suggests", {
         params: {
-          user_id: user?.user_id
-        }
+          user_id: user?.user_id,
+        },
       });
       setSuggestFriendList(response.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const GetIncomingRequestFriend = async () => {
     try {
       const response = await apiClientWithAuth.get("/friend/requests", {
         params: {
-          user_id: user?.user_id
-        }
+          user_id: user?.user_id,
+        },
       });
       setIncomingRequestFriendList(response.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const GetWaitingAcceptFriend = async () => {
     try {
       const response = await apiClientWithAuth.get("/friend/waiting-accept", {
         params: {
-          user_id: user?.user_id
-        }
+          user_id: user?.user_id,
+        },
       });
       setWaitingAcceptFriendList(response.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const GetCosplayerList = async () => {
+    setLoading(true);
+    setCosplayerList([]);
     try {
       const response = await apiClientWithAuth.get("/match-cosplayer/list", {
         params: {
-          user_id: user?.user_id
-        }
+          user_id: user?.user_id,
+        },
       });
-      setCosplayerList(response.data);
+      console.log(response.data);
+      setTimeout(() => {
+        setOpenSearchBox(false);
+        setCosplayerList(response.data);
+        setLoading(false);
+      }, 3000); // Delay for 3 seconds
     } catch (error) {
-      console.log(error)
+      console.log(error);
+      setTimeout(() => {
+        setOpenSearchBox(false);
+        setLoading(false);
+      }, 3000); // Delay for 3 seconds
     }
-  }
+  };
 
   useEffect(() => {
     if (user) {
@@ -136,7 +159,7 @@ const Friends = ({ searchParams }: { searchParams: SearchParams }) => {
       GetSuggestFriend();
       GetIncomingRequestFriend();
       GetWaitingAcceptFriend();
-      GetCosplayerList();
+      // GetCosplayerList();
     }
   }, [user, type])
 
@@ -178,9 +201,11 @@ const Friends = ({ searchParams }: { searchParams: SearchParams }) => {
       <div className="bg-primary-50 rounded-xl border border-primary-200 px-6 pt-4 pb-0 flex gap-x-8">
         <Link href="/friends?type=list">
           <button
-            className={`${type === "list" ? "text-primary-600" : "text-neutral-400"
-              } pb-3 border-b-2 ${type === "list" ? "border-b-primary-600" : " border-transparent"
-              } px-4 text-lg transition-all ease-linear duration-200`}
+            className={`${
+              type === "list" ? "text-primary-600" : "text-neutral-400"
+            } pb-3 border-b-2 ${
+              type === "list" ? "border-b-primary-600" : " border-transparent"
+            } px-4 text-lg transition-all ease-linear duration-200`}
           >
             เพื่อนของคุณ
           </button>
@@ -196,9 +221,13 @@ const Friends = ({ searchParams }: { searchParams: SearchParams }) => {
         </Link>
         <Link href="/friends?type=matching">
           <button
-            className={`${type === "matching" ? "text-primary-600" : "text-neutral-400"
-              } pb-3 border-b-2 ${type === "matching" ? "border-b-primary-600" : " border-transparent"
-              } px-4 text-lg transition-all ease-linear duration-200`}
+            className={`${
+              type === "matching" ? "text-primary-600" : "text-neutral-400"
+            } pb-3 border-b-2 ${
+              type === "matching"
+                ? "border-b-primary-600"
+                : " border-transparent"
+            } px-4 text-lg transition-all ease-linear duration-200`}
           >
             จับคู่คอสเพลย์
           </button>
@@ -358,13 +387,20 @@ const Friends = ({ searchParams }: { searchParams: SearchParams }) => {
               )}
             </div>
           </div>
-
         </>
       )}
       {type === "matching" && (
         <>
-          <SearchBox />
-          <Result cosplayerList={cosplayerList} />
+          <SearchBox
+            loading={loading}
+            setLoading={setLoading}
+            openSearchBox={openSearchBox}
+            setOpenSearchBox={setOpenSearchBox}
+            GetCosplayerList={GetCosplayerList}
+          />
+          {!loading && cosplayerList.length > 0 && (
+            <Result cosplayerList={cosplayerList} setCosplayerList={setCosplayerList} />
+          )}
         </>
       )}
     </div>

@@ -4,7 +4,7 @@ import { Divider } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { IoLocation, IoLocationOutline } from "react-icons/io5";
+import { IoLocationOutline } from "react-icons/io5";
 
 interface EventCardProps {
   start_date: string;
@@ -12,7 +12,8 @@ interface EventCardProps {
   name: string;
   location: string;
   image_cover?: string;
-  mobile?: boolean
+  mobile?: boolean;
+  navigate?: boolean;
 }
 
 const EventCard: React.FC<EventCardProps> = ({
@@ -21,42 +22,50 @@ const EventCard: React.FC<EventCardProps> = ({
   name,
   location,
   image_cover,
-  mobile
+  mobile,
+  navigate = true,
 }) => {
-  return (
-    <Link href="/events/" className={mobile ? "px-2":""}>
-      <div
-        className="bg-white drop-shadow-sm flex flex-col h-[360px] border hover:border-opacity-100 
+  const cardContent = (
+    <div
+      className="bg-white drop-shadow-sm flex flex-col w-full h-[360px] border hover:border-opacity-100 
     border-primary-200 border-opacity-50 rounded transition-all ease-linear duration-150"
-    id="search-result-card"
-      >
+      id="search-result-card"
+    >
+      <div className="relative w-full h-[200px]">
         <Image
-          className="object-contain w-full h-full max-h-[200px] rounded-t"
+          className="object-cover w-full h-full rounded-t"
           src={image_cover || "/images/sad-cat.jpg"}
           alt="placeholder"
-          width={200}
-          height={200}
+          width={500}
+          height={300}
+          unoptimized
         />
-        <div className="pl-2 pt-2 pb-1.5 flex-grow flex flex-col">
-          <h6 className="text-primary-600 font-light text-xs xl:text-sm bg-primary-100 w-fit px-2 py-0.5 rounded-lg">
-            {eventCardDateFormat(start_date, end_date)}
-          </h6>
-          <h4 className="text-primary-700 font-light ml-0.5">{name}</h4>
-          <div className="mt-auto mb-0">
-            <Divider
-              className="bg-secondary-100 col-span-full"
-              style={divider}
-            />
-            <div className="flex mt-1">
-              <IoLocationOutline className="my-auto mr-1 text-primary-800 text-sm" />
-              <h6 className="text-sm text-primary-500 font-light truncate">
-                {location}
-              </h6>
-            </div>
+      </div>
+      <div className="pl-2 pt-2 pb-1.5 flex-grow flex flex-col">
+        <h6 className="text-primary-600 font-light text-xs xl:text-sm bg-primary-100 w-fit px-2 py-0.5 rounded-lg">
+          {eventCardDateFormat(start_date, end_date)}
+        </h6>
+        <h4 className="text-primary-700 font-light ml-0.5">{name}</h4>
+        <div className="mt-auto mb-0">
+          <Divider className="bg-secondary-100 col-span-full" style={divider} />
+          <div className="flex mt-1">
+            <IoLocationOutline className="my-auto mr-1 text-primary-800 text-sm" />
+            <h6 className="text-sm text-primary-500 font-light truncate">
+              {location}
+            </h6>
           </div>
         </div>
       </div>
+    </div>
+  );
+
+  return navigate ? (
+    <Link href="/events/" className={mobile ? "px-2" : ""}>
+      {cardContent}
     </Link>
+  ) : (
+    <div className={mobile ? "px-2" : ""}>{cardContent}</div>
   );
 };
+
 export default EventCard;
