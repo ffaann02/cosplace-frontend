@@ -38,7 +38,13 @@ const TagStyle = {
   paddingRight: 8,
 };
 
-const SearchResultHeader = () => {
+const SearchResultHeader = ({
+  openFilterDrawerMobile,
+  setOpenFilterDrawerMobile,
+}: {
+  openFilterDrawerMobile: boolean;
+  setOpenFilterDrawerMobile: (open: boolean) => void;
+}) => {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -108,8 +114,11 @@ const SearchResultHeader = () => {
 
   const handleSearch = (value: string) => {
     const currentParams = new URLSearchParams(searchParams.toString());
-  
-    console.log("Current URL Parameters:", decodeURIComponent(currentParams.toString()));
+
+    console.log(
+      "Current URL Parameters:",
+      decodeURIComponent(currentParams.toString())
+    );
   };
 
   return (
@@ -152,6 +161,15 @@ const SearchResultHeader = () => {
               ค้นหา
             </Button>
           </Space.Compact>
+          <div className="w-full text-right block lg:hidden">
+            <Button
+              onClick={() => setOpenFilterDrawerMobile(!openFilterDrawerMobile)}
+              type="default"
+              className="text-right text-primary-600 mr-1 mt-2"
+            >
+              ตัวช่วยค้นหา
+            </Button>
+          </div>
           {/* </AutoComplete> */}
         </div>
         {/* <div className="flex justify-between">

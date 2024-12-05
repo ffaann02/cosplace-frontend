@@ -99,26 +99,25 @@ const Navbar = () => {
               <span className="text-sm text-center">กิจกรรมและงาน</span>
             </Link>
           </div>
-          {!pathname.includes("marketplace") && (
-            <div className="hidden sm:block w-full lg:w-3/5 my-auto ml-2 relative">
-              <AutoComplete
-                options={options}
-                onSearch={handleSearch}
-                onSelect={handleSearchSelect}
-                style={{ width: "100%" }}
-              >
-                <Input
-                  size="middle"
-                  placeholder="ค้นหาชุด, ชื่อตัวละคร, ของตกแต่ง"
-                  style={{ borderRadius: 16 }}
-                  prefix={<FaSearch />}
-                  onPressEnter={(e) =>
-                    handleSearchSelect((e.target as HTMLInputElement).value)
-                  }
-                />
-              </AutoComplete>
-            </div>
-          )}
+
+          <div className="w-full lg:w-3/5 my-auto ml-0 lg:ml-2 relative">
+            <AutoComplete
+              options={options}
+              onSearch={handleSearch}
+              onSelect={handleSearchSelect}
+              style={{ width: "100%" }}
+            >
+              <Input
+                size="middle"
+                placeholder="ค้นหาชุด, ชื่อตัวละคร, ของตกแต่ง"
+                style={{ borderRadius: 16 }}
+                prefix={<FaSearch />}
+                onPressEnter={(e) =>
+                  handleSearchSelect((e.target as HTMLInputElement).value)
+                }
+              />
+            </AutoComplete>
+          </div>
         </div>
       </Flex>
       {loading ? (
@@ -144,7 +143,7 @@ const Navbar = () => {
           )}
         </>
       )}
-      {!pathname.includes("marketplace") && (
+      {/* {!pathname.includes("marketplace") && (
         <div className="w-full block sm:hidden">
           <AutoComplete
             options={options}
@@ -163,7 +162,7 @@ const Navbar = () => {
             />
           </AutoComplete>
         </div>
-      )}
+      )} */}
     </nav>
   );
 };

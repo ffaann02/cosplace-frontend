@@ -39,10 +39,14 @@ const getBase64 = (file: FileType): Promise<string> =>
   });
 
 const options: SelectProps["options"] = [
-  { value: "gold", key: "gold" },
-  { value: "lime", key: "lime" },
-  { value: "green", key: "green" },
-  { value: "cyan", key: "cyan" },
+  { value: "portrait", label: "Portrait" },
+  { value: "landscape", label: "Landscape" },
+  { value: "anime", label: "Anime" },
+  { value: "fantasy", label: "Fantasy" },
+  { value: "sci-fi", label: "Sci-Fi" },
+  { value: "abstract", label: "Abstract" },
+  { value: "realism", label: "Realism" },
+  { value: "character-design", label: "Character Design" },
 ];
 
 const tagRender: SelectProps["tagRender"] = (props) => {

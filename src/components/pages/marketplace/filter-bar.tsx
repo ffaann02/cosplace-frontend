@@ -15,8 +15,15 @@ import { useSearchParams } from "next/navigation";
 // import FilterBarMobile from "./filter-bar-mobile";
 import { divider } from "@/config/theme";
 import FilterBarMobile from "./filter-bar-mobile";
+import { useState } from "react";
 
-const FilterBar = () => {
+const FilterBar = ({
+  openFilterDrawerMobile,
+  setOpenFilterDrawerMobile,
+}: {
+  openFilterDrawerMobile: boolean;
+  setOpenFilterDrawerMobile: (open: boolean) => void;
+}) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -131,7 +138,10 @@ const FilterBar = () => {
           </div>
         </div>
       </div>
-      {/* <FilterBarMobile openFilterDrawerMobile={true} /> */}
+      <FilterBarMobile
+        openFilterDrawerMobile={openFilterDrawerMobile}
+        setOpenFilterDrawerMobile={setOpenFilterDrawerMobile}
+      />
     </div>
   );
 };
