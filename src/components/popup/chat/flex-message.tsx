@@ -1,4 +1,4 @@
-import { Image } from 'antd';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react'
 import { IoOpenOutline } from "react-icons/io5";
@@ -73,11 +73,11 @@ const FlexMessage = ({
                         className="object-cover w-full rounded-t-lg my-auto mx-auto"
                         src={image}
                         alt="Message with image"
-                        height={150}
-                        onClick={() => console.log("click")}
-                        preview={false}
+                        width={200}
+                        height={200}
+                        unoptimized={true}
                     />
-                    <div className='mx-2'>
+                    <div className='mx-2 mt-2'>
                         {/* Header */}
                         {message.header && <h3 className="text-left text-sm font-medium">{message.header}</h3>}
                         {/* Text */}
