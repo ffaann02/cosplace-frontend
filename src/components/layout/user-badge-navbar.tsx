@@ -1,4 +1,5 @@
 import { logout } from "@/api/auth";
+import { useAuth } from "@/context/auth-context";
 import { Avatar, Badge, Dropdown, MenuProps, Space } from "antd";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -10,6 +11,7 @@ import { SlLogout } from "react-icons/sl";
 
 const UserBadgeNavbar = ({ username }: { username: string | null | undefined }) => {
   const router = useRouter();
+  const {user} = useAuth();
 
   const navigateToProfile = () => {
     router.push("/profile?menu=account");
@@ -55,7 +57,7 @@ const UserBadgeNavbar = ({ username }: { username: string | null | undefined }) 
   ];
 
   return (
-    <div className="hidden lg:flex">
+    <div className="flex">
       <Badge
         size="default"
         color="red"
@@ -78,7 +80,7 @@ const UserBadgeNavbar = ({ username }: { username: string | null | undefined }) 
         </Avatar>
       </Badge>
       <div
-        className="hidden lg:flex cursor-pointer bg-white hover:bg-primary-50 pl-1.5 pr-2 py-1 
+        className="cursor-pointer bg-white hover:bg-primary-50 pl-1.5 pr-2 py-1 
         border border-primary-200 ml-4 rounded-lg transition-all ease-linear duration-100"
       >
         <Dropdown menu={{ items }} className="my-auto" placement="bottomRight">

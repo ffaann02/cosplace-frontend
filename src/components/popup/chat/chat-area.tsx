@@ -8,14 +8,14 @@ import { ChatMessage, useChat } from "@/context/chat-context";
 import { useEffect, useState, useRef } from "react";
 import { socket } from "@/api/socket";
 import { useAuth } from "@/context/auth-context";
-import { convertToThaiMonth, displayMessageTime, formatMessageTime, getFriendListWithLastMessage } from "@/utils/chat";
+import {
+  convertToThaiMonth,
+  displayMessageTime,
+  formatMessageTime,
+  getFriendListWithLastMessage,
+} from "@/utils/chat";
 
-const ChatArea = ({
-  isOpen,
-}: {
-  isOpen: boolean;
-}) => {
-
+const ChatArea = ({ isOpen }: { isOpen: boolean }) => {
   const { user } = useAuth();
   const {
     chatList,
@@ -64,8 +64,8 @@ const ChatArea = ({
       type: "text",
       message: {
         text: inputMessage,
-        image_url: ""
-      }
+        image_url: "",
+      },
     };
     socket.emit("message", chatMessageFormat);
     setInputMessage("");
@@ -74,7 +74,7 @@ const ChatArea = ({
   const handleMessagesClick = (index: number) => {
     setMessageClickedIndex(index);
     setIsMessageClicked(!isMessageClicked);
-  }
+  };
 
   useEffect(() => {
     autoScrollMessageRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -89,13 +89,17 @@ const ChatArea = ({
             <div className="absolute w-full h-full flex justify-center items-center">
               <div className=" animate-headShake">
                 <Image
-                  src={"https://cpe334-cosplace-bucket.s3.ap-southeast-1.amazonaws.com/mascot/tanuki_select_chat.png"}
+                  src={
+                    "https://cpe334-cosplace-bucket.s3.ap-southeast-1.amazonaws.com/mascot/tanuki_select_chat.png"
+                  }
                   alt="mascot"
                   width={128}
                   height={128}
                   className="m-auto"
                 />
-                <p className=" text-primary-800">เลือกผู้ใช้ที่คุณต้องการสนทนาด้วย</p>
+                <p className=" text-primary-800">
+                  เลือกผู้ใช้ที่คุณต้องการสนทนาด้วย
+                </p>
               </div>
             </div>
           </div>
@@ -110,27 +114,42 @@ const ChatArea = ({
             height={32}
             className="rounded-full w-[32px] h-[32px] my-auto"
           />
-          <p className="text-lg my-auto ml-2 text-primary-600">{recieverName}</p>
+          <p className="text-lg my-auto ml-2 text-primary-600">
+            {recieverName}
+          </p>
         </div>
       )}
       {currentChatId !== "" && (
         <div className="bg-white overflow-y-scroll h-[40vh] custom-scrollbar">
           {messages?.map((message, index) => (
             <div key={index}>
-              {displayMessageTime(messages, message, index) && message.dateTimeFormatted && (
-                <div className="text-center text-sm text-primary-400 my-2" key={index}>
-                  {message.dateTimeFormatted.day} {convertToThaiMonth(message.dateTimeFormatted.month)} {formatMessageTime(message.dateTimeFormatted.hour, message.dateTimeFormatted.minute)}
-                </div>
-              )}
+              {displayMessageTime(messages, message, index) &&
+                message.dateTimeFormatted && (
+                  <div
+                    className="text-center text-sm text-primary-400 my-2"
+                    key={index}
+                  >
+                    {message.dateTimeFormatted.day}{" "}
+                    {convertToThaiMonth(message.dateTimeFormatted.month)}{" "}
+                    {formatMessageTime(
+                      message.dateTimeFormatted.hour,
+                      message.dateTimeFormatted.minute
+                    )}
+                  </div>
+                )}
               <div ref={autoScrollMessageRef}>
                 <Message
                   key={message.messageId}
                   message={message.message.text}
-                  side={message.senderId === user?.user_id ? "sender" : "receiver"}
+                  side={
+                    message.senderId === user?.user_id ? "sender" : "receiver"
+                  }
                   type="text"
                   profileImageUrl="/images/sad-cat.jpg"
                   onClickFunction={() => handleMessagesClick(index)}
-                  isDisplayTime={isMessageClicked && messageClickedIndex === index}
+                  isDisplayTime={
+                    isMessageClicked && messageClickedIndex === index
+                  }
                   dateTime={message.dateTimeFormatted}
                 />
               </div>
@@ -148,20 +167,23 @@ const ChatArea = ({
               <BsFileImage className="text-xl" />
             </button>
             <TextArea
+              onPressEnter={() => sendMessage()}
               placeholder="ส่งข้อความ"
               autoSize
               style={{ marginTop: 2 }}
               onChange={(e) => setInputMessage(e.target.value)}
               value={inputMessage}
             />
-            <button className="text-primary-400 hover:text-primary-600 hover:bg-primary-100 rounded-full p-2 h-fit" onClick={() => sendMessage()}>
+            <button
+              className="text-primary-400 hover:text-primary-600 hover:bg-primary-100 rounded-full p-2 h-fit"
+              onClick={() => sendMessage()}
+            >
               <IoSend className="text-xl" />
             </button>
           </div>
         </div>
-      )
-      }
-    </div >
+      )}
+    </div>
   );
 };
 export default ChatArea;

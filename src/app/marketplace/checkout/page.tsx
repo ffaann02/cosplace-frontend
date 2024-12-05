@@ -8,26 +8,34 @@ import {
   Input,
   Collapse,
   message,
-  Image,
+  // Image,
+  Breadcrumb,
 } from "antd";
-import { CreditCardOutlined, QrcodeOutlined } from "@ant-design/icons";
+import { CreditCardOutlined, HomeOutlined, QrcodeOutlined, ShopOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import axios from "axios"; // Make sure axios is installed
 import { apiClientWithAuth } from "@/api";
 import { set } from "date-fns";
-import { Product } from "@/types/product";
+import { CheckoutProduct, Product } from "@/types/product";
 import useCart from "@/hooks/use-cart";
+import { useAuth } from "@/context/auth-context";
+import Link from "next/link";
+import { IoCardOutline } from "react-icons/io5";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const { Panel } = Collapse;
 
 const Checkout = () => {
-  const { itemCount, updateCart,removeSellerFromCart } = useCart(); // Use the useCart hook
+  const { itemCount, updateCart, removeSellerFromCart } = useCart(); // Use the useCart hook
   const [paymentMethod, setPaymentMethod] = useState<string>("");
+  const { user } = useAuth();
   const [shippingAddress, setShippingAddress] = useState<string>("");
 
-  const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
+  const [selectedProducts, setSelectedProducts] = useState<CheckoutProduct[]>([]);
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [loading, setLoading] = useState(false);
   const [sellerId, setSellerId] = useState<string>("");
+  const router = useRouter();
 
   const fetchProducts = async () => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -63,43 +71,99 @@ const Checkout = () => {
     fetchProducts();
   }, []);
 
-  const handleSubmitPayment = () => {
-    if (paymentMethod === "creditcard") {
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-        message.success("การชำระเงินด้วยบัตรเครดิตสำเร็จ!");
-        // Remove the seller's products from the cart after successful payment
-        console.log(sellerId);
-        removeSellerFromCart(sellerId);  // Pass the seller ID
-      }, 3000);
-    } else if (paymentMethod === "promptpay") {
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-        message.success("การชำระเงินด้วยพร้อมเพย์สำเร็จ!");
-        console.log(sellerId);
-        // Remove the seller's products from the cart after successful payment
-        removeSellerFromCart(sellerId);  // Pass the seller ID
-      }, 3000);
-    }
+  const handleSubmitPayment = async () => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const list = queryParams.get("list"); // e.g., "P-11,P-7"
+    const quantity = queryParams.get("quantity"); // e.g., "2,1"
 
-    console.log("การชำระเงินถูกส่ง", {
-      method: paymentMethod,
-      products: selectedProducts,
-      totalAmount: selectedProducts.reduce(
-        (sum, product) => sum + product.price * product.quantity,
-        0
-      ),
-      shippingAddress,
-    });
+    const productIds = list ? list.split(",") : []; // ["P-11", "P-7"]
+    const quantities = quantity ? quantity.split(",").map(Number) : []; // [2, 1]
+
+    const products = productIds.map((productId, index) => ({
+      product_id: productId,
+      quantity: quantities[index] || 0, // Use 0 if quantity is missing
+    }));
+
+    const sellerId = selectedProducts[0].seller_id;
+    console.log("Seller ID:", sellerId);
+
+    setLoading(true);
+    try {
+      const response = await apiClientWithAuth.post("/checkout", {
+        user_id: user?.user_id,
+        seller_id: sellerId,
+        products,
+      });
+
+      if (response.status === 200) {
+        message.success("การชำระเงินสำเร็จ!");
+        console.log(response.data);
+        const orderId = response.data.order_id;
+        // Remove the seller's products from the cart after successful payment
+        removeSellerFromCart(sellerId); // Pass the seller ID
+        router.push(`/marketplace/purchase`);
+      } else {
+        message.error("เกิดข้อผิดพลาดในการชำระเงิน");
+      }
+    } catch (error) {
+      console.error("Error processing payment:", error);
+      message.error("เกิดข้อผิดพลาดในการชำระเงิน");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div>
-      <div className="w-full bg-primary-100 py-4">
-        <div className="w-full max-w-2xl mx-auto px-4">
-          <h1 className="text-2xl font-bold text-primary-400">ชำระเงิน</h1>
+      <div className="bg-gradient-to-t from-primary-100 to-primary-200 w-full px-4 pt-6 pb-3">
+        <div className="w-full lg:max-w-5xl 2xl:max-w-5xl mx-auto px-4 justify-between flex relative h-full flex-grow">
+          <div className="text-primary-700 my-auto">
+            <div className="flex">
+              <ShoppingCartOutlined className="text-3xl mr-3" />
+              <h3 className="text-3xl text-primary-800">ชำระเงิน</h3>
+            </div>
+            <div className="mt-2">
+              <Breadcrumb
+                items={[
+                  {
+                    href: "/",
+                    title: (
+                      <>
+                        <HomeOutlined />
+                        <span>หน้าหลัก</span>
+                      </>
+                    ),
+                  },
+                  {
+                    href: "/select-service",
+                    title: (
+                      <>
+                        <ShopOutlined />
+                        <span>บริการ</span>
+                      </>
+                    ),
+                  },
+                  {
+                    href: "/marketplace/cart",
+                    title: (
+                      <>
+                        <ShoppingCartOutlined />
+                        <span>ตะกร้า</span>
+                      </>
+                    ),
+                  },
+                  {
+                    title: (
+                      <div className="flex">
+                        <IoCardOutline className="my-auto mr-1" />
+                        <span>ชำระเงิน</span>
+                      </div>
+                    ),
+                  }
+                ]}
+              />
+            </div>
+          </div>
         </div>
       </div>
       <div className="max-w-2xl w-full mx-auto p-4 pt-0 space-y-4 mt-6">
@@ -120,7 +184,14 @@ const Checkout = () => {
           {selectedProducts.map((product) => (
             <div key={product.product_id} className="flex justify-between mb-2">
               <div className="flex">
-                <Image src={product?.product_images?.[0]?.image_url || ''} width={40} height={40} />
+                <Image
+                  unoptimized
+                  className="h-[40px] w-[40px] object-cover rounded-md"
+                  alt="Product Image"
+                  src={product?.image_url || ""}
+                  width={40}
+                  height={40}
+                />
                 <span className="my-auto ml-2">
                   {product.name} (x{product.quantity})
                 </span>
@@ -176,7 +247,7 @@ const Checkout = () => {
                   alt="PromptPay QR Code"
                   width={200}
                   height={240}
-                  preview={false}
+                  // preview={false}
                 />
               </div>
             </Panel>

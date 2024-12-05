@@ -10,8 +10,9 @@ import {
   Input,
 } from "antd";
 import { CommissionPost } from "@/types/commissions";
-import { EyeOutlined, PlusOutlined, MinusOutlined } from "@ant-design/icons";
+import { EyeOutlined, PlusOutlined, MinusOutlined, SendOutlined } from "@ant-design/icons";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useAuth } from "@/context/auth-context";
 
 const { Text, Paragraph } = Typography;
 const { PreviewGroup } = Image;
@@ -23,6 +24,7 @@ const CommissionCard = ({ commission }: { commission: CommissionPost }) => {
   const [links, setLinks] = useState<string[]>([""]);
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { user } = useAuth();
 
   const handleViewDetails = () => {
     setIsModalVisible(true);
@@ -157,7 +159,7 @@ const CommissionCard = ({ commission }: { commission: CommissionPost }) => {
       </Card>
       {/* Modal for details */}
       <Modal
-        title={commission.title}
+        // title={commission.title}
         visible={isModalVisible}
         onCancel={handleModalClose}
         footer={null}
@@ -231,60 +233,67 @@ const CommissionCard = ({ commission }: { commission: CommissionPost }) => {
           )}
 
           {/* Offering Input Area */}
-          <div style={{ marginTop: "20px" }} className="bg-primary-50 rounded-lg p-4 drop-shadow-sm">
-            <Typography.Title level={4}>ข้อเสนอของคุณ</Typography.Title>
-            <TextArea
-              rows={2}
-              showCount
-              maxLength={200}
-              placeholder="เพิ่มข้อความข้อเสนอของคุณ..."
-              value={offerText}
-              onChange={handleOfferTextChange}
-            />
-
-            <Typography.Title level={4} style={{ marginTop: "20px" }}>
-              ลิงก์ที่เกี่ยวข้อง
-            </Typography.Title>
-            <div className="w-full">
-              {links.map((link, index) => (
-                <Space
-                  key={index}
-                  style={{
-                    display: "flex",
-                    marginBottom: "8px",
-                    width: "100%",
-                  }}
-                >
-                  <Input
-                    style={{ width: "100%" }}
-                    placeholder={`ลิงก์ #${index + 1}`}
-                    value={link}
-                    onChange={(e) => handleLinkChange(e.target.value, index)}
-                  />
-                  <Button
-                    icon={<MinusOutlined />}
-                    onClick={() => handleRemoveLink(index)}
-                  />
-                </Space>
-              ))}
-            </div>
-            <Button
-              type="dashed"
-              style={{ width: "100%", marginTop: "10px" }}
-              icon={<PlusOutlined />}
-              onClick={handleAddLink}
+          {user?.role === "seller" && (
+            <div
+              style={{ marginTop: "20px" }}
+              className="bg-primary-50 rounded-lg p-4 drop-shadow-sm"
             >
-              เพิ่มลิงก์
-            </Button>
-          </div>
+              <Typography.Title level={4}>ข้อเสนอของคุณ</Typography.Title>
+              <TextArea
+                rows={2}
+                showCount
+                maxLength={200}
+                placeholder="เพิ่มข้อความข้อเสนอของคุณ..."
+                value={offerText}
+                onChange={handleOfferTextChange}
+              />
 
-          <Button
-            type="primary"
+              <Typography.Title level={4} style={{ marginTop: "20px" }}>
+                ลิงก์ที่เกี่ยวข้อง
+              </Typography.Title>
+              <div className="w-full">
+                {links.map((link, index) => (
+                  <div className="w-full flex gap-2">
+                    <Input
+                      style={{ width: "100%" }}
+                      placeholder={`ลิงก์ #${index + 1}`}
+                      value={link}
+                      onChange={(e) => handleLinkChange(e.target.value, index)}
+                    />
+                    <Button
+                      icon={<MinusOutlined />}
+                      onClick={() => handleRemoveLink(index)}
+                    />
+                  </div>
+                ))}
+              </div>
+              <Button
+                type="dashed"
+                style={{ width: "100%", marginTop: "10px" }}
+                icon={<PlusOutlined />}
+                onClick={handleAddLink}
+              >
+                เพิ่มลิงก์
+              </Button>
+              <Button
+                type="primary"
+                size="large"
+                style={{ width: "100%", marginTop: "10px" }}
+                icon={<SendOutlined />}
+                onClick={handleAddLink}
+              >
+                ส่งข้อเสนอ
+              </Button>
+            </div>
+          )}
+
+          {/* <Button
+            type="default"
             style={{ marginTop: "20px", width: "100%" }}
             onClick={handleModalClose}
           >
             ปิด
-          </Button>
+          </Button> */}
         </Typography>
       </Modal>
     </>

@@ -19,6 +19,15 @@ export interface Product {
   product_images: ProductImage[];
 }
 
+export interface CheckoutProduct {
+  product_id: string;
+  seller_id: string;
+  name: string;
+  price: number;
+  quantity: number;
+  image_url: string;
+};
+
 export interface ProductImage {
   product_image_id: number;
   product_id: string;
