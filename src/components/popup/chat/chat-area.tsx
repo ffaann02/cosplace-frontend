@@ -48,6 +48,7 @@ const ChatArea = ({
 
   useEffect(() => {
     socket.on("history", (message: ChatMessage[]) => {
+      console.log("Received history:", message);
       setMessages?.(message);
     });
     return () => {
@@ -64,8 +65,7 @@ const ChatArea = ({
       type: "text",
       message: {
         text: inputMessage,
-        image_url: ""
-      }
+      },
     };
     socket.emit("message", chatMessageFormat);
     setInputMessage("");
@@ -125,9 +125,10 @@ const ChatArea = ({
               <div ref={autoScrollMessageRef}>
                 <Message
                   key={message.messageId}
-                  message={message.message.text}
+                  message={message.message}
                   side={message.senderId === user?.user_id ? "sender" : "receiver"}
-                  type="text"
+                  type={message.type}
+                  image={message.message.image_url}
                   profileImageUrl="/images/sad-cat.jpg"
                   onClickFunction={() => handleMessagesClick(index)}
                   isDisplayTime={isMessageClicked && messageClickedIndex === index}

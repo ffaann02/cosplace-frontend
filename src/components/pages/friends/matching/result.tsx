@@ -113,7 +113,7 @@ const Result = ({
         >
           {cosplayerList && cosplayerList.length > 0 && (
             <MatchedUserCard
-              key={cosplayerList[currentIndex].user_id}
+              key={cosplayerList[currentIndex]?.user_id}
               cosplayer={cosplayerList[currentIndex]}
               onIgnore={handleIgnore}
               onInterest={handleInterest}

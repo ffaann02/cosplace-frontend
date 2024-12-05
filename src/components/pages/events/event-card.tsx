@@ -36,6 +36,8 @@ const EventCard: React.FC<EventCardProps> = ({
           className="object-cover w-full h-full rounded-t"
           src={image_cover || "/images/sad-cat.jpg"}
           alt="placeholder"
+          width={500}
+          height={300}
           unoptimized
         />
       </div>

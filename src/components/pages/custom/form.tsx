@@ -126,32 +126,30 @@ const CreateCustomPostForm = () => {
       const postId = response.data.post_id;
 
       // Upload images to /upload/custom API
-      await Promise.all(
-        fileList.map(async (file) => {
+      await (async () => {
+        for (const file of fileList) {
           try {
             const image = await getBase64(file.originFileObj as FileType);
             const imageData = {
-              post_id: postId,
-              image_url: image,
+          post_id: postId,
+          image_url: image,
             };
-            await apiClientWithAuth.post(
-              "/upload/custom-ref-image",
-              imageData
-            );
+            await apiClientWithAuth.post("/upload/custom-ref-image", imageData);
           } catch (err) {
             console.error("Error uploading image:", err);
             message.error("เกิดข้อผิดพลาดในการอัปโหลดรูปภาพ");
           }
-        })
-      );
+        }
+      })();
 
       message.success("โพสต์สำเร็จ!");
-      router.push(`/custom/${postId}`);
+      // router.push(`/custom/${postId}`);
     } catch (error) {
       console.error("Error submitting form:", error);
       message.error("เกิดข้อผิดพลาดในการโพสต์");
     }
   };
+  
 
   return (
     <div className="px-4 pt-2 flex flex-col">

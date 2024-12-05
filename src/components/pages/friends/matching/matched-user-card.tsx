@@ -57,16 +57,20 @@ const MatchedUserCard = ({
           <div className="px-2.5 mb-2">
             <p className="mt-2">สิ่งที่สนใจ</p>
             <div className="flex flex-wrap">
-              {cosplayer?.interests.slice(0, 5).map((interest, index) => (
+              {cosplayer?.interests && cosplayer.interests.length > 0 ? (
+              cosplayer.interests.slice(0, 5).map((interest, index) => (
                 <div
-                  key={index}
-                  className="bg-white px-2 py-1 rounded-lg border border-primary-100 m-1 text-sm"
+                key={index}
+                className="bg-white px-2 py-1 rounded-lg border border-primary-100 m-1 text-sm"
                 >
-                  {interest}
+                {interest}
                 </div>
-              ))}
-              {cosplayer?.interests.length > 5 && (
-                <div className="mt-auto mb-0.5 text-lg ml-2">...</div>
+              ))
+              ) : (
+              <p className="text-sm text-gray-500">No interests listed</p>
+              )}
+              {cosplayer?.interests && cosplayer.interests.length > 5 && (
+              <div className="mt-auto mb-0.5 text-lg ml-2">...</div>
               )}
             </div>
           </div>
