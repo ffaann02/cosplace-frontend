@@ -81,6 +81,7 @@ const CommissionCard = ({ commission }: { commission: CommissionPost }) => {
         {commission.custom_ref_images.length > 0 && (
           <PreviewGroup>
             <div
+              key={commission.custom_ref_images[0].commission_image_id}
               style={{
                 display: "grid",
                 gridTemplateColumns:
@@ -253,7 +254,9 @@ const CommissionCard = ({ commission }: { commission: CommissionPost }) => {
               </Typography.Title>
               <div className="w-full">
                 {links.map((link, index) => (
-                  <div className="w-full flex gap-2">
+                  <div className="w-full flex gap-2"
+                    key={index}
+                  >
                     <Input
                       style={{ width: "100%" }}
                       placeholder={`ลิงก์ #${index + 1}`}
