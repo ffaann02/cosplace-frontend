@@ -144,10 +144,6 @@ const MatchedUserCard = ({
             <HeartOutlined className="inline-block my-auto text-2xl" />
             <p className="text-sm">สนใจ</p>
           </button>
-          <button className="bg-white px-4 py-1 border border-primary-100 rounded-md">
-            <IoChatbubbleEllipsesOutline className="inline-block my-auto text-2xl" />
-            <p className="text-sm">แชท</p>
-          </button>
         </div>
       </div>
     </div>

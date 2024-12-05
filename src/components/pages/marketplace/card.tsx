@@ -41,7 +41,7 @@ const SearchResultCard: React.FC<SearchResultCardProps> = ({
         unoptimized
       />
       <div className="pl-2.5 py-2 relative flex-grow flex flex-col">
-        <h5 className="font-light text-primary-700 text-xl">{name}</h5>
+        <h5 className="font-light text-primary-700 text-xl truncate">{name}</h5>
         <p className="text-primary-600 text-sm">จำนวน: {quantity}</p>
         <div className="mt-auto">
           <h6 className=" bg-primary-100 text-primary-600 px-2 py-1 rounded-lg w-fit mb-2">

@@ -168,7 +168,7 @@ const PersonCard = ({
                 type="primary"
                 onClick={onAcceptRequest}
               >
-                ยกเลิกคำขอ
+                ยอมรับคำขอเพื่อน
               </Button>
               <Button
                 style={{ width: "100%", marginTop: 8 }}

@@ -1,4 +1,5 @@
 import { logout } from "@/api/auth";
+import { useAuth } from "@/context/auth-context";
 import { Avatar, Badge, Dropdown, MenuProps, Space } from "antd";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -10,6 +11,7 @@ import { SlLogout } from "react-icons/sl";
 
 const UserBadgeNavbar = ({ username }: { username: string | null | undefined }) => {
   const router = useRouter();
+  const {user} = useAuth();
 
   const navigateToProfile = () => {
     router.push("/profile?menu=account");
@@ -55,8 +57,8 @@ const UserBadgeNavbar = ({ username }: { username: string | null | undefined }) 
   ];
 
   return (
-    <div className="hidden lg:flex">
-      <Badge
+    <div className="flex">
+      {/* <Badge
         size="default"
         color="red"
         count={5}
@@ -64,8 +66,8 @@ const UserBadgeNavbar = ({ username }: { username: string | null | undefined }) 
           marginTop: 8,
           marginBottom: "auto",
         }}
-      >
-        <Avatar
+      > */}
+        {/* <Avatar
           shape="circle"
           size="default"
           style={{
@@ -75,10 +77,10 @@ const UserBadgeNavbar = ({ username }: { username: string | null | undefined }) 
           }}
         >
           <LuBellRing className="text-primary-600" />
-        </Avatar>
-      </Badge>
+        </Avatar> */}
+      {/* </Badge> */}
       <div
-        className="hidden lg:flex cursor-pointer bg-white hover:bg-primary-50 pl-1.5 pr-2 py-1 
+        className="cursor-pointer bg-white hover:bg-primary-50 pl-1.5 pr-2 py-1 
         border border-primary-200 ml-4 rounded-lg transition-all ease-linear duration-100"
       >
         <Dropdown menu={{ items }} className="my-auto" placement="bottomRight">
@@ -94,7 +96,7 @@ const UserBadgeNavbar = ({ username }: { username: string | null | undefined }) 
                   marginBottom: "auto",
                 }}
               />
-              <p className="my-auto text-[16px] text-primary-800 mb-1 tracking-wide">
+              <p className="hidden lg:block my-auto text-[16px] text-primary-800 mb-1 tracking-wide">
                 {username}
               </p>
               <FaChevronDown className="text-xs mt-0.5 mb-0.5 mr-0.5 text-primary-800" />

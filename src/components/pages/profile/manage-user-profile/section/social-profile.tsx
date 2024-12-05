@@ -30,16 +30,16 @@ const SocialProfile = () => {
     useState<boolean>(false);
   const [editingDisplayName, setEditingDisplayName] = useState<boolean>(false);
   const [displayName, setDisplayName] = useState<string>("");
-  const user_id = user?.user_id;
+  // const user_id = user?.user_id;
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       if (isFetched || !user) return;
       // const userId = session?.user?.id;
       // const user_id = user?.user_id;
-      console.log("user_id", user_id);
+      console.log("user_id", user?.user_id);
       try {
-        const response = await apiClient.get(`/profile/${user_id}`);
+        const response = await apiClient.get(`/profile/${user?.user_id}`);
         const profileData = response.data;
         console.log("Profile data:", profileData);
         setDisplayName(profileData.display_name);
@@ -64,7 +64,7 @@ const SocialProfile = () => {
         setUpdatingProfileInfo(true);
         const response = await apiClientWithAuth.post("/profile/display-name", {
           // user_id: session?.user?.id,
-          user_id: user_id,
+          user_id: user?.user_id,
           display_name: displayNameValue,
         });
         setDisplayName(response.data.display_name);
@@ -84,7 +84,7 @@ const SocialProfile = () => {
         setUpdatingProfileInfo(true);
         const response = await apiClientWithAuth.post("/profile/bio", {
           // user_id: session?.user?.id,
-          user_id: user_id,
+          user_id:  user?.user_id,
           bio: bioValue,
         });
         console.log("Response from saving bio:", response);
@@ -120,7 +120,7 @@ const SocialProfile = () => {
         setUploadingProfileImage(true);
         const response = await apiClientWithAuth.post("/upload/profile-image", {
           // user_id: session?.user?.id,
-          user_id: user_id,
+          user_id: user?.user_id,
           image: base64Image,
         });
         const image_url = response.data.image_url;
@@ -142,7 +142,7 @@ const SocialProfile = () => {
         setUploadingCoverImage(true);
         const response = await apiClientWithAuth.post("/upload/cover-image", {
           // user_id: session?.user?.id,
-          user_id: user_id,
+          user_id:  user?.user_id,
           image: base64Image,
         });
         const image_url = response.data.image_url;
@@ -383,7 +383,9 @@ const SocialProfile = () => {
           </Form>
         )}
         <Link href={"/profile/" + user?.username}>
-          <button className="absolute bottom-1 left-2 text-sm">ไปหน้าฟีดของคุณ</button>
+          <button className="absolute bottom-1 left-2 text-sm">
+            ไปหน้าฟีดของคุณ
+          </button>
         </Link>
       </div>
     </div>

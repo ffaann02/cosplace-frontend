@@ -20,7 +20,8 @@ import { IoShirtOutline } from "react-icons/io5";
 
 const Marketplace = () => {
   const [products, setProducts] = useState<Product[]>([]);
-
+  const [loading, setLoading] = useState<boolean>(true);
+  const [openFilterDrawer, setOpenFilterDrawer] = useState<boolean>(false);
 
   useEffect(() => {
     const getProducts = async () => {
@@ -30,6 +31,14 @@ const Marketplace = () => {
     };
     getProducts();
   }, []);
+
+  const onSearch = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      console.log("Search completed");
+    }, 2000);
+  };
 
   return (
     <div className="flex-grow min-h-screen flex flex-col">
@@ -87,8 +96,8 @@ const Marketplace = () => {
         </div>
       </div>
       <div className="mt-8 lg:mt-12  w-full lg:max-w-[80rem] 2xl:max-w-[86rem] section-container grid grid-cols-10 gap-x-2 pl-0 lg:pl-4 flex-grow relative">
-        <FilterBar />
-        <SearchResult products={products} showMenu />
+        <FilterBar openFilterDrawerMobile={openFilterDrawer} setOpenFilterDrawerMobile={setOpenFilterDrawer} />
+        <SearchResult products={products} showMenu loading={loading} openFilterDrawerMobile={openFilterDrawer} setOpenFilterDrawerMobile={setOpenFilterDrawer} />
       </div>
     </div>
   );

@@ -235,10 +235,10 @@ const Friends = ({ searchParams }: { searchParams: SearchParams }) => {
       </div>
       {type === "list" && (
         <>
-          <div className="bg-primary-50 border border-primary-200 px-4 py-2 rounded-xl text-primary-600 min-h-screen">
+          <div className="bg-primary-50 border border-primary-200 px-4 py-2 rounded-xl text-primary-600 h-fit">
             <FriendSearchHeader />
             {friendList.length === 0 && (
-              <NoFriendList category="friend mt-4" />
+              <NoFriendList category="friend" />
             )}
             <div className="grid grid-cols-3 gap-4 mt-4">
               {friendList?.map((friend: any, index: number) => (
