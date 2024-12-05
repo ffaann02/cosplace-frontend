@@ -19,7 +19,7 @@ const menuItems = [
   { key: "overview", label: "ภาพรวม", icon: <AppstoreOutlined /> },
   { key: "products", label: "สินค้า", icon: <ShoppingOutlined /> },
   { key: "log", label: "ติดตาม", icon: <SyncOutlined /> },
-  { key: "chat", label: "แชท", icon: <MessageOutlined /> },
+  // { key: "chat", label: "แชท", icon: <MessageOutlined /> },
   { key: "setting", label: "การตั้งค่า", icon: <SettingOutlined /> },
 ];
 
@@ -48,8 +48,8 @@ const MyShopBoard = () => {
         return <Products />;
       case "log":
         return <Logs />;
-      case "chat":
-        return <Chats />;
+      // case "chat":
+      //   return <Chats />;
       case "setting":
         return <Settings />;
       default:

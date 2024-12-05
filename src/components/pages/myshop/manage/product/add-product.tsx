@@ -353,7 +353,9 @@ const AddProduct = () => {
           </Col>
         </Row>
         <Form.Item>
-          <Button type="default" size="large" loading={creating}>
+          <Button type="default" size="large" loading={creating}
+            onClick={() => router.push("/myshop?menu=products")}
+            >
             ยกเลิก
           </Button>
           <Popconfirm
