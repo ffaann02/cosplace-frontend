@@ -42,8 +42,8 @@ const SearchResultHeader = ({
   openFilterDrawerMobile,
   setOpenFilterDrawerMobile,
 }: {
-  openFilterDrawerMobile: boolean;
-  setOpenFilterDrawerMobile: (open: boolean) => void;
+  openFilterDrawerMobile?: boolean;
+  setOpenFilterDrawerMobile?: (open: boolean) => void;
 }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -163,7 +163,9 @@ const SearchResultHeader = ({
           </Space.Compact>
           <div className="w-full text-right block lg:hidden">
             <Button
-              onClick={() => setOpenFilterDrawerMobile(!openFilterDrawerMobile)}
+              onClick={() => 
+                setOpenFilterDrawerMobile && setOpenFilterDrawerMobile(true)
+              }
               type="default"
               className="text-right text-primary-600 mr-1 mt-2"
             >

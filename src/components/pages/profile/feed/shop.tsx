@@ -42,7 +42,7 @@ const FeedShop = ({ sellerId }: { sellerId?: string }) => {
     <div className="mt-4 px-4 xl:px-0">
       <ProductHeader seller={sellerData} showButton={false} />
       <div className="bg-neutral-50 pt-4 rounded-lg border border-primary-100">
-        <SearchResult products={products} showMenu={false} />
+        <SearchResult products={products} loading={false} showMenu={false} openFilterDrawerMobile={false} setOpenFilterDrawerMobile={()=>{}} />
       </div>
     </div>
   );
