@@ -25,6 +25,7 @@ const ChatArea = ({ isOpen }: { isOpen: boolean }) => {
     messages,
     setMessages,
     autoScrollMessageRef,
+    currentProfileImageUrl
   } = useChat();
 
   const [inputMessage, setInputMessage] = useState("");
@@ -108,7 +109,7 @@ const ChatArea = ({ isOpen }: { isOpen: boolean }) => {
       {currentChatId !== "" && (
         <div className="border-b bg-primary-50 border-primary-200 px-1.5 py-1.5 drop-shadow-sm flex">
           <Image
-            src={"/images/sad-cat.jpg"}
+            src={currentProfileImageUrl || "/images/profile.png"}
             alt="profile"
             width={32}
             height={32}

@@ -5,15 +5,16 @@ import { useEffect } from "react";
 import { socket } from "@/api/socket";
 import { useAuth } from "@/context/auth-context";
 import { ChatListInterface, useChat } from "@/context/chat-context";
-import { NotificationInterface, useNotification } from "@/context/notification-context";
-import { getFriendListWithLastMessage, getFriendListWithLastMessageAndOther } from "@/utils/chat";
+import {
+  NotificationInterface,
+  useNotification,
+} from "@/context/notification-context";
+import {
+  getFriendListWithLastMessage,
+  getFriendListWithLastMessageAndOther,
+} from "@/utils/chat";
 
-const ChatList = ({
-  isOpen,
-}: {
-  isOpen: boolean;
-}) => {
-
+const ChatList = ({ isOpen }: { isOpen: boolean }) => {
   const { user } = useAuth();
   const {
     partnerUsername,
@@ -27,11 +28,10 @@ const ChatList = ({
     setMessages,
     setReceiverId,
     setRecieverName,
+    currentProfileImageUrl,
+    setCurrentProfileImageUrl,
   } = useChat();
-  const {
-    notifications,
-    setNotifications,
-  } = useNotification();
+  const { notifications, setNotifications } = useNotification();
 
   useEffect(() => {
     // Reset chat list when chat box is closed
@@ -45,7 +45,7 @@ const ChatList = ({
     socket.connect();
     // Use general chat list
     if (!isOpenWithUsername) {
-      console.log('Get friend list with last message');
+      console.log("Get friend list with last message");
       getFriendListWithLastMessage(user?.user_id);
     }
     // Use only when click chat on profile page
@@ -58,12 +58,14 @@ const ChatList = ({
   }, [isOpen]);
 
   useEffect(() => {
-    if(isOpenWithUsername && chatList.length > 0 && partnerUsername !== "") {
-      const receiverId = chatList.find((chat) => chat.username === partnerUsername)?.userId || "";
+    if (isOpenWithUsername && chatList.length > 0 && partnerUsername !== "") {
+      const receiverId =
+        chatList.find((chat) => chat.username === partnerUsername)?.userId ||
+        "";
       console.log(receiverId);
       selectChat(user?.user_id || "", receiverId);
     }
-  }, [chatList])
+  }, [chatList]);
 
   // Listen for response friend list
   useEffect(() => {
@@ -71,7 +73,7 @@ const ChatList = ({
       console.log(friendList);
       setChatList(friendList);
     }
-    console.log('Listen for friend list');
+    console.log("Listen for friend list");
     socket.on("friendList", friendListEvent);
     return () => {
       socket.off("friendList");
@@ -88,7 +90,7 @@ const ChatList = ({
 
   useEffect(() => {
     function notificationEvent(notiData: NotificationInterface) {
-      getFriendListWithLastMessage((user?.user_id));
+      getFriendListWithLastMessage(user?.user_id);
       const newNotification: NotificationInterface = {
         notification_id: notiData.notification_id,
         send_from: notiData.send_from,
@@ -117,41 +119,58 @@ const ChatList = ({
     };
   }, [setNotifications, socket]);
 
-  const selectChat = (senderId: string, receiverId: string) => {
+  const selectChat = (senderId: string, receiverId: string, imageUrl?: string) => {
     const sortedIds = [senderId, receiverId].sort();
     const roomId = `${sortedIds[0]}-${sortedIds[1]}`;
-    console.log('Select chat:', roomId);
+    console.log("Select chat:", roomId);
     setCurrentChatId(roomId);
+    setCurrentProfileImageUrl(imageUrl || "/images/profile.png");
     setReceiverId(receiverId);
-    setRecieverName(chatList.find((chat) => chat.userId === receiverId)?.name || "");
+    setRecieverName(
+      chatList.find((chat) => chat.userId === receiverId)?.name || ""
+    );
     markAsRead(receiverId);
     const data = {
       chatId: roomId,
-      userId: user?.user_id
-    }
-    socket.emit('joinRoom', data);
-  }
+      userId: user?.user_id,
+    };
+    socket.emit("joinRoom", data);
+  };
 
   const checkUnreadMessage = (currentChatUserId: string) => {
-    return notifications?.filter((notification) => notification.sender_id === currentChatUserId && !notification.is_read && notification.reciever_id !== user?.user_id && !currentChatId.includes(currentChatUserId)).length > 0.;
-  }
+    return (
+      notifications?.filter(
+        (notification) =>
+          notification.sender_id === currentChatUserId &&
+          !notification.is_read &&
+          notification.reciever_id !== user?.user_id &&
+          !currentChatId.includes(currentChatUserId)
+      ).length > 0
+    );
+  };
 
   const countUnreadMessage = (currentChatUserId: string) => {
-    return notifications?.filter((notification) => notification.sender_id === currentChatUserId && !notification.is_read && notification.reciever_id !== user?.user_id && !currentChatId.includes(currentChatUserId)).length;
-  }
+    return notifications?.filter(
+      (notification) =>
+        notification.sender_id === currentChatUserId &&
+        !notification.is_read &&
+        notification.reciever_id !== user?.user_id &&
+        !currentChatId.includes(currentChatUserId)
+    ).length;
+  };
 
   const markAsRead = (currentChatUserId: string) => {
     const updatedNotifications = notifications?.map((notification) => {
       if (notification.sender_id === currentChatUserId) {
         return {
           ...notification,
-          is_read: true
-        }
+          is_read: true,
+        };
       }
       return notification;
-    })
+    });
     setNotifications(updatedNotifications);
-  }
+  };
 
   const addNewNotification = (newNotification: NotificationInterface) => {
     setNotifications((prevNotifications: NotificationInterface[]) => {
@@ -161,7 +180,7 @@ const ChatList = ({
       ];
       return updatedNotifications;
     });
-  }
+  };
 
   return (
     <div className="col-span-2 border-r flex flex-col border-primary-200 h-full pr-0 max-h-[50vh]">
@@ -173,32 +192,45 @@ const ChatList = ({
           <div
             key={chat.userId}
             className="flex items-center border-primary-200 cursor-pointer hover:bg-primary-100 truncate"
-            onClick={() => user?.user_id && selectChat(user.user_id, chat.userId)}
+            onClick={() =>
+              user?.user_id && selectChat(user.user_id, chat.userId, chat.profileImageUrl)
+            }
           >
             <Image
-              src={"/images/sad-cat.jpg"}
+              src={chat.profileImageUrl || "/images/profile.png"}
               alt="profile"
               width={24}
               height={24}
               className="rounded-full w-[24px] h-[24px] my-auto m-2"
             />
             <div>
-              <h6 className="text-primary-700 text-sm text-ellipsis" >{chat.name}</h6>
+              <h6 className="text-primary-700 text-sm text-ellipsis">
+                {chat.name}
+              </h6>
               <div className="flex">
-                <p className="text-primary-500 font-light text-xs">{chat.senderId === user?.user_id && "คุณ: "} {chat.lastMessage}</p>
-                {notifications && notifications.length > 0 && checkUnreadMessage(chat.userId) && (
-                  <div className="bg-primary-400 text-white text-xs rounded-full w-4 h-4 flex justify-center items-center ml-2">
-                    {countUnreadMessage(chat.userId)}
-                  </div>
-                )}
+                <p className="text-primary-500 font-light text-xs">
+                  {chat.senderId === user?.user_id && "คุณ: "}{" "}
+                  {chat.lastMessage}
+                </p>
+                {notifications &&
+                  notifications.length > 0 &&
+                  checkUnreadMessage(chat.userId) && (
+                    <div className="bg-primary-400 text-white text-xs rounded-full w-4 h-4 flex justify-center items-center ml-2">
+                      {countUnreadMessage(chat.userId)}
+                    </div>
+                  )}
               </div>
             </div>
           </div>
         ))}
         {chatList.length === 0 && (
           <div>
-            <p className="text-center text-sm text-primary-400 my-2">ไม่มีพบรายชื่อเพื่อน</p>
-            <p className="text-center text-xs text-primary-400 my-2">กรุณาเพิ่มเพื่อนก่อนเริ่มแชท</p>
+            <p className="text-center text-sm text-primary-400 my-2">
+              ไม่มีพบรายชื่อเพื่อน
+            </p>
+            <p className="text-center text-xs text-primary-400 my-2">
+              กรุณาเพิ่มเพื่อนก่อนเริ่มแชท
+            </p>
           </div>
         )}
       </div>
@@ -206,4 +238,3 @@ const ChatList = ({
   );
 };
 export default ChatList;
-

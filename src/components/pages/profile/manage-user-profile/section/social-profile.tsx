@@ -212,7 +212,7 @@ const SocialProfile = () => {
                   unoptimized
                   src={
                     coverImageUrl ||
-                    "https://uploads.dailydot.com/2018/10/olli-the-polite-cat.jpg?auto=compress&fm=pjpg"
+                    "/images/profile.png"
                   }
                   alt="Cover"
                   width={1920}
@@ -228,7 +228,7 @@ const SocialProfile = () => {
                   unoptimized
                   src={
                     profileImageUrl ||
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXFajwhtgDi6dBSYXf110K6408BstkJ2Xe23N453vJncFSchmXXqUHuFQpgSGlBEd4_BA&usqp=CAU"
+                    "/images/profile.png"
                   }
                   alt="Profile"
                   width={124}

@@ -136,7 +136,7 @@ const PersonCard = ({
     >
       <Image
         className="object-cover w-full h-[200px] rounded-t"
-        src={profile_image_url || "/images/sad-cat.jpg"}
+        src={profile_image_url || "/images/profile.png"}
         alt="profile image"
         width={200}
         height={200}

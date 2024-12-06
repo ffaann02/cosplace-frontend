@@ -44,7 +44,7 @@ const MatchedUserCard = ({
         <div className="bg-secondary-50 border border-primary-100 rounded-lg">
           <Image
             className="object-cover w-full rounded-lg h-[240px] rounded-b-none"
-            src={cosplayer.profile_image_url || "/images/sad-cat.jpg"}
+            src={cosplayer.profile_image_url || "/images/profile.png"}
             alt="placeholder"
             // unoptimized
             width={200}

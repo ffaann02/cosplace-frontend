@@ -18,25 +18,25 @@ const mockShows: Show[] = [
       show_id: 2,
       name_en: "Attack on Titan",
       name_th: "ผ่าพิภพไททัน",
-      cover_image: "https://static.thairath.co.th/media/4DQpjUtzLUwmJZZSCHsUuqV6tBvr6dsUPvAYJNGOq9IH.jpg",
+      cover_image: "https://th.e-muse.com.tw/wp-content/uploads/2022/09/%E9%80%B2%E6%93%8A%E7%9A%84%E5%B7%A8%E4%BA%BAS4-Part-2_%E6%96%B0%E5%AA%92%E5%AE%A3%E5%82%B3%E5%9C%96%E7%9B%B4_V02_%E6%B3%B0-1.jpg",
     },
     {
       show_id: 3,
       name_en: "My Hero Academia",
       name_th: "มายฮีโร่ อคาเดเมีย",
-      cover_image: "https://static.thairath.co.th/media/4DQpjUtzLUwmJZZSCHsUuqV6tBvr6dsUPvAYJNGOq9IH.jpg",
+      cover_image: "https://img.ecartelera.com/noticias/71500/71561-h3.jpg",
     },
     {
       show_id: 4,
       name_en: "One Piece",
       name_th: "วันพีซ",
-      cover_image: "https://static.thairath.co.th/media/4DQpjUtzLUwmJZZSCHsUuqV6tBvr6dsUPvAYJNGOq9IH.jpg",
+      cover_image: "https://static1.srcdn.com/wordpress/wp-content/uploads/2023/12/the-future-of-netflix-s-one-piece-live-action-just-got-much-more-exciting-2.jpg",
     },
     {
       show_id: 5,
       name_en: "Naruto",
       name_th: "นารูโตะ",
-      cover_image: "https://static.thairath.co.th/media/4DQpjUtzLUwmJZZSCHsUuqV6tBvr6dsUPvAYJNGOq9IH.jpg",
+      cover_image: "https://www.beartai.com/wp-content/uploads/2024/02/Naruto-1600x840.jpg",
     },
   ];
 

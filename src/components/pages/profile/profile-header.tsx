@@ -170,7 +170,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
     <div className="w-full relative bg-primary-50 border border-b-primary-100">
       <PreviewImageModal />
       <Image
-        src={coverImageUrl || "/images/sad-cat.jpg"}
+        src={coverImageUrl || "/images/profile.png"}
         alt="Profile Header"
         width={1920}
         height={196}
@@ -178,7 +178,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
         unoptimized
       />
       <Image
-        src={profileImageUrl || "/images/sad-cat.jpg"}
+        src={profileImageUrl || "/images/profile.png"}
         alt="Profile Header"
         width={124}
         height={124}

@@ -40,16 +40,16 @@ const HeroBlock = () => {
                   <div className="w-full">
                     <FaUserFriends className="text-4xl text-primary-600" />
                     <h4 className="text-primary-600">ค้นหาเพื่อน</h4>
-                    <a className="text-sm text-primary-500">
+                    {/* <a className="text-sm text-primary-500">
                       Lorem ipsum dolor sit amet
-                    </a>
+                    </a> */}
                   </div>
                   <div className="pl-4 ">
                     <MdEventAvailable className="text-4xl text-primary-600" />
                     <h4 className="text-primary-600">ค้นหางานและกิจกรรม</h4>
-                    <a className="text-sm text-primary-500">
+                    {/* <a className="text-sm text-primary-500">
                       Lorem ipsum dolor sit amet
-                    </a>
+                    </a> */}
                   </div>
                 </div>
               </div>

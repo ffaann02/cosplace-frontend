@@ -95,7 +95,7 @@ const FriendCard = ({
                 <div className="col-span-1 h-full flex items-center">
                     <Image
                         className="object-cover w-full h-full rounded-lg my-auto"
-                        src={profile_image_url || "/images/sad-cat.jpg"}
+                        src={profile_image_url || "/images/profile.png"}
                         alt="profile image"
                         onClick={() => console.log("click")}
                     />
