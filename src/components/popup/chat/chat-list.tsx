@@ -57,15 +57,15 @@ const ChatList = ({ isOpen }: { isOpen: boolean }) => {
     };
   }, [isOpen]);
 
-  useEffect(() => {
-    if (isOpenWithUsername && chatList.length > 0 && partnerUsername !== "") {
-      const receiverId =
-        chatList.find((chat) => chat.username === partnerUsername)?.userId ||
-        "";
-      console.log(receiverId);
-      selectChat(user?.user_id || "", receiverId);
-    }
-  }, [chatList]);
+  // useEffect(() => {
+  //   if (isOpenWithUsername && chatList.length > 0 && partnerUsername !== "") {
+  //     const receiverId =
+  //       chatList.find((chat) => chat.username === partnerUsername)?.userId ||
+  //       "";
+  //     console.log(receiverId);
+  //     selectChat(user?.user_id || "", receiverId);
+  //   }
+  // }, [chatList]);
 
   // Listen for response friend list
   useEffect(() => {
