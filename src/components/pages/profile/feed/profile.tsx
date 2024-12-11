@@ -470,14 +470,14 @@ const FeedProfile = ({
           <p className="text-primary-600 mb-2">
             {selectedPortfolio.description}
           </p>
-          <Carousel arrows infinite={false} autoplay autoplaySpeed={200}>
+          <Carousel arrows infinite={false} autoplay autoplaySpeed={2000}>
             {selectedPortfolio?.portfolio_images?.length > 0 &&
               selectedPortfolio.portfolio_images.map((image, index) => (
                 <Image
                   key={index}
                   src={image.image_url}
                   alt={selectedPortfolio.title}
-                  className="object-cover h-64 w-full rounded-lg"
+                  className="object-cover h-[320px] w-full rounded-lg"
                   unoptimized
                   width={500}
                   height={200}

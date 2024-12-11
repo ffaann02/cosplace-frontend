@@ -57,7 +57,7 @@ const tagRender: SelectProps["tagRender"] = (props) => {
   };
   return (
     <Tag
-      color={value}
+      // color={value}
       onMouseDown={onPreventMouseDown}
       closable={closable}
       onClose={onClose}
