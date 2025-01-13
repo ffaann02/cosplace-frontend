@@ -11,7 +11,7 @@
 ## Overview
 CosBaanDeawGun is an all-in-one platform designed for cosplayers to rent, sell, and manage costumes and related services securely and efficiently. It features an online marketplace, event finder, cosplay matching, secure payment systems, and interactive user functionalities like reviews and chat, aiming to streamline cosplay activities and foster community growth.
 ## Demo and Presentation
-- Web demo (Skip to 11:26): https://youtu.be/30G_giW6Mcs?si=wDrc71WmBMdrvXUk&t=686
+- Web demo (Skip to 11:24): https://youtu.be/30G_giW6Mcs?si=wDrc71WmBMdrvXUk&t=684
 - Presentation: http://surl.li/ggtmyo
 ## Features
 1. **Online Marketplace**:
